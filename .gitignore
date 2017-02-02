@@ -8,3 +8,4 @@ Homestead.yaml
 .env
 
 .DS_Store
+/public/js/app.js
