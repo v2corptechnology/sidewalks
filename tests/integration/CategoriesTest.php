@@ -39,7 +39,7 @@ class CategoriesTest extends TestCase
 
 	public function test_categories_are_displayed()
 	{
-		$categories = factory(App\Category::class)->create([
+		$category = factory(App\Category::class)->create([
 			'shop_id' => $this->shop->id,
 			'name' => 'This is the coolest category, ever'
 		]);
@@ -47,15 +47,16 @@ class CategoriesTest extends TestCase
 		$this->actingAs($this->user);
 		
         $this->visit('/categories')
-        	 ->see('This is the coolest category, ever');
+        	 ->see($category->name);
 	}
 
-	public function test_user_can_create_category()
+	public function test_only_user_categories_are_displayed()
 	{
-		 $this->visit('/register')
-	          ->type('Taylor', 'name')
-	          ->check('terms')
-	          ->press('Register')
-	          ->seePageIs('/dashboard');
+		$unseen = factory(App\Category::class)->create();
+
+		$this->actingAs($this->user);
+		
+        $this->visit('/categories')
+        	 ->dontSee($unseen->name);
 	}
 }

@@ -7,13 +7,14 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     My categories
+                    <a class="btn btn-sm btn-primary pull-right" href="{{ route('categories.create') }}">Add</a>
                 </div>
 
                 <div class="panel-body">
                     <ul>
                         @foreach ($categories as $category)
                             <li>
-                                {{ $category }}
+                                {{ $category->name }}
                             </li>
                         @endforeach
                     </ul>
