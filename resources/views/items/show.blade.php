@@ -9,6 +9,13 @@
 
                     <div class="panel-body">
                         <p>{{ $item->description }}</p>
+                        <h5>Categories</h5>
+                        <ul>
+                            @foreach ($item->categories as $category)
+                                <li><a href="{{ route('categories.show', $category) }}">{{ $category->name }}</a></li>
+                            @endforeach
+                        </ul>
+                        <h5>Info</h5>
                         <span><span class="label label-warning">price: {{ $item->amount }} {{ $item->symbol }}</span></span><br>
                         <span><span class="label label-info">quantity: {{ $item->quantity }}</span></span>
                         <div class="row">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreCategory;
+use App\Category;
 
 class CategoriesController extends Controller
 {
@@ -48,9 +49,9 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category $category)
     {
-        //
+        return view('categories.show', compact('category'));
     }
 
     /**
