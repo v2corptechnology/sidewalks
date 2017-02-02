@@ -8,11 +8,13 @@
                 <div class="panel-heading">{{ $category->name }}</div>
 
                 <div class="panel-body">
-                	<ul>
-                        @foreach ($category->items as $item)
-                            <li><a href="{{ route('items.show', $item) }}">{{ $item->title }}</a></li>
-                        @endforeach                		
-                	</ul>
+                	<div class="row">
+						@foreach ($category->items as $item)
+							 <div class="col-sm-4">
+							    @include('items.card', ['item' => $item])
+							</div>
+						@endforeach
+					</div>
                 </div>
             </div>
         </div>
