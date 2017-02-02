@@ -93,7 +93,7 @@
                                             <label class="control-label" for="categories">
                                                 Categories
                                             </label>
-                                            <select class="form-control js-categories" name="categories[]" id="categories" multiple required>
+                                            <select class="form-control js-categories" style="width: 100%" name="categories[]" id="categories" multiple required>
                                                 @foreach($categories as $category)
                                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                 @endforeach
