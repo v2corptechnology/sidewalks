@@ -37,7 +37,7 @@ Vue.component('item', {
                 vm = this;
 
             reader.onload = (event) => {
-                vm.items.images.push(event.target.result);
+                vm.item.images.push(event.target.result);
             };
 
             reader.readAsDataURL(file);
