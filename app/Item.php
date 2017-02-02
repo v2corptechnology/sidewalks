@@ -10,6 +10,11 @@ class Item extends Model
 
     protected $casts = ['amount' => 'float', 'images' => 'array', 'extra' => 'array'];
 
+    public function categories()
+    {
+        return $this->belongsToMany(\App\Category::class);
+    }
+
     public function setAmountAttribute($value)
     {
         $this->attributes['amount'] = (int) $value * 100;

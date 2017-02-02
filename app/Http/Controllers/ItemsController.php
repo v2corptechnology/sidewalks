@@ -25,7 +25,9 @@ class ItemsController extends Controller
      */
     public function create()
     {
-        return view('items.create');
+        $categories = auth()->user()->shop->categories;
+
+        return view('items.create', compact('categories'));
     }
 
     /**
@@ -39,15 +41,18 @@ class ItemsController extends Controller
         // Store item
         $item = Item::create($request->except('images'));
 
+        // Attach the categories to him
+        $item->categories()->attach($request->get('categories'));
+
         // Save image
         $images = $this->saveImages($item, $request->get('images'));
 
         // Redirect accordingly
-        if ($request->get('next', 'save')) {
-            return redirect()->route('shops.markers.create', auth()->user()->shop);
+        if ($request->get('next', 'save') == 'save') {
+            return redirect()->route('shops.markers.create', $request->user()->shop);
         }
 
-        return 'add another item';
+        return redirect()->back();
     }
 
     /**

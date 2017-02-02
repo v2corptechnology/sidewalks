@@ -33,6 +33,7 @@ class StoreItem extends FormRequest
             ],
             'symbol'        => 'required',
             'quantity'      => 'required|numeric|between:1,100',
+            'categories'    => 'required|array|min:1',
             'images'        => 'required|array|min:1',
             'user_id'       => 'required|integer|exists:users,id',
             'shop_id'       => 'required|integer|exists:shops,id',

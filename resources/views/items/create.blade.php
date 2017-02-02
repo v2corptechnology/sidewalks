@@ -1,6 +1,6 @@
 @extends('spark::layouts.app')
 
-@section('content')
+@section('scripts')
 <style>
     .col-sm-4 {margin-bottom: 1rem;}
     .close {
@@ -10,6 +10,13 @@
         transform: translateX(50%) translateY(-50%);
     }
 </style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.6/select2-bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+@endsection
+
+@section('content')
 <item inline-template>
     <div class="container">
         <div class="row">
@@ -82,6 +89,17 @@
                                             </div>
                                         </div>
 
+                                        <div class="form-group">
+                                            <label class="control-label" for="categories">
+                                                Categories
+                                            </label>
+                                            <select class="form-control js-categories" name="categories[]" id="categories" multiple required>
+                                                @foreach($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
                                         <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                                             <label class="control-label" for="description">
                                                 Description
@@ -96,7 +114,7 @@
 
                                 <div class="col-sm-6">
                                     <fieldset>
-                                        <label for="image">Images</label>
+                                        <label class="control-label" for="image">Images</label>
                                         <div class="form-group" v-show="item.images.length">
                                             <div class="row">
                                                 <div class="col-sm-4" v-for="(image, index) in item.images">
