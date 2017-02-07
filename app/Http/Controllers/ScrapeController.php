@@ -18,7 +18,7 @@ class ScrapeController extends Controller
         $url = urldecode($rawUrl);
 
         return \Cache::remember($rawUrl, 60, function () use ($url) {
-            $diffbot = new Diffbot('3a4112bdb34bca3217613b46b2284893');
+            $diffbot = new Diffbot('f6e1dcdddd64559dcfb313a7e831f758');
             $productApi = $diffbot->createProductAPI($url);
             $rawResult = $productApi->call()->getResponse()->getBody();
 
