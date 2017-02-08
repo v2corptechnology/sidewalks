@@ -8,29 +8,32 @@
                 <div class="panel-heading">{{ $shop->name }}</div>
 
                 <div class="panel-body">
-                    <ul class="list-unstyled opening-hours">
-                        @foreach ($shop->schedules->groupBy('day_of_week') as $schedule)
-                            <li>
-                                @if (\Carbon\Carbon::now()->dayOfWeek == $schedule->first()->day_of_week)
-                                    <b>
-                                @endif
-                                {{ jddayofweek(($schedule->first()->day_of_week-1), 1) }}
 
-                                <span class="pull-right">
-                                    @foreach ($schedule as $hour)
-                                        {{ \Carbon\Carbon::createFromFormat('H:i', $hour->time_open)->format('H:i') }}–{{ \Carbon\Carbon::createFromFormat('H:i', $hour->time_open)->addMinutes($hour->working_time)->format('H:i') }}
-                                        @if (! $loop->last) 
-                                        , 
-                                        @endif
-                                    @endforeach
-                                </span>
-                                @if (\Carbon\Carbon::now()->dayOfWeek == $schedule->first()->day_of_week)
-                                    </b>
-                                @endif
-                            </li>
-                        @endforeach
-                    </ul>
-                    <br><br>
+                    @if ($shop->schedules->first())
+                        <ul class="list-unstyled opening-hours">
+                            @foreach ($shop->schedules->groupBy('day_of_week') as $schedule)
+                                <li>
+                                    @if (\Carbon\Carbon::now()->dayOfWeek == $schedule->first()->day_of_week)
+                                        <b>
+                                    @endif
+                                    {{ jddayofweek(($schedule->first()->day_of_week-1), 1) }}
+
+                                    <span class="pull-right">
+                                        @foreach ($schedule as $hour)
+                                            {{ \Carbon\Carbon::createFromFormat('H:i', $hour->time_open)->format('H:i') }}–{{ \Carbon\Carbon::createFromFormat('H:i', $hour->time_open)->addMinutes($hour->working_time)->format('H:i') }}
+                                            @if (! $loop->last) 
+                                            , 
+                                            @endif
+                                        @endforeach
+                                    </span>
+                                    @if (\Carbon\Carbon::now()->dayOfWeek == $schedule->first()->day_of_week)
+                                        </b>
+                                    @endif
+                                </li>
+                            @endforeach
+                        </ul>
+                        <br><br>
+                    @endif
                     <pano-viewer panorama="{{ asset('storage/panoramas/' . $shop->panorama) }}" 
                                  markers="{{ $shop->markers->toPSV() }}"
                                  items="{{ $shop->items->toJson() }}"
