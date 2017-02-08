@@ -14,7 +14,7 @@ class Shop extends Model
 {
 	use SoftDeletes;
 
-    protected $fillable = ['name', 'panorama'];
+    protected $fillable = ['name', 'phone', 'email', 'address', 'contact', 'panorama'];
 
     protected $dates = ['deleted_at'];
 
@@ -42,4 +42,15 @@ class Shop extends Model
     {
         return $this->hasMany(Category::class);
     }
+
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = \Crypt::encrypt($value);
+    }
+
+    public function getEmailAttribute($value)
+    {
+        return \Crypt::decrypt($value);
+    }
+
 }

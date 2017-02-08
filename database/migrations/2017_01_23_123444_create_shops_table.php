@@ -17,7 +17,11 @@ class CreateShopsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id')->references('id')->on('users');
             $table->string('name');
-            $table->string('panorama');
+            $table->string('phone');
+            $table->string('email');
+            $table->string('address');
+            $table->string('contact');
+            $table->string('panorama')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

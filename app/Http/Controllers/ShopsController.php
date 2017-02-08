@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Request;
 use App\Shop;
 use App\Schedule;
+use App\Http\Requests\StoreShop;
+use libphonenumber\PhoneNumberFormat;
 
 class ShopsController extends Controller
 {
@@ -37,8 +39,52 @@ class ShopsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreShop $request)
     {
+        // Format phone number
+        $request->merge(['phone' => phone($request->input('phone'), null, PhoneNumberFormat::E164)]);
+
+        $shop = auth()->user()->shop()->create($request->all());
+
+        return redirect()->route('shops.edit', $shop);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Shop $shop)
+    {
+        $sunday = $shop->schedules->shift();
+
+        $shop->schedules->push($sunday);
+
+        return view('shops.show', compact('shop'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Shop $shop)
+    {
+        return view('shops.edit', compact('shop'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+
         $path = $request->file('image')->store('panoramas');
 
         $schedules = json_decode($request->input('schedules'));
@@ -67,44 +113,6 @@ class ShopsController extends Controller
                 ]);
             }
         }
-
-        return redirect()->route('shops.show', $shop);$account = App\Account::find(10);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Shop $shop)
-    {
-        $sunday = $shop->schedules->shift();
-        $shop->schedules->push($sunday);
-        return view('shops.show', compact('shop'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**
