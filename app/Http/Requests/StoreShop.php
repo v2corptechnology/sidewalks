@@ -24,11 +24,13 @@ class StoreShop extends FormRequest
     public function rules()
     {
         return [
-            'name'      => "required",
+            'name'      => "required_without:image",
             'phone'     => "required|phone:AUTO,US",
             'email'     => "required|email",
             'address'   => "required",
             'contact'   => "required",
+            'image'     => "required_without:name",
+            'schedules' => "required_without:name",
         ];
     }
 }

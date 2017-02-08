@@ -82,16 +82,22 @@ class ShopsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Shop $shop)
     {
+        if ($request->hasFile('image')) {
 
-        $path = $request->file('image')->store('panoramas');
+            $path = $request->file('image')->store('panoramas');
+
+            $request->merge(['panorama' => basename($path)]);
+
+        }
+
+        $shop->update($request->all());
+
+        dd('Shop was updated but schedules need to be done');
+
 
         $schedules = json_decode($request->input('schedules'));
-
-        $request->merge(['panorama' => basename($path)]);
-
-        $shop = auth()->user()->shop()->create($request->all());
 
         foreach ($schedules as $schedule) {
 
