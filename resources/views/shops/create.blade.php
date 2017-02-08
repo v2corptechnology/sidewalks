@@ -43,7 +43,7 @@
                         <div class="form-group {{ $errors->has('contact') ? ' has-error' : '' }}">
                             <label class="control-label col-sm-2" for="contact">Contact name</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="contact" value="{{ old('contact') }}" id="contact" type="text" placeholder="Mister Owner" required>
+                                <input class="form-control" name="contact" value="{{ old('contact', auth()->user()->name) }}" id="contact" type="text" placeholder="Mister Owner" required>
                                 {!! $errors->first('contact', '<p class="help-block">:message</p>') !!}
                             </div>
                         </div>
