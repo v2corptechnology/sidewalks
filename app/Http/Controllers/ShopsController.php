@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Shop;
 use App\Schedule;
 use App\Http\Requests\StoreShop;
@@ -85,40 +86,13 @@ class ShopsController extends Controller
     public function update(Request $request, Shop $shop)
     {
         if ($request->hasFile('image')) {
-
             $path = $request->file('image')->store('panoramas');
-
             $request->merge(['panorama' => basename($path)]);
-
         }
-
         $shop->update($request->all());
+        $this->saveSchedules($request->input('schedules'), $shop->id);
 
-        dd('Shop was updated but schedules need to be done');
-
-
-        $schedules = json_decode($request->input('schedules'));
-
-        foreach ($schedules as $schedule) {
-
-            foreach ($schedule->days as $day) {
-                $dayOfWeek = \Carbon\Carbon::createFromFormat('D', $day)->dayOfWeek;    
-                $start = \Carbon\Carbon::createFromFormat('D H:i', $day . ' ' .$schedule->start);
-                $end = \Carbon\Carbon::createFromFormat('D H:i', $day . ' ' .$schedule->end);
-
-                // In case the schedule ends after midnight
-                if ($start->timestamp > $end->timestamp) {
-                    $end->addDay();
-                }
-
-                Schedule::create([
-                    'shop_id' =>        $shop->id,
-                    'day_of_week' =>    $dayOfWeek,
-                    'time_open' =>      $start->format('H:i'),
-                    'working_time' =>   $end->diffInMinutes($start),
-                ]);
-            }
-        }
+        return redirect()->route('shops.show', $shop);
     }
 
     /**
@@ -130,5 +104,28 @@ class ShopsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    protected function saveSchedules(string $json, int $shopId)
+    {
+        foreach (json_decode($json) as $schedule) {
+            foreach ($schedule->days as $day) {
+                $dayOfWeek = Carbon::createFromFormat('D', $day)->dayOfWeek;    
+                $start = Carbon::createFromFormat('D H:i', $day . ' ' .$schedule->start);
+                $end = Carbon::createFromFormat('D H:i', $day . ' ' .$schedule->end);
+
+                // In case the schedule ends after midnight
+                if ($start->timestamp > $end->timestamp) {
+                    $end->addDay();
+                }
+
+                Schedule::updateOrCreate([
+                    'shop_id'       => $shopId,
+                    'day_of_week'   => $dayOfWeek,
+                    'time_open'     => $start->format('H:i'),
+                    'working_time'  => $end->diffInMinutes($start),
+                ]);
+            }
+        }
     }
 }
