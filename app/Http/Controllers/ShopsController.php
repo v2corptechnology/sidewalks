@@ -46,7 +46,7 @@ class ShopsController extends Controller
 
         $shop = auth()->user()->shop()->create($request->all());
 
-        return redirect()->route('shops.edit', $shop);
+        return redirect()->route('shops.edit', [$shop, 'narrow']);
     }
 
     /**
