@@ -90,7 +90,7 @@ class ShopsController extends Controller
             $request->merge(['panorama' => basename($path)]);
         }
         $shop->update($request->all());
-        $this->saveSchedules($request->input('schedules'), $shop->id);
+        $this->saveSchedules($request->input('schedules'), $shop);
 
         return redirect()->route('shops.show', $shop);
     }
@@ -106,8 +106,9 @@ class ShopsController extends Controller
         //
     }
 
-    protected function saveSchedules(string $json, int $shopId)
+    protected function saveSchedules(string $json, Shop $shop)
     {
+        $shop->schedules()->delete();
         foreach (json_decode($json) as $schedule) {
             foreach ($schedule->days as $day) {
                 $dayOfWeek = Carbon::createFromFormat('D', $day)->dayOfWeek;    
@@ -120,7 +121,7 @@ class ShopsController extends Controller
                 }
 
                 Schedule::updateOrCreate([
-                    'shop_id'       => $shopId,
+                    'shop_id'       => $shop->id,
                     'day_of_week'   => $dayOfWeek,
                     'time_open'     => $start->format('H:i'),
                     'working_time'  => $end->diffInMinutes($start),
