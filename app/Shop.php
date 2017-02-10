@@ -53,4 +53,9 @@ class Shop extends Model
         return \Crypt::decrypt($value);
     }
 
+    public function addressImage(string $size = '260x150', int $scale = 1)
+    {
+        return "//maps.googleapis.com/maps/api/staticmap?center=". urlencode($this->address) ."&zoom=13&size={$size}&maptype=roadmap&scale={$scale}&markers=". urlencode($this->address) ."&key=AIzaSyB7FyN9T9YarDU7F8ZCEXM0EAh6_2swL9A";
+    }
+
 }
