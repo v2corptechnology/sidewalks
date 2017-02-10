@@ -28,14 +28,14 @@ Vue.component('pano', {
                 //this.$emit('select-marker');
                 var notMatchingItems = document.querySelectorAll('.item:not([data-item-id="'+ marker.item_id +'"])');
                 for (var i = 0; i < notMatchingItems.length; i++) {
-                    notMatchingItems[i].classList.toggle('hidden');
+                    notMatchingItems[i].parentNode.classList.toggle('hidden');
                 }
             });
 
             PSV.on('unselect-marker', function(marker) {
                 var hiddenItems = document.querySelectorAll('.item.hidden');
                 for (var i = 0; i < hiddenItems.length; i++) {
-                    hiddenItems[i].classList.toggle('hidden');
+                    hiddenItems[i].parentNode.classList.toggle('hidden');
                 }
             });
         }
