@@ -1,4 +1,4 @@
-<div class="item box">
+<div class="item box" data-item-id="{{ $item->id }}">
 	<a class="item__content" href="{{ route('items.show', $item) }}" title="{{ $item->description }}">
 	    <figure class="item__gallery">
 	        <img class="item__image img-responsive" 

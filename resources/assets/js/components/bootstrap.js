@@ -13,6 +13,7 @@ require('./../spark-components/bootstrap');
 
 require('./home');
 
+require('./pano');
 require('./panorama');
 require('./pano-viewer');
 

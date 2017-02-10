@@ -82,7 +82,7 @@
 @endsection
 
 @section('content')
-<div class="container">
+<div class="container" id="root">
     <div class="row">
         <div class="col-sm-3 col-sm-push-9">
             <div class="box">
@@ -122,22 +122,19 @@
         </div>
         <div class="col-sm-9 col-sm-pull-3">
             <div class="box">
-                <pano-viewer panorama="{{ asset('storage/panoramas/' . $shop->panorama) }}" 
-                             markers="{{ $shop->markers->toPSV() }}"
-                             items="{{ $shop->items->toJson() }}"
-                             target-url="{{ route('shops.markers.store', $shop) }}"></pano-viewer>
+                <pano panorama="{{ asset('storage/panoramas/' . $shop->panorama) }}" 
+                      markers="{{ $shop->markers->toPSV() }}">
+                </pano>
             </div>
         </div>
         <div class="col-sm-12">
-            @foreach ($shop->items->chunk(4) as $items)
-                <div class="row">
-                     @foreach ($items as $item)
-                         <div class="col-sm-3">
-                            @include('items.card', ['item' => $item])
-                        </div>
-                    @endforeach
-                </div>
-            @endforeach
+            <div class="row">
+                @foreach ($shop->items as $item)
+                     <div class="col-sm-3">
+                        @include('items.card', ['item' => $item])
+                    </div>
+                @endforeach
+            </div>
         </div>
     </div>
 </div>

@@ -1,13 +1,5 @@
 Vue.component('pano-viewer', {
 	props: ['panorama', 'markers', 'items', 'target-url'],
-	/*
-	 {
-        product: {
-            type: Object,
-            required: true
-        }
-    },
-    */
 	template: `<div>
 					<div id="photosphere"></div>
 					<div id="js-add-marker" class="hidden">
