@@ -4,6 +4,75 @@
     <style>
         h1.text-center {margin-top: 0;}
     </style>
+    <script>
+// This example displays an address form, using the autocomplete feature
+// of the Google Places API to help users fill in the information.
+
+var placeSearch, autocomplete;
+var componentForm = {
+  street_number: 'short_name',
+  route: 'long_name',
+  locality: 'long_name',
+  administrative_area_level_1: 'short_name',
+  country: 'long_name',
+  postal_code: 'short_name'
+};
+
+function initAutocomplete() {
+  // Create the autocomplete object, restricting the search to geographical
+  // location types.
+  autocomplete = new google.maps.places.Autocomplete(
+      (document.getElementById('address')),
+      {types: ['geocode']});
+
+  // When the user selects an address from the dropdown, populate the address
+  // fields in the form.
+  autocomplete.addListener('place_changed', fillInAddress);
+}
+
+// [START region_fillform]
+function fillInAddress() {
+  // Get the place details from the autocomplete object.
+  var place = autocomplete.getPlace();
+
+  var img = document.createElement('img'),
+    targetElement = document.getElementById("js-address-img");
+
+  img.classList.add('img-responsive');
+  img.setAttribute('src', "//maps.googleapis.com/maps/api/staticmap?center="+ place.formatted_address +"&zoom=13&size=346x150&maptype=roadmap&scale=2&markers="+ place.formatted_address +"&key=AIzaSyB7FyN9T9YarDU7F8ZCEXM0EAh6_2swL9A");
+
+    targetElement.querySelector('.fa-spinner').classList.remove('hidden');
+    targetElement.appendChild(img);
+
+    img.onload = function(){
+        targetElement.querySelector('.fa-spinner').classList.add('hidden');
+    };
+
+  /*
+  for (var component in componentForm) {
+    document.getElementById(component).value = '';
+    document.getElementById(component).disabled = false;
+  }
+  */
+
+  // Get each component of the address from the place details
+  // and fill the corresponding field on the form.
+ /*
+  for (var i = 0; i < place.address_components.length; i++) {
+    var addressType = place.address_components[i].types[0];
+    if (componentForm[addressType]) {
+      var val = place.address_components[i][componentForm[addressType]];
+      document.getElementById(addressType).value = val;
+    }
+  }
+  */
+}
+// [END region_fillform]
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7FyN9T9YarDU7F8ZCEXM0EAh6_2swL9A&libraries=places&callback=initAutocomplete"
+        async defer></script>
+
 @endsection
 
 @section('content')
@@ -43,6 +112,10 @@
                             <div class="col-sm-4">
                                 <input class="form-control" name="address" value="{{ old('address') }}" id="address" type="text" placeholder="1 Quality Street, 99110 Ca" required>
                                 {!! $errors->first('address', '<p class="help-block">:message</p>') !!}
+                                <br>
+                                <p class="text-center" id="js-address-img">
+                                    <i class="fa fa-spinner fa-spin fa-3x fa-fw hidden"></i>
+                                </p>
                             </div>
                         </div>
                         <div class="form-group {{ $errors->has('contact') ? ' has-error' : '' }}">
