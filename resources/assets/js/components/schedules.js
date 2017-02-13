@@ -2,28 +2,28 @@ Vue.component('schedules', {
     template: `
             <div>
                 <div class="form-group" v-for="(schedule, index) in schedules">
-                    <div class="col-sm-5">
+                    <div class="col-sm-4">
                         <div class="row">
                             <div class="col-sm-6">
-                                <input class="form-control input-sm" type="time" id="from" placeholder="10:00am" required v-model="schedule.start">
+                                <input class="form-control" type="time" id="from" placeholder="10:00am" required v-model="schedule.start">
                             </div>
                             <div class="col-sm-6">
-                                <input class="form-control input-sm" type="time" id="from" placeholder="10:00am" required v-model="schedule.end">
+                                <input class="form-control" type="time" id="from" placeholder="10:00am" required v-model="schedule.end">
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="btn-group btn-group-xs btn-group-justified">
+                    <div class="col-sm-7">
+                        <div class="btn-group btn-group-justified">
                             <label class="btn btn-default" :class="isActiveDay(day, index) ? 'active' : ''" v-for="day in days">
                                 <input class="sr-only" type="checkbox" autocomplete="off" :checked="isActiveDay(day, index)" @click="toggleDay(day, index)"> {{ day }}
                             </label>
                         </div>
                     </div>
                     <div class="col-sm-1">
-                        <a href="#" v-show="index" @click="removeSchedule(index)">&times;</a>
+                        <a href="#" v-show="index" @click="removeSchedule(index)"><i class="fa fa-times"></i></a>
                     </div>
                 </div>
-                <button class="btn btn-default btn-xs" type="button" @click="addSchedule">Add Hours</button>
+                <a href="#" @click="addSchedule"><i class="fa fa-plus-square-o"></i> Add Hours</a>
                 <input type="hidden" name="schedules" :value="JSON.stringify(schedules)"/>
             </div>
     `,
