@@ -8,11 +8,15 @@ class MarkerCollection extends Collection
 {
     public function toPSV() :string
     {
-        return base64_encode($this->each(function($item) {
-            $item->image = asset('img/pin_green.svg');
-            $item->anchor = "bottom center";
-            $item->width = 32;
-            $item->height = 32;
+    	$this->load('item');
+
+        return base64_encode($this->each(function($marker) {
+            $marker->image = asset('img/pin_green.svg');
+            $marker->anchor = "bottom center";
+            $marker->width = 32;
+            $marker->height = 32;
+            $marker->title = $marker->item->title;
+            $marker->tooltip = $marker->item->title;
         })->toJson());
     }
 }
