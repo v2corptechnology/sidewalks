@@ -78,6 +78,10 @@
             border-radius: 2px;
             padding: 0.25rem 0.5rem;
         }
+
+        /** EXTRA **/
+        .h3 {border-bottom: 1px solid #eaeaea;}
+        .form-inline.pull-right {margin-top: 1.6rem;}
     </style>
 @endsection
 
@@ -127,15 +131,19 @@
                 </pano>
             </div>
         </div>
+
         <div class="col-sm-12">
-            <div class="row">
-                @foreach ($shop->items as $item)
-                     <div class="col-sm-3">
-                        @include('items.card', ['item' => $item])
-                    </div>
-                @endforeach
+            <form action="#" class="form-inline pull-right">
+                <label class="control-label" for="filter">
+                    <input class="form-control input-sm" type="search" name="filter" id="filter" placeholder="Filter...">
+                </label>
+            </form>
+            <h1 class="h3">{{ $shop->items->count() }} items</h1>
+            <div class="row" id="root">
+                @each('items.card', $shop->items, 'item')
             </div>
         </div>
+
     </div>
 </div>
 @endsection
