@@ -10,35 +10,6 @@
     <script src="//rawgit.com/mrdoob/three.js/master/examples/js/controls/DeviceOrientationControls.js"></script>
     <script src="//rawgit.com/mistic100/Photo-Sphere-Viewer/master/dist/photo-sphere-viewer.min.js"></script>
     <style>
-        .box {
-            border-radius: 2px;
-            background-color: #ffffff;
-            box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.08);
-            border: solid 1px #eaeaea;
-            margin-bottom: 3rem;
-        }
-
-        .box__content {
-            padding: 2rem;
-        }
-
-        .box__content:last-child :last-child {
-            margin-bottom: 0;
-        }
-
-        .box__heading {
-            font-family: 'Open Sans', sans-serif;
-            font-size: 18px;
-            font-weight: 600;
-            font-style: normal;
-            font-stretch: normal;
-            line-height: 1.17;
-            letter-spacing: normal;
-            color: #454545;
-            margin: 0 0 1.5rem 0;
-            padding: 0;
-        }
-
         .schedules {
 
         }
