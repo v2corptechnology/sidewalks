@@ -35,17 +35,20 @@ function fillInAddress() {
   // Get the place details from the autocomplete object.
   var place = autocomplete.getPlace();
 
-  var img = document.createElement('img'),
-    targetElement = document.getElementById("js-address-img");
+  var targetElement = document.getElementById("js-address-img"),
+      img = targetElement.querySelector('img') || document.createElement('img');
 
-  img.classList.add('img-responsive');
+  img.classList.add('img-responsive', 'hidden');
   img.setAttribute('src', "//maps.googleapis.com/maps/api/staticmap?center="+ place.formatted_address +"&zoom=13&size=346x150&maptype=roadmap&scale=2&markers="+ place.formatted_address +"&key=AIzaSyB7FyN9T9YarDU7F8ZCEXM0EAh6_2swL9A");
 
+    //targetElement.parentNode.remove(targetElement.querySelector('img'));
+    targetElement.parentNode.classList.remove('hidden');
     targetElement.querySelector('.fa-spinner').classList.remove('hidden');
     targetElement.appendChild(img);
 
-    img.onload = function(){
+    img.onload = function() {
         targetElement.querySelector('.fa-spinner').classList.add('hidden');
+        img.classList.remove('hidden');
     };
 
   /*
@@ -112,12 +115,15 @@ function fillInAddress() {
                             <div class="col-sm-4">
                                 <input class="form-control" name="address" value="{{ old('address') }}" id="address" type="text" placeholder="1 Quality Street, 99110 Ca" required>
                                 {!! $errors->first('address', '<p class="help-block">:message</p>') !!}
-                                <br>
-                                <p class="text-center" id="js-address-img">
-                                    <i class="fa fa-spinner fa-spin fa-3x fa-fw hidden"></i>
-                                </p>
                             </div>
                         </div>
+
+                        <div class="form-group text-center hidden">
+                            <div class="col-sm-4 col-sm-offset-4" id="js-address-img">
+                                <i class="fa fa-spinner fa-spin fa-3x fa-fw hidden"></i>
+                            </div>
+                        </div>
+
                         <div class="form-group {{ $errors->has('contact') ? ' has-error' : '' }}">
                             <label class="control-label col-sm-4" for="contact">Contact name</label>
                             <div class="col-sm-4">
