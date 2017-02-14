@@ -1,0 +1,34 @@
+.item {}
+
+.item__content {
+    display: block;
+    position: relative;
+}
+
+.item__title {
+    background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.65) 100%);
+    bottom: 0;
+    color: #FFF;
+    display: block;
+    left: 0;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 0.5rem;
+    position: absolute;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    z-index: 3;
+}
+
+.item:hover .item__title, 
+.item:focus .item__title {
+    background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.65) 60%);
+    white-space: inherit;
+}
+
+.item__price {
+    background-color: #FF3D7B;
+    border-radius: 2px;
+    padding: 0.25rem 0.5rem;
+}
