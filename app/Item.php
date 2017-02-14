@@ -10,6 +10,8 @@ class Item extends Model
 
     protected $casts = ['amount' => 'float', 'images' => 'array', 'extra' => 'array'];
 
+    protected $appends = ['display_url', 'src', 'srcset'];
+
     public function categories()
     {
         return $this->belongsToMany(\App\Category::class);
@@ -25,7 +27,22 @@ class Item extends Model
         return (float) $value / 100;
     }
 
-    public function coverImage(string $size = '400x200')
+    public function getDisplayUrlAttribute()
+    {
+        return route('items.show', $this);
+    }
+
+    public function getSrcAttribute()
+    {
+        return $this->getImageSrc('400x200');
+    }
+
+    public function getsrcsetAttribute()
+    {
+        return $this->getImageSrc('400x200@2x') . ' 2x';
+    }
+
+    private function getImageSrc(string $size = '400x200')
     {
         preg_match("/(\d*)x(\d*)@?(\d)?/", $size, $params);
         $width = $params[1] * ($params[3] ?? 1);

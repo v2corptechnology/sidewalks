@@ -68,15 +68,7 @@
         </div>
 
         <div class="col-sm-12">
-            <form action="#" class="form-inline pull-right">
-                <label class="control-label" for="filter">
-                    <input class="form-control input-sm" type="search" name="filter" id="filter" placeholder="Filter...">
-                </label>
-            </form>
-            <h1 class="h3">{{ $shop->items->count() }} items</h1>
-            <div class="row" id="root">
-                @each('items.card', $shop->items, 'item')
-            </div>
+            <shop-items raw-items="{{ $shop->items->toJson() }}"></shop-items>
         </div>
 
     </div>

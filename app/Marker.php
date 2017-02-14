@@ -15,12 +15,6 @@ class Marker extends Model
         return $this->belongsTo(Item::class);
     }
 
-    /**
-     * Create a new Eloquent Collection instance.
-     *
-     * @param  array  $models
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
     public function newCollection(array $models = [])
     {
         return new MarkerCollection($models);
