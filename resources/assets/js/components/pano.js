@@ -2,14 +2,16 @@ Vue.component('pano', {
     props: ['panorama', 'markers'],
     template: `<div id="photosphere"></div>`,
     data() {
-        return {};
+        return {PSV: null};
     },
 	mounted() {
 		this.initPSV();
+        Bus.$on('item-isolated', this.onItemIsolated);
 	},
     methods: {
         initPSV() {
-            var PSV = new PhotoSphereViewer({
+            var self = this;
+            this.PSV = new PhotoSphereViewer({
                 panorama: this.panorama,
                 container: 'photosphere',
                 loading_img: '/img/spin.svg',
@@ -24,36 +26,22 @@ Vue.component('pano', {
                 },
             });
 
-            PSV.on('select-marker', function(marker) {
-                var notMatchingItems = document.querySelectorAll('.item:not([data-item-id="'+ marker.item_id +'"])');
-                for (var i = 0; i < notMatchingItems.length; i++) {
-                    notMatchingItems[i].parentNode.classList.toggle('hidden');
-                }
-
-                document.getElementById('filter').value= 'ID ' + marker.id;
-
+            this.PSV.on('select-marker', function(marker) {
+                Bus.$emit('marker-selected', marker);
                 marker.image = '/img/pin_blue.svg';
-                PSV.updateMarker(marker);
+                self.PSV.updateMarker(marker);
             });
 
-            PSV.on('click', function(data) {
-                var hiddenItems = document.querySelectorAll('.hidden');
-                for (var i = 0; i < hiddenItems.length; i++) {
-                    hiddenItems[i].classList.toggle('hidden');
-                }
-            });
-
-            PSV.on('unselect-marker', function(marker) {
-                var hiddenItems = document.querySelectorAll('.hidden');
-                for (var i = 0; i < hiddenItems.length; i++) {
-                    hiddenItems[i].classList.toggle('hidden');
-                }
-
-                document.getElementById('filter').value= null;
-
+            this.PSV.on('unselect-marker', function(marker) {
+                Bus.$emit('marker-unselected', marker);
                 marker.image = '/img/pin_green.svg';
-                PSV.updateMarker(marker);
+                self.PSV.updateMarker(marker);
             });
+        },
+        onItemIsolated(item) {
+            if (item.id in this.PSV.hud.markers) {
+                this.PSV.gotoMarker(item.id, 500);
+            }
         }
     }
 });

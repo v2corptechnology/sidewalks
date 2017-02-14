@@ -17,6 +17,7 @@ Vue.component('shop-items', {
 		return {
 			items: [],
 			filterString: null,
+			hasToEmit: false,
 		};
 	},
 	computed: {
@@ -25,11 +26,26 @@ Vue.component('shop-items', {
 				filterString = this.filterString && this.filterString.toLowerCase();
 
 			if (filterString) {
-				data = this.items.filter(function (row) {
-					return Object.keys(row).some(function (key) {
-						return String(row[key]).toLowerCase().indexOf(filterString) > -1
+				if (filterString.indexOf('id: ') > -1) {
+					data = this.items.filter(function (item) {
+						return item.id == filterString.substring(3);
 					})
-				})
+				} else {
+					data = this.items.filter(function (item) {
+						return Object.keys(item).some(function (key) {
+							return String(item[key]).toLowerCase().indexOf(filterString) > -1
+						})
+					})
+				}
+			}
+
+			if (this.hasToEmit && data.length == 1) {
+				Bus.$emit('item-isolated', data[0]);
+				this.hasToEmit = false;
+			}
+
+			if (data.length > 1 && ! this.hasToEmit) {
+				this.hasToEmit = true;
 			}
 
 			return data;
@@ -37,11 +53,20 @@ Vue.component('shop-items', {
 	},
 	created() {
 		this.fetchData();
+		Bus.$on('marker-selected', this.onMarkerSelected);
+		Bus.$on('marker-unselected', this.onMarkerUnselected);
 	},
 	methods: {
 		fetchData() {
 			// Use AJAX call
 			this.items = JSON.parse(this.rawItems);
+			this.hasToEmit = this.items.length > 1;
+		},
+		onMarkerSelected(marker) {
+			this.filterString = 'Id: ' + marker.id;
+		},
+		onMarkerUnselected(marker) {
+			this.filterString = null;
 		}
 	}
 });
