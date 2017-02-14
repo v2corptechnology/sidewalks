@@ -7,7 +7,7 @@ Vue.component('shop-items', {
                     <input class="form-control input-sm" type="search" name="filter" id="filter" placeholder="Filter..." v-model="filterString">
                 </label>
             </form>
-            <h1 class="h3">{{ items.length }} items</h1>
+            <h1 class="h3">{{ filteredItems.length }} items</h1>
             <div class="row">
             	<item-card v-for="item in filteredItems" :item="item"></item-card>
             </div>
