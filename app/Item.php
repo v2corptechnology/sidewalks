@@ -42,7 +42,7 @@ class Item extends Model
         return $this->getImageSrc('400x200@2x') . ' 2x';
     }
 
-    private function getImageSrc(string $size = '400x200')
+    public function getImageSrc(string $size = '400x200')
     {
         preg_match("/(\d*)x(\d*)@?(\d)?/", $size, $params);
         $width = $params[1] * ($params[3] ?? 1);
