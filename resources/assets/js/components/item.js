@@ -12,14 +12,6 @@ Vue.component('item', {
         };
     },
 
-    mounted() {
-        $(function(){
-            $('.js-categories').select2({
-                placeholder: 'Choose'
-            });
-        });
-    },
-
     methods: {
         onItemScraped(item) {
             this.item = item;

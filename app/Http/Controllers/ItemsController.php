@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Item;
+use App\Category;
 use App\Http\Requests\StoreItem;
 
 class ItemsController extends Controller
@@ -40,10 +41,9 @@ class ItemsController extends Controller
     {
         // Store item
         $item = Item::create($request->except('images'));
-
         // Attach the categories to him
-        $item->categories()->attach($request->get('categories'));
-
+        $categoriesId = $this->saveCategories($request->get('categories'));
+        $item->categories()->attach($categoriesId);
         // Save image
         $images = $this->saveImages($item, $request->get('images'));
 
@@ -100,7 +100,20 @@ class ItemsController extends Controller
         //
     }
 
-    protected function saveImages(Item $item, array $images = [])
+    private function saveCategories(array $categories): array
+    {
+        return collect($categories)->map(function($category) {
+            if (! is_numeric($category)) {
+                return Category::create([
+                    'shop_id' => auth()->user()->shop->id,
+                    'name' => $category,
+                ])->id;
+            }
+            return $category;
+        })->values()->toArray();
+    }
+
+    private function saveImages(Item $item, array $images = [])
     {
         $path = "items/originals/{$item->id}/";
         $imageNames = [];

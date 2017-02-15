@@ -14,6 +14,14 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.6/select2-bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script>
+    $(function() {
+        $('.js-categories').select2({
+            tags: true,
+            placeholder: 'Choose'
+        });
+    });
+</script>
 @endsection
 
 @section('content')

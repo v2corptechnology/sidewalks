@@ -15,9 +15,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $shop = auth()->user()->shop;
-        
-        return view('categories.index', ['categories' => $shop->categories]);
+        //
     }
 
     /**
@@ -27,7 +25,7 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        //
     }
 
     /**
@@ -38,9 +36,7 @@ class CategoriesController extends Controller
      */
     public function store(StoreCategory $request)
     {
-        $category = auth()->user()->shop->categories()->create($request->all());
-
-        return redirect()->route('categories.index');
+        //
     }
 
     /**
