@@ -15,7 +15,6 @@
         }
 
         /** EXTRA **/
-        .h3 {border-bottom: 1px solid #eaeaea;}
         .form-inline.pull-right {margin-top: -0.6rem;}
     </style>
 @endsection
