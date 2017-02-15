@@ -72,7 +72,7 @@ class ShopsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Shop $shop)
-    {
+    {        
         return view('shops.edit', compact('shop'));
     }
 
@@ -91,6 +91,10 @@ class ShopsController extends Controller
         }
         $shop->update($request->all());
         $this->saveSchedules($request->input('schedules'), $shop);
+
+        if (! $shop->items->count()) {
+            return redirect()->route('items.create');
+        }
 
         return redirect()->route('shops.show', $shop);
     }
