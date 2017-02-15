@@ -43,8 +43,10 @@ Vue.component('attach-marker', {
         onSubmit() {
             /* TODO: URGENT REFACTOR NEEDED */
             this.currentMarker.item_id = $('.js-link_to').val();
+            
+            var targetUrl = window.location.pathname.substring( 0, window.location.pathname.indexOf( "/create" ) );
 
-            this.$http.post('/shops/1/markers/', {
+            this.$http.post(targetUrl, {
                 item_id: this.currentMarker.item_id, 
                 latitude: this.currentMarker.latitude, 
                 longitude: this.currentMarker.longitude,
