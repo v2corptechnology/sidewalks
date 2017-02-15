@@ -41,6 +41,7 @@
                     </attach-marker>
                 </div>
             </div>
+            <a href="{{ route('shops.show', $shop) }}" class="btn btn-block btn-warning">I'm done</a>
         </div>
         <div class="col-sm-9 col-sm-pull-3">
             <div class="box">
