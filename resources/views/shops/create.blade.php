@@ -99,7 +99,7 @@ function fillInAddress() {
                         <div class="form-group {{ $errors->has('phone') ? ' has-error' : '' }}">
                             <label class="control-label col-sm-4" for="phone">Shop phone</label>
                             <div class="col-sm-4">
-                                <input class="form-control" name="phone" value="{{ old('phone') }}" id="phone" type="tel" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" placeholder="+1 665-555-1" required>
+                                <input class="form-control" name="phone" value="{{ old('phone') }}" id="phone" type="tel" placeholder="+1 665-555-1" required>
                                 {!! $errors->first('phone', '<p class="help-block">:message</p>') !!}
                             </div>
                         </div>
