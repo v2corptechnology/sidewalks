@@ -58,6 +58,10 @@
                     <p><i class="fa fa-map-marker fa-fw"></i> {{ $shop->address }}</p>
                 </div>
             </div>
+
+            @if (auth()->check() && $shop->user_id == auth()->user()->id)
+                <a href="{{ route('shops.markers.create', $shop) }}" class="btn btn-warning btn-block">Add markers</a>
+            @endif
         </div>
         <div class="col-sm-9 col-sm-pull-3">
             <div class="box">
