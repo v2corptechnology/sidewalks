@@ -36,9 +36,9 @@
                         
                     <p class="help-block">Move the panorama and click on it once you have located the item.</p>
 
-                    <attach-marker raw-categories="{{ $shop->categories->toJson() }}" 
+                    <marker-attach raw-categories="{{ $shop->categories->toJson() }}" 
                                    raw-items="{{ $shop->items->toJson() }}">
-                    </attach-marker>
+                    </marker-attach>
                 </div>
             </div>
             <a href="{{ route('shops.show', $shop) }}" class="btn btn-block btn-warning">I'm done</a>

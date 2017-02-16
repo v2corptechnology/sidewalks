@@ -1,4 +1,4 @@
-Vue.component('attach-marker', {
+Vue.component('marker-attach', {
     props: ['raw-categories', 'raw-items'],
     template: `
         <fieldset :disabled="! canBeSaved">
