@@ -10,13 +10,21 @@ class Marker extends Model
 {
     protected $fillable = ['shop_id', 'item_id', 'latitude', 'longitude', 'latitude_px', 'longitude_px'];
 
+    protected $appends = ['psv_info'];
+
     public function item() 
     {
         return $this->belongsTo(Item::class);
     }
 
-    public function newCollection(array $models = [])
+    public function getPsvInfoAttribute()
     {
-        return new MarkerCollection($models);
+        return [
+            'image'   => asset('img/pin_green.svg'),
+            'anchor'  => 'bottom center',
+            'width'   => 32,
+            'height'  => 32,
+            'tooltip' => $this->item->title,
+        ];   
     }
 }
