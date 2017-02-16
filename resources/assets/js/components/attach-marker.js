@@ -50,8 +50,8 @@ Vue.component('attach-marker', {
                 item_id: this.currentMarker.item_id, 
                 latitude: this.currentMarker.latitude, 
                 longitude: this.currentMarker.longitude,
-                latitude_px: 1000,
-                longitude_px: 1000,
+                latitude_px: this.currentMarker.y,
+                longitude_px: this.currentMarker.x,
             }).then(response => {
                 Bus.$emit('marker-saved', this.currentMarker);
                 this.canBeSaved = false;

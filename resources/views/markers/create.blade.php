@@ -47,7 +47,7 @@
             <div class="box">
                 <pano panorama="{{ asset('storage/panoramas/' . $shop->panorama) }}" 
                       editable="true"
-                      raw-markers="{{ $shop->markers->toJson() }}">
+                      raw-markers="{{ $shop->markers->toJson() }}"></pano>
             </div>
         </div>
     </div>

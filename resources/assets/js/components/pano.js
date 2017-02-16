@@ -74,6 +74,8 @@ Vue.component('pano', {
                 id: '#' + Math.random(),
                 longitude: event.longitude,
                 latitude: event.latitude,
+                x: event.texture_x,
+                y: event.texture_y,
                 image: '/img/pin_red.svg',
                 width: 32,
                 height: 32,
