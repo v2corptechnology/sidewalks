@@ -1,4 +1,4 @@
-Vue.component('panorama', {
+Vue.component('panorama-chooser', {
     props: ['user'],
 
     data() {

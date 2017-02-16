@@ -14,7 +14,7 @@ require('./../spark-components/bootstrap');
 require('./home');
 
 require('./pano');
-require('./panorama');
+require('./panorama-chooser');
 require('./shop-items');
 require('./item-card');
 require('./marker-attach');

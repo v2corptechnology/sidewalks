@@ -46,7 +46,7 @@
                         @endif
 
                         <div class="form-group {{ $errors->has('image') ? ' has-error' : '' }}">
-                            <panorama :user="user" inline-template>
+                            <panorama-chooser :user="user" inline-template>
                                 <div>
                                     <label class="control-label col-sm-4" for="image">360° picture</label>
                                     <div class="col-sm-4">
@@ -59,7 +59,7 @@
                                         {!! $errors->first('image', '<p class="help-block">:message</p>') !!}
                                     </div>
                                 </div>
-                            </panorama>
+                            </panorama-chooser>
                         </div>
                         <div class="form-group {{ $errors->has('schedules') ? ' has-error' : '' }}">
                             <label for="schedule" class="control-label col-sm-4">Hours</label>
