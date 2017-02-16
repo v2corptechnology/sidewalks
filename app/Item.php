@@ -48,6 +48,6 @@ class Item extends Model
         $width = $params[1] * ($params[3] ?? 1);
         $height = $params[2] * ($params[3] ?? 1);
 
-        return "https://e6vwrfe.cloudimg.io/crop/{$width}x{$height}/q80.tjpg/". asset("storage/items/originals/{$this->id}/{$this->images[0]}");
+        return "https://eazkmue.cloudimg.io/crop/{$width}x{$height}/q80.tjpg/". asset("storage/items/originals/{$this->id}/{$this->images[0]}");
     }
 }
