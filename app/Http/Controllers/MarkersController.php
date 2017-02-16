@@ -28,7 +28,6 @@ class MarkersController extends Controller
     public function store(Shop $shop, Request $request)
     {
         $request->merge(['shop_id' => $shop->id]);
-
         Marker::create($request->all());
 
         return ['status' => 'ok'];

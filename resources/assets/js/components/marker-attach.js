@@ -6,10 +6,10 @@ Vue.component('marker-attach', {
                 <select class="form-control js-link_to" name="link_to" required :disabled="! currentMarker">
                     <option value="">Choose</option>
                     <optgroup label="Categories">
-                        <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
+                        <option v-for="category in categories" :value="category.id" data-type="categories">{{ category.name }}</option>
                     </optgroup>
                     <optgroup label="Items">
-                        <option v-for="item in items" :value="item.id">{{ item.title }}</option>
+                        <option v-for="item in items" :value="item.id" data-type="items">{{ item.title }}</option>
                     </optgroup>
                 </select>
             </div>
@@ -45,7 +45,8 @@ Vue.component('marker-attach', {
             var targetUrl = window.location.pathname.substring( 0, window.location.pathname.indexOf( "/create" ) );
 
             this.$http.post(targetUrl, {
-                item_id: this.currentMarker.item_id, 
+                markable_id: this.currentMarker.item_id, 
+                markable_type: selectedOption.data('type'), 
                 latitude: this.currentMarker.latitude, 
                 longitude: this.currentMarker.longitude,
                 latitude_px: this.currentMarker.y,
