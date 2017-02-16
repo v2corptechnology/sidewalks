@@ -22,19 +22,16 @@ Vue.component('marker-attach', {
         return {
             currentMarker: null,
             canBeSaved: false,
+            items: [],
+            categories: [],
         };
-    },
-    computed: {
-        items() {
-            return JSON.parse(this.rawItems);
-        },
-        categories() {
-            return JSON.parse(this.rawCategories);
-        }
     },
     created() {
         Bus.$on('marker-created', this.onMarkerCreated);
         Bus.$on('maker-associated', this.onMarkerAssociated);
+
+        this.items = JSON.parse(this.rawItems);
+        this.categories = JSON.parse(this.rawCategories);
     },
     methods: {
         onMarkerCreated(marker) {
