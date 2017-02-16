@@ -15,7 +15,6 @@ require('./home');
 
 require('./pano');
 require('./panorama');
-require('./pano-viewer');
 require('./shop-items');
 require('./item-card');
 require('./attach-marker');

@@ -1,16 +1,38 @@
 Vue.component('pano', {
-    props: ['panorama', 'markers'],
+    props: ['panorama', 'rawMarkers', 'editable'],
     template: `<div id="photosphere"></div>`,
     data() {
-        return {PSV: null};
+        return {
+            PSV: null,
+            markers: [],
+            currentMarker: null,
+            isEditable: (this.editable && this.editable == 'true') || false,
+        };
+    },
+    computed: {
+        PSVFormattedMarkers() {
+            return this.markers.map(function(marker) {
+                marker.image = marker.psv_info.image;
+                marker.anchor = marker.psv_info.anchor;
+                marker.width = marker.psv_info.width;
+                marker.height = marker.psv_info.height;
+                marker.tooltip = marker.psv_info.tooltip;
+                delete marker.psv_info;
+
+                return marker;
+            });
+        }
+    },
+    created() {
+        Bus.$on('marker-saved', this.onMarkerCreated);
+        Bus.$on('item-isolated', this.onItemIsolated);
+        this.markers = JSON.parse(this.rawMarkers);
     },
 	mounted() {
 		this.initPSV();
-        Bus.$on('item-isolated', this.onItemIsolated);
 	},
     methods: {
         initPSV() {
-            var self = this;
             this.PSV = new PhotoSphereViewer({
                 panorama: this.panorama,
                 container: 'photosphere',
@@ -20,23 +42,50 @@ Vue.component('pano', {
                 mousewheel: false,
                 /*time_anim: false,*/
                 gyroscope: true,
-                markers: JSON.parse(atob(this.markers)),
+                markers: this.PSVFormattedMarkers,
                 size: {
                     height: this.height || 500
                 },
             });
 
-            this.PSV.on('select-marker', function(marker) {
-                Bus.$emit('marker-selected', marker);
-                marker.image = '/img/pin_blue.svg';
-                self.PSV.updateMarker(marker);
+            this.PSV.on('select-marker', this.onPSVSelectMarker);
+            this.PSV.on('unselect-marker', this.onPSVUnselectMarker);
+            if (this.isEditable) {
+                this.PSV.on('click', this.onPSVClick);
+            }
+        },
+        onPSVSelectMarker(marker) {
+            Bus.$emit('marker-selected', marker);
+            marker.image = '/img/pin_blue.svg';
+            this.PSV.updateMarker(marker);
+        },
+        onPSVUnselectMarker(marker) {
+            Bus.$emit('marker-unselected', marker);
+            marker.image = '/img/pin_green.svg';
+            this.PSV.updateMarker(marker);
+        },
+        onPSVClick(event) {
+            if (this.currentMarker) {
+                this.PSV.removeMarker(this.currentMarker);
+                this.currentMarker = null;
+            }
+
+            this.currentMarker = this.PSV.addMarker({
+                id: '#' + Math.random(),
+                longitude: event.longitude,
+                latitude: event.latitude,
+                image: '/img/pin_red.svg',
+                width: 32,
+                height: 32,
+                anchor: 'bottom center',
+                tooltip: 'This marker is not saved',
             });
 
-            this.PSV.on('unselect-marker', function(marker) {
-                Bus.$emit('marker-unselected', marker);
-                marker.image = '/img/pin_green.svg';
-                self.PSV.updateMarker(marker);
-            });
+            Bus.$emit('marker-created', this.currentMarker);
+        },
+        onMarkerCreated(marker) {
+            marker.image = '/img/pin_green.svg',
+            this.PSV.updateMarker(marker);
         },
         onItemIsolated(item) {
             if (item.id in this.PSV.hud.markers) {

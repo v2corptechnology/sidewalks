@@ -65,7 +65,7 @@
         <div class="col-sm-9 col-sm-pull-3">
             <div class="box">
                 <pano panorama="{{ asset('storage/panoramas/' . $shop->panorama) }}" 
-                      markers="{{ $shop->markers->toPSV() }}">
+                      raw-markers="{{ $shop->markers->toJson() }}">
                 </pano>
             </div>
         </div>
