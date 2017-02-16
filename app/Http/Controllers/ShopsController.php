@@ -59,7 +59,6 @@ class ShopsController extends Controller
     public function show(Shop $shop)
     {
         $sunday = $shop->schedules->shift();
-
         $shop->schedules->push($sunday);
 
         return view('shops.show', compact('shop'));

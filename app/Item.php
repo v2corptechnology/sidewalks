@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Marker;
 
 class Item extends Model
 {
@@ -15,6 +16,11 @@ class Item extends Model
     public function categories()
     {
         return $this->belongsToMany(\App\Category::class);
+    }
+    
+    public function markers()
+    {
+        return $this->morphMany(Marker::class, 'markable');
     }
 
     public function setAmountAttribute($value)

@@ -42,7 +42,8 @@ Vue.component('attach-marker', {
         },
         onSubmit() {
             /* TODO: URGENT REFACTOR NEEDED */
-            this.currentMarker.item_id = $('.js-link_to').val();
+            var selectedOption = $('.js-link_to option:selected');
+            this.currentMarker.item_id = selectedOption.val();
             
             var targetUrl = window.location.pathname.substring( 0, window.location.pathname.indexOf( "/create" ) );
 
@@ -53,6 +54,7 @@ Vue.component('attach-marker', {
                 latitude_px: this.currentMarker.y,
                 longitude_px: this.currentMarker.x,
             }).then(response => {
+                this.currentMarker.tooltip = selectedOption.text();
                 Bus.$emit('marker-saved', this.currentMarker);
                 this.canBeSaved = false;
                 this.currentMarker = null;

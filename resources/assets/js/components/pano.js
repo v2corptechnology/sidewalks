@@ -24,7 +24,7 @@ Vue.component('pano', {
         }
     },
     created() {
-        Bus.$on('marker-saved', this.onMarkerCreated);
+        Bus.$on('marker-saved', this.onMakerSaved);
         Bus.$on('item-isolated', this.onItemIsolated);
         this.markers = JSON.parse(this.rawMarkers);
     },
@@ -85,9 +85,10 @@ Vue.component('pano', {
 
             Bus.$emit('marker-created', this.currentMarker);
         },
-        onMarkerCreated(marker) {
+        onMakerSaved(marker) {
             marker.image = '/img/pin_green.svg',
             this.PSV.updateMarker(marker);
+            this.currentMarker = null;
         },
         onItemIsolated(item) {
             if (item.id in this.PSV.hud.markers) {

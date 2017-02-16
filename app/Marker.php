@@ -8,13 +8,13 @@ use App\Item;
 
 class Marker extends Model
 {
-    protected $fillable = ['shop_id', 'item_id', 'latitude', 'longitude', 'latitude_px', 'longitude_px'];
+    protected $fillable = ['shop_id', 'markable_id', 'markable_type', 'latitude', 'longitude', 'latitude_px', 'longitude_px'];
 
     protected $appends = ['psv_info'];
 
-    public function item() 
+    public function markable()
     {
-        return $this->belongsTo(Item::class);
+        return $this->morphTo();
     }
 
     public function getPsvInfoAttribute()
@@ -24,7 +24,7 @@ class Marker extends Model
             'anchor'  => 'bottom center',
             'width'   => 32,
             'height'  => 32,
-            'tooltip' => $this->item->title,
+            'tooltip' => $this->markable->title,
         ];   
     }
 }
