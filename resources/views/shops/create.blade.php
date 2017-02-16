@@ -19,6 +19,12 @@ var componentForm = {
 };
 
 function initAutocomplete() {
+  document.getElementById('address').addEventListener('keydown', function (event) {
+    if (event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
   // Create the autocomplete object, restricting the search to geographical
   // location types.
   autocomplete = new google.maps.places.Autocomplete(
