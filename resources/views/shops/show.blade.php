@@ -71,7 +71,11 @@
         </div>
 
         <div class="col-sm-12">
-            <shop-items raw-items="{{ $shop->items->toJson() }}"></shop-items>
+            <div class="row">
+                <div class="col-sm-9">
+                    <shop-items raw-items="{{ $shop->items->toJson() }}"></shop-items>
+                </div>
+            </div>
         </div>
 
     </div>
