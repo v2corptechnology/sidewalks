@@ -25,7 +25,14 @@
         <div class="col-sm-3 col-sm-push-9">
             <div class="box">
                 <div class="box__content">
-                    <h1 class="box__heading">{{ $shop->name }}</h1>
+                    <h1 class="box__heading">
+                        <a class="pull-right" href="{{ route('shops.edit', $shop) }}" 
+                           title="Edit shop details">
+                           <i class="fa fa-ellipsis-h fa-fw"></i> 
+                           <span class="sr-only">Edit shop details</span>
+                        </a>
+                        {{ $shop->name }}
+                    </h1>
                     @if ($shop->schedules->first())
                         <ul class="list-unstyled schedules">
                             @foreach ($shop->schedules->groupBy('day_of_week') as $schedule)
@@ -59,7 +66,7 @@
             </div>
 
             @if (auth()->check() && $shop->user_id == auth()->user()->id)
-                <a href="{{ route('shops.markers.create', $shop) }}" class="btn btn-warning btn-block">Add markers</a>
+                <a class="btn btn-warning btn-block" href="{{ route('shops.markers.create', $shop) }}">Add markers</a>
             @endif
         </div>
         <div class="col-sm-9 col-sm-pull-3">
