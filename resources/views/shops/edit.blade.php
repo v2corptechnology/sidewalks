@@ -1,5 +1,15 @@
 @extends('spark::layouts.app')
 
+@section('scripts')
+    <link href="//rawgit.com/mistic100/Photo-Sphere-Viewer/master/dist/photo-sphere-viewer.min.css" rel="stylesheet" >
+    <script src="//rawgit.com/mrdoob/three.js/dev/build/three.min.js"></script>
+    <script src="//rawgit.com/malko/D.js/master/lib/D.min.js"></script>
+    <script src="//rawgit.com/mistic100/uEvent/master/uevent.min.js"></script>
+    <script src="//rawgit.com/olado/doT/master/doT.min.js"></script>
+    <script src="//rawgit.com/mrdoob/three.js/master/examples/js/controls/DeviceOrientationControls.js"></script>
+    <script src="//rawgit.com/mistic100/Photo-Sphere-Viewer/master/dist/photo-sphere-viewer.min.js"></script>
+@endsection
+
 @section('content')
 <div class="container">
     <h1 class="h3 text-center">{{ $shop->name }}</h1>
@@ -46,16 +56,15 @@
                         @endif
 
                         <div class="form-group {{ $errors->has('image') ? ' has-error' : '' }}">
-                            <panorama-chooser :user="user" inline-template>
+                            <panorama-chooser raw-panorama="{{ $shop->panorama ? $shop->rawImageData : null }}" inline-template>
                                 <div>
                                     <label class="control-label col-sm-4" for="image">360° picture</label>
                                     <div class="col-sm-4">
-                                        <p v-show="image"><img class="img-responsive" :src="image" /></p>
-                                        <div class="form-control" v-show="!image">
+                                        <p>
+                                            <pano height="200" :panorama="panorama"></pano>
+                                        </p>
+                                        <div class="form-control">
                                             <input type="file" id="image" name="image" required @change="onFileChange">
-                                        </div>
-                                         <div v-show="image">
-                                            <a href="#" @click="removeImage">Choose another panorama</a>
                                         </div>
                                         {!! $errors->first('image', '<p class="help-block">:message</p>') !!}
                                     </div>

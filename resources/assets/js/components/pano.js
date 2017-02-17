@@ -6,6 +6,7 @@ Vue.component('pano', {
             PSV: null,
             markers: [],
             currentMarker: null,
+            panoramaImage: null,
             isEditable: (this.editable && this.editable == 'true') || false,
         };
     },
@@ -21,20 +22,24 @@ Vue.component('pano', {
 
                 return marker;
             });
-        }
+        },
     },
     created() {
         Bus.$on('marker-saved', this.onMakerSaved);
         Bus.$on('item-isolated', this.onItemIsolated);
+        Bus.$on('panorama-image-updated', this.onPanoramaImageUpdated);
         this.markers = JSON.parse(this.rawMarkers || "[]");
+        this.panoramaImage = this.panorama || null;
     },
 	mounted() {
 		this.initPSV();
 	},
     methods: {
         initPSV() {
+            if (!this.panoramaImage) return;
+
             this.PSV = new PhotoSphereViewer({
-                panorama: this.panorama,
+                panorama: this.panoramaImage,
                 container: 'photosphere',
                 loading_img: '/img/spin.svg',
                 navbar: false,
@@ -84,6 +89,14 @@ Vue.component('pano', {
             });
 
             Bus.$emit('marker-created', this.currentMarker);
+        },
+        onPanoramaImageUpdated(image) {
+            if (this.PSV) {
+                this.PSV.setPanorama(image);
+            } else {
+                this.panoramaImage = image;
+                this.initPSV();
+            }
         },
         onMakerSaved(marker) {
             marker.image = '/img/pin_green.svg',

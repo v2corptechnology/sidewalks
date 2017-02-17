@@ -1,12 +1,10 @@
 Vue.component('panorama-chooser', {
-    props: ['user'],
-
+    props: ['rawPanorama'],
     data() {
         return {
-            image: '',
+            panorama: this.rawPanorama
         };
     },
-
     methods: {
         onFileChange(e) {
             var files = e.target.files || e.dataTransfer.files;
@@ -15,17 +13,14 @@ Vue.component('panorama-chooser', {
             this.createImage(files[0]);
         },
         createImage(file) {
-            var image = new Image();
-            var reader = new FileReader();
-            var vm = this;
+            var self = this,
+                reader = new FileReader();
 
             reader.onload = (e) => {
-                vm.image = e.target.result;
+                self.panorama = e.target.result;
+                Bus.$emit('panorama-image-updated', self.panorama);
             };
             reader.readAsDataURL(file);
         },
-        removeImage: function (e) {
-            this.image = '';
-        }
     }
 });

@@ -71,7 +71,7 @@ class ShopsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Shop $shop)
-    {        
+    {
         return view('shops.edit', compact('shop'));
     }
 
