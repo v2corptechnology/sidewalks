@@ -26,7 +26,7 @@ Vue.component('pano', {
     created() {
         Bus.$on('marker-saved', this.onMakerSaved);
         Bus.$on('item-isolated', this.onItemIsolated);
-        this.markers = JSON.parse(this.rawMarkers);
+        this.markers = JSON.parse(this.rawMarkers || "[]");
     },
 	mounted() {
 		this.initPSV();
