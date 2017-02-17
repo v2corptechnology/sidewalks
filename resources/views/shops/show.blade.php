@@ -80,7 +80,7 @@
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-9">
-                    <shop-items raw-items="{{ $shop->items->toJson() }}"></shop-items>
+                    <shop-items raw-items="{{ $shop->items->load('categories')->toJson() }}"></shop-items>
                 </div>
             </div>
         </div>

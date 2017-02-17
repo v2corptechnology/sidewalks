@@ -61,6 +61,13 @@ Vue.component('pano', {
         },
         onPSVSelectMarker(marker) {
             Bus.$emit('marker-selected', marker);
+
+            for (markerId in this.PSV.hud.markers) {
+                var m = this.PSV.getMarker(markerId);
+                m.image = '/img/pin_green.svg';
+                this.PSV.updateMarker(m);
+            }
+
             marker.image = '/img/pin_blue.svg';
             this.PSV.updateMarker(marker);
         },

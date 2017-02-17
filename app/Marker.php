@@ -10,7 +10,7 @@ class Marker extends Model
 {
     protected $fillable = ['shop_id', 'markable_id', 'markable_type', 'latitude', 'longitude', 'latitude_px', 'longitude_px'];
 
-    protected $appends = ['psv_info'];
+    protected $appends = ['filter', 'psv_info'];
 
     public function markable()
     {
@@ -26,5 +26,10 @@ class Marker extends Model
             'height'  => 32,
             'tooltip' => $this->markable->title,
         ];   
+    }
+
+    public function getFilterAttribute()
+    {
+        return ucfirst($this->markable_type) . ': ' . $this->markable_id;
     }
 }
