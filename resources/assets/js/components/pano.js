@@ -1,5 +1,5 @@
 Vue.component('pano', {
-    props: ['panorama', 'rawMarkers', 'editable'],
+    props: ['panorama', 'rawMarkers', 'editable', 'height'],
     template: `<div id="photosphere"></div>`,
     data() {
         return {
