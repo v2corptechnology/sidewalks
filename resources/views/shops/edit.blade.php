@@ -65,7 +65,10 @@
                         <div class="form-group {{ $errors->has('schedules') ? ' has-error' : '' }}">
                             <label for="schedule" class="control-label col-sm-4">Hours</label>
                             <div class="col-sm-8">
-                                <schedules></schedules>
+                                <p class="help-block">
+                                    You can't edit your hours right now.
+                                </p>
+                                {{--<schedules></schedules>--}}
                                 {!! $errors->first('schedules', '<p class="help-block">:message</p>') !!}
                             </div>
                         </div>

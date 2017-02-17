@@ -89,7 +89,7 @@ class ShopsController extends Controller
             $request->merge(['panorama' => basename($path)]);
         }
         $shop->update($request->all());
-        $this->saveSchedules($request->input('schedules'), $shop);
+        $this->saveSchedules($request->input('schedules', '[]'), $shop);
 
         if (! $shop->items->count()) {
             return redirect()->route('items.create');
