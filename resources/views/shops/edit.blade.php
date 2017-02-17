@@ -51,10 +51,11 @@
                                     <label class="control-label col-sm-4" for="image">360° picture</label>
                                     <div class="col-sm-4">
                                         <p v-show="image"><img class="img-responsive" :src="image" /></p>
-                                        <input class="form-control" type="file" id="image" name="image" required 
-                                               v-show="!image" @change="onFileChange">
-                                         <div class="text-center" v-show="image">
-                                            <button class="btn btn-default" @click="removeImage">Choose another panorama</button>
+                                        <div class="form-control" v-show="!image">
+                                            <input type="file" id="image" name="image" required @change="onFileChange">
+                                        </div>
+                                         <div v-show="image">
+                                            <a href="#" @click="removeImage">Choose another panorama</a>
                                         </div>
                                         {!! $errors->first('image', '<p class="help-block">:message</p>') !!}
                                     </div>
