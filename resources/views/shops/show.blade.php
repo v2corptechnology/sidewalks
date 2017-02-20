@@ -28,7 +28,7 @@
                     <h1 class="box__heading">
                         <a class="pull-right" href="{{ route('shops.edit', $shop) }}" 
                            title="Edit shop details">
-                           <i class="fa fa-ellipsis-h fa-fw"></i> 
+                           <i class="fa fa-ellipsis-v fa-fw"></i> 
                            <span class="sr-only">Edit shop details</span>
                         </a>
                         {{ $shop->name }}
