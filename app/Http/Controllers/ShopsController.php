@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Shop;
@@ -12,7 +11,6 @@ use libphonenumber\PhoneNumberFormat;
 
 class ShopsController extends Controller
 {
-    use DatabaseTransactions;
 
     /**
      * Display a listing of the resource.
