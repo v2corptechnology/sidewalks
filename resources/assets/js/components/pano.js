@@ -13,13 +13,10 @@ Vue.component('pano', {
     computed: {
         PSVFormattedMarkers() {
             return this.markers.map(function(marker) {
-                marker.image = marker.psv_info.image;
-                marker.anchor = marker.psv_info.anchor;
-                marker.width = marker.psv_info.width;
-                marker.height = marker.psv_info.height;
-                marker.tooltip = marker.psv_info.tooltip;
+                for (info in marker.psv_info) {
+                    marker[info] = marker.psv_info[info];
+                }
                 delete marker.psv_info;
-
                 return marker;
             });
         },
@@ -61,6 +58,13 @@ Vue.component('pano', {
         },
         onPSVSelectMarker(marker) {
             Bus.$emit('marker-selected', marker);
+
+            if (marker.target) {
+                this.PSV.setPanorama(marker.target);
+                return;
+            }
+
+            console.log(marker.target);
 
             for (markerId in this.PSV.hud.markers) {
                 var m = this.PSV.getMarker(markerId);

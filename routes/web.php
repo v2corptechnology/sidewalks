@@ -28,4 +28,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('shops.markers', 'MarkersController');
 
     Route::resource('crawls', 'CrawlsController');
+
+    Route::get('demo', 'DemoController@show');
 });
