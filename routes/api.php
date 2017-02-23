@@ -1,5 +1,85 @@
 <?php
 
+Route::get('/views/{id}', function($id) {
+    $data = [
+        [
+            'path' => asset('img/01.jpg'), 
+            'markers' => [
+                [
+                    'id' => 1,
+                    'latitude' => 0,
+                    'longitude' => pi(),
+                    'anchor' => "center center",
+                    'html' => '<i style="color: #FFF" class="fa fa-arrow-circle-up fa-5x"></i>',
+                    'tooltip' => "Walk there",
+                    'view_id' => 2,
+                ]
+            ]
+        ], 
+        [
+            'path' => asset('img/02.jpg'), 
+            'markers' => [
+                [
+                    'id' => 1,
+                    'latitude' => 0,
+                    'longitude' => pi(),
+                    'anchor' => "center center",
+                    'html' => '<i style="color: #FFF" class="fa fa-arrow-circle-up fa-5x"></i>',
+                    'tooltip' => "Walk there",
+                    'view_id' => 3,
+                ],
+                [
+                    'id' => 2,
+                    'latitude' => 0,
+                    'longitude' => 0.40613944590901535,
+                    'anchor' => "center center",
+                    'html' => '<i style="color: #FFF" class="fa fa-arrow-circle-up fa-5x"></i>',
+                    'tooltip' => "Walk there",
+                    'view_id' => 1,
+                ]
+            ]
+        ], 
+        [
+            'path' => asset('img/03.jpg'), 
+            'markers' => [
+                [
+                    'id' => 1,
+                    'latitude' => 0,
+                    'longitude' => pi(),
+                    'anchor' => "center center",
+                    'html' => '<i style="color: #FFF" class="fa fa-arrow-circle-up fa-5x"></i>',
+                    'tooltip' => "Walk there",
+                    'view_id' => 4,
+                ],
+                [
+                    'id' => 2,
+                    'latitude' => 0,
+                    'longitude' => 0.7496433213062232,
+                    'anchor' => "center center",
+                    'html' => '<i style="color: #FFF" class="fa fa-arrow-circle-up fa-5x"></i>',
+                    'tooltip' => "Walk there",
+                    'view_id' => 2,
+                ]
+            ]
+        ], 
+        [
+            'path' => asset('img/04.jpg'), 
+            'markers' => [
+                [
+                    'id' => 1,
+                    'latitude' => 0,
+                    'longitude' => 1.4688032772132902,
+                    'anchor' => "center center",
+                    'html' => '<i style="color: #FFF" class="fa fa-arrow-circle-up fa-5x"></i>',
+                    'tooltip' => "Walk there",
+                    'view_id' => 3,
+                ]
+            ]
+        ], 
+    ];
+
+    return $data[$id -1];
+});
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,5 +94,6 @@
 Route::group([
     'middleware' => 'auth:api'
 ], function () {
-    //
 });
+
+

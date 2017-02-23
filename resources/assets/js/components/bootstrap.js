@@ -14,6 +14,7 @@ require('./../spark-components/bootstrap');
 require('./home');
 
 require('./pano');
+require('./path-viewer');
 require('./panorama-chooser');
 require('./shop-items');
 require('./item-card');
