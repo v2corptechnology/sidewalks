@@ -4,6 +4,7 @@ namespace App;
 
 use Laravel\Spark\User as SparkUser;
 use App\Shop;
+use App\Path;
 
 class User extends SparkUser
 {
@@ -52,6 +53,11 @@ class User extends SparkUser
     public function shop()
     {
         return $this->hasOne(Shop::class);
+    }
+
+    public function paths()
+    {
+        return $this->hasMany(Path::class);
     }
 
     public function hasShop() :bool 

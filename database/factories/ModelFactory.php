@@ -68,3 +68,10 @@ $factory->define(App\Marker::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Path::class, function (Faker\Generator $faker) {
+    return [
+        'user_id'   => factory(\App\User::class)->create()->id,
+        'name'      => $faker->word,
+    ];
+});
+
