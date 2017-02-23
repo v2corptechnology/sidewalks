@@ -9,7 +9,7 @@
 
     @if (auth()->user()->email == 'romain.sauvaire@gmail.com')
         <li>
-            <a href="{{ route('paths.show', 1) }}">Paths</a>
+            <a href="{{ route('paths.index') }}">Paths</a>
         </li>
     @endif
 

@@ -13,7 +13,7 @@ class PathsController extends Controller
      */
     public function index()
     {
-        //
+        return view('paths.index');
     }
 
     /**
