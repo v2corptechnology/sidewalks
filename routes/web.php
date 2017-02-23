@@ -30,5 +30,5 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('crawls', 'CrawlsController');
 
-    Route::get('demo', 'DemoController@show');
+    Route::get('demo', 'PathsController@show');
 });
