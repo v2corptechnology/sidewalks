@@ -27,7 +27,8 @@ Vue.component('path-viewer', {
                 this.initPSV(data.path, data.markers);
             } else {
                 this.PSV.clearMarkers();
-                this.PSV.setPanorama(data.path, {latitude:0, longitude: this.longitude});
+                //this.PSV.setPanorama(data.path, {latitude:0, longitude: this.longitude});
+                this.PSV.setPanorama(data.path, {latitude:0, longitude: 0});
                 data.markers.map(marker => this.PSV.addMarker(marker));
             }
         },
