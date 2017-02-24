@@ -4,17 +4,10 @@
     <style>
         .h3 {border-bottom: 1px solid #eaeaea;}
     </style>
-    <link href="//rawgit.com/mistic100/Photo-Sphere-Viewer/master/dist/photo-sphere-viewer.min.css" rel="stylesheet">
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.6/select2-bootstrap.min.css" rel="stylesheet">
     <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
-    <script src="//rawgit.com/mrdoob/three.js/dev/build/three.min.js"></script>
-    <script src="//rawgit.com/malko/D.js/master/lib/D.min.js"></script>
-    <script src="//rawgit.com/mistic100/uEvent/master/uevent.min.js"></script>
-    <script src="//rawgit.com/olado/doT/master/doT.min.js"></script>
-    <script src="//rawgit.com/mrdoob/three.js/master/examples/js/controls/DeviceOrientationControls.js"></script>
-    <script src="//rawgit.com/mistic100/Photo-Sphere-Viewer/master/dist/photo-sphere-viewer.min.js"></script>
     <script>
         $(function(){
             $('.js-link_to').select2({
