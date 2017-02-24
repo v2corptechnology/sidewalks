@@ -17,6 +17,7 @@ class CreateViewsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('path_id')->references('id')->on('paths');
             $table->string('image');
+            $table->json('exif')->nullable();
             $table->timestamps();
         });
     }
