@@ -32,18 +32,3 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('demo', 'PathsController@show');
 });
-
-Route::group(['prefix' => 'api', 'middleware' => 'auth'], function () {
-    Route::get('/paths/', function() {
-        //return factory(\App\Path::class, 3)->create();
-        return auth()->user()->paths()->with('views')->get();
-    });
-
-    Route::post('/paths/', function() {
-        $path = request()->user()->paths()->create([
-            'name' => request()->input('name')
-        ])->load('views');
-
-        return ['data' => $path];
-    });
-});

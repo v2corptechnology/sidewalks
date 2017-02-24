@@ -2,13 +2,17 @@ Vue.component('paths', {
     template: `
         <div>
             <ul>
-                <li v-for="path in paths"><a :href="path.url">{{ path.name }}</a> <small>({{ path.views.length }} views)</small></li>
+                <li v-for="path in paths">
+                    {{ path.name }} <small>({{ path.views.length }} views)</small>
+                     — <a :href="path.urls.edit">Edit</a> — <a :href="path.urls.view">View</a>
+                </li>
                 <li>
                     <input type="text" placeholder="Name a new path" v-model="name" @keyup="onKeyUp" />
                 </li>
             </ul>
         </div>
     `,
+    props: ['user'],
     data() {
         return {
             paths: [],
@@ -16,13 +20,14 @@ Vue.component('paths', {
         };
     },
     created() {
-        this.$http.get('/api/paths/')
-            .then(response => this.paths = response.data);
+        this.$http.get('/api/users/'+ this.user.id +'/paths/')
+            .then(response => this.paths = response.data)
+            .catch(error => alert('Error fetching your paths'));
     },
     methods: {
         onKeyUp(event) {
             if (event.keyCode == 13) {
-                this.$http.post('/api/paths/', {name: this.name})
+                this.$http.post('/api/users/'+ this.user.id +'/paths/', {name: this.name})
                     .then(response => {
                         this.paths.push(response.body.data)
                         this.name = '';

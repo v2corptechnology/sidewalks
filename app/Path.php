@@ -7,16 +7,19 @@ use App\View;
 
 class Path extends Model
 {
-	protected $fillable = ['name'];
-	protected $appends = ['url'];
+    protected $fillable = ['name'];
+    protected $appends = ['urls'];
 
-	public function views()
-	{
-	    return $this->hasMany(View::class);
-	}
-	
-    public function getUrlAttribute()
+    public function views()
     {
-        return route('paths.show', $this);
+        return $this->hasMany(View::class);
+    }
+    
+    public function getUrlsAttribute()
+    {
+        return [
+            'view' => route('paths.show', $this),
+            'edit' => route('paths.edit', $this),
+        ];
     }
 }

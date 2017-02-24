@@ -7,7 +7,7 @@
 <div class="container">
     <div class="row">
         <h1>Your paths</h1>
-        <paths></paths>
+        <paths :user="user"></paths>
     </div>
 </div>
 @endsection
