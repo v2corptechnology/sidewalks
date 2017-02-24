@@ -1,5 +1,8 @@
 Vue.component('path-viewer', {
-    props: {viewId: {type: Number, required: true}},
+    props: {
+        viewId: {type: [Number, String], required: true}, 
+        height: {type: [Number, String], required: false}
+    },
     template: `<div id="path_viewer"></div>`,
     data() {
         return {
