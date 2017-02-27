@@ -6,12 +6,9 @@
     <li>
         <a href="{{ route('items.create') }}">Create item</a>
     </li>
-
-    @if (auth()->user()->email == 'romain.sauvaire@gmail.com')
-        <li>
-            <a href="{{ route('paths.index') }}">Paths</a>
-        </li>
-    @endif
+    <li>
+        <a href="{{ route('paths.index') }}">Paths</a>
+    </li>
 
     <li class="hidden">
         <a href="{{ route('crawls.create') }}">Crawl website</a>
