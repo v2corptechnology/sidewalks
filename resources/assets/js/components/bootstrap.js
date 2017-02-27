@@ -17,6 +17,7 @@ require('./pano');
 require('./path-viewer');
 require('./path-editor');
 require('./paths');
+require('./view-uploader');
 require('./panorama-chooser');
 require('./shop-items');
 require('./item-card');

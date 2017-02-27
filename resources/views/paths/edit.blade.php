@@ -11,7 +11,7 @@
             <path-viewer view-id="1" height="300"></path-viewer>
         </div>
         <div class="col-sm-4">
-            <h2>Linked views</h1>
+            <h1>Linked views</h1>
             <div class="box">
                 <div class="box__content">
                     <path-editor></path-editor>

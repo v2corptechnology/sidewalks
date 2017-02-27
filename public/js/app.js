@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "./";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 272);
+/******/ 	return __webpack_require__(__webpack_require__.s = 276);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1884,7 +1884,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(259)("./" + name);
+            __webpack_require__(262)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -26793,12 +26793,12 @@ module.exports = function(module) {
  |
  */
 
-__webpack_require__(242);
+__webpack_require__(245);
 
 __webpack_require__(127);
 
 var app = new Vue({
-  mixins: [__webpack_require__(243)]
+  mixins: [__webpack_require__(246)]
 });
 
 /***/ }),
@@ -26895,25 +26895,25 @@ RawTask.prototype.call = function () {
  | your components that you write while building your applications.
  */
 
-__webpack_require__(140);
+__webpack_require__(143);
 
 __webpack_require__(128);
 
 __webpack_require__(132);
+__webpack_require__(135);
 __webpack_require__(134);
-__webpack_require__(369);
-__webpack_require__(368);
-__webpack_require__(371);
+__webpack_require__(136);
+__webpack_require__(140);
 __webpack_require__(133);
-__webpack_require__(137);
+__webpack_require__(139);
 __webpack_require__(129);
 __webpack_require__(131);
 
 __webpack_require__(130);
 
-__webpack_require__(135);
+__webpack_require__(137);
 
-__webpack_require__(136);
+__webpack_require__(138);
 
 /***/ }),
 /* 128 */
@@ -27207,11 +27207,37 @@ Vue.component('panorama-chooser', {
 
 /***/ }),
 /* 134 */
+/***/ (function(module, exports) {
+
+Vue.component('path-editor', {
+    template: '\n        <div>\n            <p class="help-block" v-if="!markers.length">First click where you want to link another view.</p>\n            <div class="media" v-for="marker in markers">\n                <div class="media-left">\n                    <i class="media-object fa fa-arrow-circle-up fa-fw fa-2x" :style="{ color: marker.color }"></i>\n                </div>\n                <div class="media-body">\n                    <div class="form-group">\n                        <view-uploader></view-uploader>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ',
+    data: function data() {
+        return {
+            markers: []
+        };
+    },
+    created: function created() {
+        Bus.$on('marker-created', this.onMarkerCreated);
+        Bus.$on('marker-removed', this.onMarkerRemoved);
+    },
+
+    methods: {
+        onMarkerCreated: function onMarkerCreated(marker) {
+            this.markers.push(marker);
+        },
+        onMarkerRemoved: function onMarkerRemoved(marker) {
+            alert('do something when marker is removed');
+        }
+    }
+});
+
+/***/ }),
+/* 135 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_randomcolor__ = __webpack_require__(370);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_randomcolor__ = __webpack_require__(270);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_randomcolor___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_randomcolor__);
 
 
@@ -27314,7 +27340,48 @@ Vue.component('path-viewer', {
 });
 
 /***/ }),
-/* 135 */
+/* 136 */
+/***/ (function(module, exports) {
+
+Vue.component('paths', {
+    template: '\n        <div>\n            <ul>\n                <li v-for="path in paths">\n                    {{ path.name }} <small>({{ path.views.length }} views)</small>\n                     \u2014 <a :href="path.urls.edit">Edit</a> \u2014 <a :href="path.urls.view">View</a>\n                </li>\n                <li>\n                    <input type="text" placeholder="Name a new path" v-model="name" @keyup="onKeyUp" />\n                </li>\n            </ul>\n        </div>\n    ',
+    props: ['user'],
+    data: function data() {
+        return {
+            paths: [],
+            name: ''
+        };
+    },
+    created: function created() {
+        var _this = this;
+
+        this.$http.get('/api/users/' + this.user.id + '/paths/').then(function (response) {
+            return _this.paths = response.data;
+        }).catch(function (error) {
+            return alert('Error fetching your paths');
+        });
+    },
+
+    methods: {
+        onKeyUp: function onKeyUp(event) {
+            var _this2 = this;
+
+            if (event.keyCode == 13) {
+                this.$http.post('/api/users/' + this.user.id + '/paths/', { name: this.name }).then(function (response) {
+                    _this2.paths.push(response.body.data);
+                    _this2.name = '';
+                }).catch(function (error) {
+                    return console.log(error);
+                });
+
+                event.preventDefault();
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 137 */
 /***/ (function(module, exports) {
 
 Vue.component('schedules', {
@@ -27353,7 +27420,7 @@ Vue.component('schedules', {
 });
 
 /***/ }),
-/* 136 */
+/* 138 */
 /***/ (function(module, exports) {
 
 Vue.component('scraper', {
@@ -27435,7 +27502,7 @@ Vue.component('scraper', {
 });
 
 /***/ }),
-/* 137 */
+/* 139 */
 /***/ (function(module, exports) {
 
 Vue.component('shop-items', {
@@ -27508,129 +27575,58 @@ Vue.component('shop-items', {
 });
 
 /***/ }),
-/* 138 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var base = __webpack_require__(187);
-
-Vue.component('spark-register-braintree', {
-    mixins: [base]
-});
-
-/***/ }),
-/* 139 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var base = __webpack_require__(188);
-
-Vue.component('spark-register-stripe', {
-    mixins: [base]
-});
-
-/***/ }),
 /* 140 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
+Vue.component('view-uploader', {
+    template: '\n        <div>\n            <div v-if="view">\n                <a :href="view.urls.edit">\n                    <img :src="imageData" class="img-responsive" alt="New view" />\n                </a>\n            </div>\n            <input v-else type="file" name="file" id="file" accept="image/*" @change="onImageChange">\n        </div>\n    ',
+    data: function data() {
+        return {
+            view: null,
+            imageData: null
+        };
+    },
 
-/**
- * Layout Components...
- */
-__webpack_require__(147);
-__webpack_require__(148);
+    methods: {
+        onImageChange: function onImageChange(event) {
+            var files = event.target.files || event.dataTransfer.files;
 
-/**
- * Authentication Components...
- */
-__webpack_require__(139);
-__webpack_require__(138);
+            if (!files.length) return;
 
-/**
- * Settings Component...
- */
-__webpack_require__(168);
+            this.createPreview(files[0]);
+            this.uploadImage(files[0]);
+        },
+        uploadImage: function uploadImage(file) {
+            var _this = this;
 
-/**
- * Profile Settings Components...
- */
-__webpack_require__(161);
-__webpack_require__(163);
-__webpack_require__(162);
+            var formData = new FormData();
+            formData.append('image', file);
 
-/**
- * Teams Settings Components...
- */
-__webpack_require__(175);
-__webpack_require__(176);
-__webpack_require__(179);
-__webpack_require__(177);
-__webpack_require__(184);
-__webpack_require__(183);
-__webpack_require__(186);
-__webpack_require__(185);
-__webpack_require__(182);
-__webpack_require__(180);
-__webpack_require__(178);
-__webpack_require__(181);
+            this.$http.post('/api/views', formData).then(function (response) {
+                return _this.view = response.body;
+            }).catch(function (error) {
+                console.log(error);alert('Error while uploading image');
+            });
+        },
+        createPreview: function createPreview(file) {
+            var self = this,
+                reader = new FileReader();
 
-/**
- * Security Settings Components...
- */
-__webpack_require__(164);
-__webpack_require__(167);
-__webpack_require__(166);
-__webpack_require__(165);
-
-/**
- * API Settings Components...
- */
-__webpack_require__(149);
-__webpack_require__(150);
-__webpack_require__(151);
-
-/**
- * Subscription Settings Components...
- */
-__webpack_require__(169);
-__webpack_require__(173);
-__webpack_require__(172);
-__webpack_require__(174);
-__webpack_require__(171);
-__webpack_require__(170);
-
-/**
- * Payment Method Components...
- */
-__webpack_require__(156);
-__webpack_require__(155);
-__webpack_require__(160);
-__webpack_require__(159);
-__webpack_require__(158);
-__webpack_require__(157);
-
-/**
- * Billing History Components...
- */
-__webpack_require__(152);
-__webpack_require__(154);
-__webpack_require__(153);
-
-/**
- * Kiosk Components...
- */
-__webpack_require__(143);
-__webpack_require__(142);
-__webpack_require__(144);
-__webpack_require__(146);
-__webpack_require__(145);
-__webpack_require__(141);
+            reader.onload = function (event) {
+                return self.imageData = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+});
 
 /***/ }),
 /* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var base = __webpack_require__(195);
+var base = __webpack_require__(190);
 
-Vue.component('spark-kiosk-add-discount', {
+Vue.component('spark-register-braintree', {
     mixins: [base]
 });
 
@@ -27638,9 +27634,9 @@ Vue.component('spark-kiosk-add-discount', {
 /* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var base = __webpack_require__(196);
+var base = __webpack_require__(191);
 
-Vue.component('spark-kiosk-announcements', {
+Vue.component('spark-register-stripe', {
     mixins: [base]
 });
 
@@ -27648,11 +27644,98 @@ Vue.component('spark-kiosk-announcements', {
 /* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var base = __webpack_require__(197);
 
-Vue.component('spark-kiosk', {
-    mixins: [base]
-});
+/**
+ * Layout Components...
+ */
+__webpack_require__(150);
+__webpack_require__(151);
+
+/**
+ * Authentication Components...
+ */
+__webpack_require__(142);
+__webpack_require__(141);
+
+/**
+ * Settings Component...
+ */
+__webpack_require__(171);
+
+/**
+ * Profile Settings Components...
+ */
+__webpack_require__(164);
+__webpack_require__(166);
+__webpack_require__(165);
+
+/**
+ * Teams Settings Components...
+ */
+__webpack_require__(178);
+__webpack_require__(179);
+__webpack_require__(182);
+__webpack_require__(180);
+__webpack_require__(187);
+__webpack_require__(186);
+__webpack_require__(189);
+__webpack_require__(188);
+__webpack_require__(185);
+__webpack_require__(183);
+__webpack_require__(181);
+__webpack_require__(184);
+
+/**
+ * Security Settings Components...
+ */
+__webpack_require__(167);
+__webpack_require__(170);
+__webpack_require__(169);
+__webpack_require__(168);
+
+/**
+ * API Settings Components...
+ */
+__webpack_require__(152);
+__webpack_require__(153);
+__webpack_require__(154);
+
+/**
+ * Subscription Settings Components...
+ */
+__webpack_require__(172);
+__webpack_require__(176);
+__webpack_require__(175);
+__webpack_require__(177);
+__webpack_require__(174);
+__webpack_require__(173);
+
+/**
+ * Payment Method Components...
+ */
+__webpack_require__(159);
+__webpack_require__(158);
+__webpack_require__(163);
+__webpack_require__(162);
+__webpack_require__(161);
+__webpack_require__(160);
+
+/**
+ * Billing History Components...
+ */
+__webpack_require__(155);
+__webpack_require__(157);
+__webpack_require__(156);
+
+/**
+ * Kiosk Components...
+ */
+__webpack_require__(146);
+__webpack_require__(145);
+__webpack_require__(147);
+__webpack_require__(149);
+__webpack_require__(148);
+__webpack_require__(144);
 
 /***/ }),
 /* 144 */
@@ -27660,7 +27743,7 @@ Vue.component('spark-kiosk', {
 
 var base = __webpack_require__(198);
 
-Vue.component('spark-kiosk-metrics', {
+Vue.component('spark-kiosk-add-discount', {
     mixins: [base]
 });
 
@@ -27670,7 +27753,7 @@ Vue.component('spark-kiosk-metrics', {
 
 var base = __webpack_require__(199);
 
-Vue.component('spark-kiosk-profile', {
+Vue.component('spark-kiosk-announcements', {
     mixins: [base]
 });
 
@@ -27680,7 +27763,7 @@ Vue.component('spark-kiosk-profile', {
 
 var base = __webpack_require__(200);
 
-Vue.component('spark-kiosk-users', {
+Vue.component('spark-kiosk', {
     mixins: [base]
 });
 
@@ -27688,9 +27771,9 @@ Vue.component('spark-kiosk-users', {
 /* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var base = __webpack_require__(202);
+var base = __webpack_require__(201);
 
-Vue.component('spark-navbar', {
+Vue.component('spark-kiosk-metrics', {
     mixins: [base]
 });
 
@@ -27698,9 +27781,9 @@ Vue.component('spark-navbar', {
 /* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var base = __webpack_require__(203);
+var base = __webpack_require__(202);
 
-Vue.component('spark-notifications', {
+Vue.component('spark-kiosk-profile', {
     mixins: [base]
 });
 
@@ -27708,9 +27791,9 @@ Vue.component('spark-notifications', {
 /* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var base = __webpack_require__(204);
+var base = __webpack_require__(203);
 
-Vue.component('spark-api', {
+Vue.component('spark-kiosk-users', {
     mixins: [base]
 });
 
@@ -27720,7 +27803,7 @@ Vue.component('spark-api', {
 
 var base = __webpack_require__(205);
 
-Vue.component('spark-create-token', {
+Vue.component('spark-navbar', {
     mixins: [base]
 });
 
@@ -27730,7 +27813,7 @@ Vue.component('spark-create-token', {
 
 var base = __webpack_require__(206);
 
-Vue.component('spark-tokens', {
+Vue.component('spark-notifications', {
     mixins: [base]
 });
 
@@ -27740,7 +27823,7 @@ Vue.component('spark-tokens', {
 
 var base = __webpack_require__(207);
 
-Vue.component('spark-invoices', {
+Vue.component('spark-api', {
     mixins: [base]
 });
 
@@ -27750,7 +27833,7 @@ Vue.component('spark-invoices', {
 
 var base = __webpack_require__(208);
 
-Vue.component('spark-invoice-list', {
+Vue.component('spark-create-token', {
     mixins: [base]
 });
 
@@ -27760,7 +27843,7 @@ Vue.component('spark-invoice-list', {
 
 var base = __webpack_require__(209);
 
-Vue.component('spark-update-extra-billing-information', {
+Vue.component('spark-tokens', {
     mixins: [base]
 });
 
@@ -27770,7 +27853,7 @@ Vue.component('spark-update-extra-billing-information', {
 
 var base = __webpack_require__(210);
 
-Vue.component('spark-payment-method-braintree', {
+Vue.component('spark-invoices', {
     mixins: [base]
 });
 
@@ -27780,7 +27863,7 @@ Vue.component('spark-payment-method-braintree', {
 
 var base = __webpack_require__(211);
 
-Vue.component('spark-payment-method-stripe', {
+Vue.component('spark-invoice-list', {
     mixins: [base]
 });
 
@@ -27790,7 +27873,7 @@ Vue.component('spark-payment-method-stripe', {
 
 var base = __webpack_require__(212);
 
-Vue.component('spark-redeem-coupon', {
+Vue.component('spark-update-extra-billing-information', {
     mixins: [base]
 });
 
@@ -27800,7 +27883,7 @@ Vue.component('spark-redeem-coupon', {
 
 var base = __webpack_require__(213);
 
-Vue.component('spark-update-payment-method-braintree', {
+Vue.component('spark-payment-method-braintree', {
     mixins: [base]
 });
 
@@ -27810,7 +27893,7 @@ Vue.component('spark-update-payment-method-braintree', {
 
 var base = __webpack_require__(214);
 
-Vue.component('spark-update-payment-method-stripe', {
+Vue.component('spark-payment-method-stripe', {
     mixins: [base]
 });
 
@@ -27820,7 +27903,7 @@ Vue.component('spark-update-payment-method-stripe', {
 
 var base = __webpack_require__(215);
 
-Vue.component('spark-update-vat-id', {
+Vue.component('spark-redeem-coupon', {
     mixins: [base]
 });
 
@@ -27830,7 +27913,7 @@ Vue.component('spark-update-vat-id', {
 
 var base = __webpack_require__(216);
 
-Vue.component('spark-profile', {
+Vue.component('spark-update-payment-method-braintree', {
     mixins: [base]
 });
 
@@ -27840,7 +27923,7 @@ Vue.component('spark-profile', {
 
 var base = __webpack_require__(217);
 
-Vue.component('spark-update-contact-information', {
+Vue.component('spark-update-payment-method-stripe', {
     mixins: [base]
 });
 
@@ -27850,7 +27933,7 @@ Vue.component('spark-update-contact-information', {
 
 var base = __webpack_require__(218);
 
-Vue.component('spark-update-profile-photo', {
+Vue.component('spark-update-vat-id', {
     mixins: [base]
 });
 
@@ -27860,7 +27943,7 @@ Vue.component('spark-update-profile-photo', {
 
 var base = __webpack_require__(219);
 
-Vue.component('spark-security', {
+Vue.component('spark-profile', {
     mixins: [base]
 });
 
@@ -27870,7 +27953,7 @@ Vue.component('spark-security', {
 
 var base = __webpack_require__(220);
 
-Vue.component('spark-disable-two-factor-auth', {
+Vue.component('spark-update-contact-information', {
     mixins: [base]
 });
 
@@ -27880,7 +27963,7 @@ Vue.component('spark-disable-two-factor-auth', {
 
 var base = __webpack_require__(221);
 
-Vue.component('spark-enable-two-factor-auth', {
+Vue.component('spark-update-profile-photo', {
     mixins: [base]
 });
 
@@ -27890,7 +27973,7 @@ Vue.component('spark-enable-two-factor-auth', {
 
 var base = __webpack_require__(222);
 
-Vue.component('spark-update-password', {
+Vue.component('spark-security', {
     mixins: [base]
 });
 
@@ -27900,7 +27983,7 @@ Vue.component('spark-update-password', {
 
 var base = __webpack_require__(223);
 
-Vue.component('spark-settings', {
+Vue.component('spark-disable-two-factor-auth', {
     mixins: [base]
 });
 
@@ -27910,7 +27993,7 @@ Vue.component('spark-settings', {
 
 var base = __webpack_require__(224);
 
-Vue.component('spark-subscription', {
+Vue.component('spark-enable-two-factor-auth', {
     mixins: [base]
 });
 
@@ -27920,7 +28003,7 @@ Vue.component('spark-subscription', {
 
 var base = __webpack_require__(225);
 
-Vue.component('spark-cancel-subscription', {
+Vue.component('spark-update-password', {
     mixins: [base]
 });
 
@@ -27930,7 +28013,7 @@ Vue.component('spark-cancel-subscription', {
 
 var base = __webpack_require__(226);
 
-Vue.component('spark-resume-subscription', {
+Vue.component('spark-settings', {
     mixins: [base]
 });
 
@@ -27940,7 +28023,7 @@ Vue.component('spark-resume-subscription', {
 
 var base = __webpack_require__(227);
 
-Vue.component('spark-subscribe-braintree', {
+Vue.component('spark-subscription', {
     mixins: [base]
 });
 
@@ -27950,7 +28033,7 @@ Vue.component('spark-subscribe-braintree', {
 
 var base = __webpack_require__(228);
 
-Vue.component('spark-subscribe-stripe', {
+Vue.component('spark-cancel-subscription', {
     mixins: [base]
 });
 
@@ -27960,7 +28043,7 @@ Vue.component('spark-subscribe-stripe', {
 
 var base = __webpack_require__(229);
 
-Vue.component('spark-update-subscription', {
+Vue.component('spark-resume-subscription', {
     mixins: [base]
 });
 
@@ -27970,7 +28053,7 @@ Vue.component('spark-update-subscription', {
 
 var base = __webpack_require__(230);
 
-Vue.component('spark-teams', {
+Vue.component('spark-subscribe-braintree', {
     mixins: [base]
 });
 
@@ -27980,7 +28063,7 @@ Vue.component('spark-teams', {
 
 var base = __webpack_require__(231);
 
-Vue.component('spark-create-team', {
+Vue.component('spark-subscribe-stripe', {
     mixins: [base]
 });
 
@@ -27990,7 +28073,7 @@ Vue.component('spark-create-team', {
 
 var base = __webpack_require__(232);
 
-Vue.component('spark-current-teams', {
+Vue.component('spark-update-subscription', {
     mixins: [base]
 });
 
@@ -28000,7 +28083,7 @@ Vue.component('spark-current-teams', {
 
 var base = __webpack_require__(233);
 
-Vue.component('spark-mailed-invitations', {
+Vue.component('spark-teams', {
     mixins: [base]
 });
 
@@ -28010,7 +28093,7 @@ Vue.component('spark-mailed-invitations', {
 
 var base = __webpack_require__(234);
 
-Vue.component('spark-pending-invitations', {
+Vue.component('spark-create-team', {
     mixins: [base]
 });
 
@@ -28020,7 +28103,7 @@ Vue.component('spark-pending-invitations', {
 
 var base = __webpack_require__(235);
 
-Vue.component('spark-send-invitation', {
+Vue.component('spark-current-teams', {
     mixins: [base]
 });
 
@@ -28030,7 +28113,7 @@ Vue.component('spark-send-invitation', {
 
 var base = __webpack_require__(236);
 
-Vue.component('spark-team-members', {
+Vue.component('spark-mailed-invitations', {
     mixins: [base]
 });
 
@@ -28040,7 +28123,7 @@ Vue.component('spark-team-members', {
 
 var base = __webpack_require__(237);
 
-Vue.component('spark-team-membership', {
+Vue.component('spark-pending-invitations', {
     mixins: [base]
 });
 
@@ -28050,7 +28133,7 @@ Vue.component('spark-team-membership', {
 
 var base = __webpack_require__(238);
 
-Vue.component('spark-team-profile', {
+Vue.component('spark-send-invitation', {
     mixins: [base]
 });
 
@@ -28060,7 +28143,7 @@ Vue.component('spark-team-profile', {
 
 var base = __webpack_require__(239);
 
-Vue.component('spark-team-settings', {
+Vue.component('spark-team-members', {
     mixins: [base]
 });
 
@@ -28070,7 +28153,7 @@ Vue.component('spark-team-settings', {
 
 var base = __webpack_require__(240);
 
-Vue.component('spark-update-team-name', {
+Vue.component('spark-team-membership', {
     mixins: [base]
 });
 
@@ -28080,12 +28163,42 @@ Vue.component('spark-update-team-name', {
 
 var base = __webpack_require__(241);
 
-Vue.component('spark-update-team-photo', {
+Vue.component('spark-team-profile', {
     mixins: [base]
 });
 
 /***/ }),
 /* 187 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var base = __webpack_require__(242);
+
+Vue.component('spark-team-settings', {
+    mixins: [base]
+});
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var base = __webpack_require__(243);
+
+Vue.component('spark-update-team-name', {
+    mixins: [base]
+});
+
+/***/ }),
+/* 189 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var base = __webpack_require__(244);
+
+Vue.component('spark-update-team-photo', {
+    mixins: [base]
+});
+
+/***/ }),
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = {
@@ -28218,7 +28331,7 @@ Vue.component('spark-update-team-photo', {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 188 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = {
@@ -28457,7 +28570,7 @@ Vue.component('spark-update-team-photo', {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 189 */
+/* 192 */
 /***/ (function(module, exports) {
 
 /**
@@ -28522,7 +28635,7 @@ Vue.filter('currency', function (value) {
 });
 
 /***/ }),
-/* 190 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {/**
@@ -28537,21 +28650,21 @@ Spark.forms = {
 /**
  * Load the SparkForm helper class.
  */
-__webpack_require__(192);
+__webpack_require__(195);
 
 /**
  * Define the SparkFormError collection class.
  */
-__webpack_require__(191);
+__webpack_require__(194);
 
 /**
  * Add additional HTTP / form helpers to the Spark object.
  */
-$.extend(Spark, __webpack_require__(193));
+$.extend(Spark, __webpack_require__(196));
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 191 */
+/* 194 */
 /***/ (function(module, exports) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -28623,7 +28736,7 @@ window.SparkFormErrors = function () {
 };
 
 /***/ }),
-/* 192 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {/**
@@ -28679,7 +28792,7 @@ window.SparkForm = function (data) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 193 */
+/* 196 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -28739,7 +28852,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 194 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = function (request, next) {
@@ -28771,7 +28884,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 195 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {function kioskAddDiscountForm() {
@@ -28840,7 +28953,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 196 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {var announcementsCreateForm = function announcementsCreateForm() {
@@ -28966,7 +29079,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 197 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = {
@@ -29003,7 +29116,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 198 */
+/* 201 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -29289,7 +29402,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 199 */
+/* 202 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -29441,7 +29554,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 200 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = {
@@ -29569,7 +29682,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 201 */
+/* 204 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -29604,7 +29717,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 202 */
+/* 205 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -29629,7 +29742,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 203 */
+/* 206 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -29712,7 +29825,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 204 */
+/* 207 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -29771,7 +29884,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 205 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = {
@@ -29918,7 +30031,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 206 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = {
@@ -30028,7 +30141,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 207 */
+/* 210 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -30078,7 +30191,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 208 */
+/* 211 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -30095,7 +30208,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 209 */
+/* 212 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -30141,7 +30254,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 210 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -30219,7 +30332,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 211 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -30264,7 +30377,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 212 */
+/* 215 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -30308,7 +30421,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 213 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -30405,7 +30518,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 214 */
+/* 217 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -30591,7 +30704,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 215 */
+/* 218 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -30635,7 +30748,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 216 */
+/* 219 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -30643,7 +30756,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 217 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = {
@@ -30685,7 +30798,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 218 */
+/* 221 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -30748,7 +30861,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 219 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = {
@@ -30780,7 +30893,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 220 */
+/* 223 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -30809,7 +30922,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 221 */
+/* 224 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -30854,7 +30967,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 222 */
+/* 225 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -30883,7 +30996,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 223 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -30914,7 +31027,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 224 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -30964,7 +31077,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 225 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = {
@@ -31014,7 +31127,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 226 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -31056,7 +31169,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 227 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -31150,7 +31263,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 228 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -31355,7 +31468,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 229 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = {
@@ -31451,7 +31564,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 230 */
+/* 233 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -31459,7 +31572,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 231 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = {
@@ -31612,7 +31725,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 232 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = {
@@ -31699,7 +31812,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 233 */
+/* 236 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -31718,7 +31831,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 234 */
+/* 237 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -31795,7 +31908,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 235 */
+/* 238 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -31917,7 +32030,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 236 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = {
@@ -32065,7 +32178,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 237 */
+/* 240 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -32110,7 +32223,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 238 */
+/* 241 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -32118,7 +32231,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 239 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -32177,7 +32290,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 240 */
+/* 243 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -32217,7 +32330,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 241 */
+/* 244 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -32289,17 +32402,17 @@ module.exports = {
 };
 
 /***/ }),
-/* 242 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(__webpack_provided_window_dot_jQuery, $) {/*
  * Load various JavaScript modules that assist Spark.
  */
-window.URI = __webpack_require__(268);
-window._ = __webpack_require__(267);
+window.URI = __webpack_require__(272);
+window._ = __webpack_require__(271);
 window.moment = __webpack_require__(0);
-window.Promise = __webpack_require__(260);
-window.Cookies = __webpack_require__(258);
+window.Promise = __webpack_require__(263);
+window.Cookies = __webpack_require__(261);
 
 /*
  * Define Moment locales
@@ -32331,18 +32444,18 @@ if (window.$ === undefined || __webpack_provided_window_dot_jQuery === undefined
     window.$ = __webpack_provided_window_dot_jQuery = __webpack_require__(1);
 }
 
-__webpack_require__(245);
+__webpack_require__(248);
 
 /**
  * Load Vue if this application is using Vue as its framework.
  */
 if ($('#spark-app').length > 0) {
-    __webpack_require__(244);
+    __webpack_require__(247);
 }
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(1)))
 
 /***/ }),
-/* 243 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {/**
@@ -32616,7 +32729,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 244 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -32625,53 +32738,53 @@ module.exports = {
  * Vue is the JavaScript framework used by Spark.
  */
 if (window.Vue === undefined) {
-  window.Vue = __webpack_require__(270);
+  window.Vue = __webpack_require__(274);
 
   window.Bus = new Vue();
 }
 
-__webpack_require__(269);
+__webpack_require__(273);
 
 /**
  * Load Vue HTTP Interceptors.
  */
-Vue.http.interceptors.push(__webpack_require__(194));
+Vue.http.interceptors.push(__webpack_require__(197));
 
 /**
  * Load Vue Global Mixin.
  */
-Vue.mixin(__webpack_require__(201));
+Vue.mixin(__webpack_require__(204));
 
 /**
  * Define the Vue filters.
  */
-__webpack_require__(189);
+__webpack_require__(192);
 
 /**
  * Load the Spark form utilities.
  */
-__webpack_require__(190);
+__webpack_require__(193);
 
 /***/ }),
-/* 245 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
-__webpack_require__(257)
-__webpack_require__(247)
-__webpack_require__(248)
-__webpack_require__(249)
+__webpack_require__(260)
 __webpack_require__(250)
 __webpack_require__(251)
 __webpack_require__(252)
-__webpack_require__(256)
 __webpack_require__(253)
 __webpack_require__(254)
 __webpack_require__(255)
-__webpack_require__(246)
+__webpack_require__(259)
+__webpack_require__(256)
+__webpack_require__(257)
+__webpack_require__(258)
+__webpack_require__(249)
 
 /***/ }),
-/* 246 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -32840,7 +32953,7 @@ __webpack_require__(246)
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 247 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -32941,7 +33054,7 @@ __webpack_require__(246)
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 248 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -33073,7 +33186,7 @@ __webpack_require__(246)
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 249 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -33317,7 +33430,7 @@ __webpack_require__(246)
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 250 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -33536,7 +33649,7 @@ __webpack_require__(246)
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 251 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -33708,7 +33821,7 @@ __webpack_require__(246)
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 252 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -34054,7 +34167,7 @@ __webpack_require__(246)
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 253 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -34169,7 +34282,7 @@ __webpack_require__(246)
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 254 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -34348,7 +34461,7 @@ __webpack_require__(246)
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 255 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -34510,7 +34623,7 @@ __webpack_require__(246)
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 256 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -35037,7 +35150,7 @@ __webpack_require__(246)
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 257 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery) {/* ========================================================================
@@ -35103,7 +35216,7 @@ __webpack_require__(246)
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 258 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -35269,7 +35382,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 
 /***/ }),
-/* 259 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -35504,21 +35617,21 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 259;
+webpackContext.id = 262;
 
 
 /***/ }),
-/* 260 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(264)
+module.exports = __webpack_require__(267)
 
 
 /***/ }),
-/* 261 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35538,7 +35651,7 @@ Promise.prototype.done = function (onFulfilled, onRejected) {
 
 
 /***/ }),
-/* 262 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35652,7 +35765,7 @@ Promise.prototype['catch'] = function (onRejected) {
 
 
 /***/ }),
-/* 263 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35675,22 +35788,22 @@ Promise.prototype['finally'] = function (f) {
 
 
 /***/ }),
-/* 264 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 module.exports = __webpack_require__(3);
-__webpack_require__(261);
-__webpack_require__(263);
-__webpack_require__(262);
-__webpack_require__(265);
+__webpack_require__(264);
 __webpack_require__(266);
+__webpack_require__(265);
+__webpack_require__(268);
+__webpack_require__(269);
 
 
 /***/ }),
-/* 265 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35827,7 +35940,7 @@ Promise.prototype.nodeify = function (callback, ctx) {
 
 
 /***/ }),
-/* 266 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35896,7 +36009,445 @@ Promise.disableSynchronous = function() {
 
 
 /***/ }),
-/* 267 */
+/* 270 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// randomColor by David Merfield under the CC0 license
+// https://github.com/davidmerfield/randomColor/
+
+;(function(root, factory) {
+
+  // Support AMD
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+  // Support CommonJS
+  } else if (typeof exports === 'object') {
+    var randomColor = factory();
+
+    // Support NodeJS & Component, which allow module.exports to be a function
+    if (typeof module === 'object' && module && module.exports) {
+      exports = module.exports = randomColor;
+    }
+
+    // Support CommonJS 1.1.1 spec
+    exports.randomColor = randomColor;
+
+  // Support vanilla script loading
+  } else {
+    root.randomColor = factory();
+  }
+
+}(this, function() {
+
+  // Seed to get repeatable colors
+  var seed = null;
+
+  // Shared color dictionary
+  var colorDictionary = {};
+
+  // Populate the color dictionary
+  loadColorBounds();
+
+  var randomColor = function (options) {
+
+    options = options || {};
+
+    // Check if there is a seed and ensure it's an
+    // integer. Otherwise, reset the seed value.
+    if (options.seed && options.seed === parseInt(options.seed, 10)) {
+      seed = options.seed;
+
+    // A string was passed as a seed
+    } else if (typeof options.seed === 'string') {
+      seed = stringToInteger(options.seed);
+
+    // Something was passed as a seed but it wasn't an integer or string
+    } else if (options.seed !== undefined && options.seed !== null) {
+      throw new TypeError('The seed value must be an integer or string');
+
+    // No seed, reset the value outside.
+    } else {
+      seed = null;
+    }
+
+    var H,S,B;
+
+    // Check if we need to generate multiple colors
+    if (options.count !== null && options.count !== undefined) {
+
+      var totalColors = options.count,
+          colors = [];
+
+      options.count = null;
+
+      while (totalColors > colors.length) {
+
+        // Since we're generating multiple colors,
+        // incremement the seed. Otherwise we'd just
+        // generate the same color each time...
+        if (seed && options.seed) options.seed += 1;
+
+        colors.push(randomColor(options));
+      }
+
+      options.count = totalColors;
+
+      return colors;
+    }
+
+    // First we pick a hue (H)
+    H = pickHue(options);
+
+    // Then use H to determine saturation (S)
+    S = pickSaturation(H, options);
+
+    // Then use S and H to determine brightness (B).
+    B = pickBrightness(H, S, options);
+
+    // Then we return the HSB color in the desired format
+    return setFormat([H,S,B], options);
+  };
+
+  function pickHue (options) {
+
+    var hueRange = getHueRange(options.hue),
+        hue = randomWithin(hueRange);
+
+    // Instead of storing red as two seperate ranges,
+    // we group them, using negative numbers
+    if (hue < 0) {hue = 360 + hue;}
+
+    return hue;
+
+  }
+
+  function pickSaturation (hue, options) {
+
+    if (options.luminosity === 'random') {
+      return randomWithin([0,100]);
+    }
+
+    if (options.hue === 'monochrome') {
+      return 0;
+    }
+
+    var saturationRange = getSaturationRange(hue);
+
+    var sMin = saturationRange[0],
+        sMax = saturationRange[1];
+
+    switch (options.luminosity) {
+
+      case 'bright':
+        sMin = 55;
+        break;
+
+      case 'dark':
+        sMin = sMax - 10;
+        break;
+
+      case 'light':
+        sMax = 55;
+        break;
+   }
+
+    return randomWithin([sMin, sMax]);
+
+  }
+
+  function pickBrightness (H, S, options) {
+
+    var bMin = getMinimumBrightness(H, S),
+        bMax = 100;
+
+    switch (options.luminosity) {
+
+      case 'dark':
+        bMax = bMin + 20;
+        break;
+
+      case 'light':
+        bMin = (bMax + bMin)/2;
+        break;
+
+      case 'random':
+        bMin = 0;
+        bMax = 100;
+        break;
+    }
+
+    return randomWithin([bMin, bMax]);
+  }
+
+  function setFormat (hsv, options) {
+
+    switch (options.format) {
+
+      case 'hsvArray':
+        return hsv;
+
+      case 'hslArray':
+        return HSVtoHSL(hsv);
+
+      case 'hsl':
+        var hsl = HSVtoHSL(hsv);
+        return 'hsl('+hsl[0]+', '+hsl[1]+'%, '+hsl[2]+'%)';
+
+      case 'hsla':
+        var hslColor = HSVtoHSL(hsv);
+        return 'hsla('+hslColor[0]+', '+hslColor[1]+'%, '+hslColor[2]+'%, ' + Math.random() + ')';
+
+      case 'rgbArray':
+        return HSVtoRGB(hsv);
+
+      case 'rgb':
+        var rgb = HSVtoRGB(hsv);
+        return 'rgb(' + rgb.join(', ') + ')';
+
+      case 'rgba':
+        var rgbColor = HSVtoRGB(hsv);
+        return 'rgba(' + rgbColor.join(', ') + ', ' + Math.random() + ')';
+
+      default:
+        return HSVtoHex(hsv);
+    }
+
+  }
+
+  function getMinimumBrightness(H, S) {
+
+    var lowerBounds = getColorInfo(H).lowerBounds;
+
+    for (var i = 0; i < lowerBounds.length - 1; i++) {
+
+      var s1 = lowerBounds[i][0],
+          v1 = lowerBounds[i][1];
+
+      var s2 = lowerBounds[i+1][0],
+          v2 = lowerBounds[i+1][1];
+
+      if (S >= s1 && S <= s2) {
+
+         var m = (v2 - v1)/(s2 - s1),
+             b = v1 - m*s1;
+
+         return m*S + b;
+      }
+
+    }
+
+    return 0;
+  }
+
+  function getHueRange (colorInput) {
+
+    if (typeof parseInt(colorInput) === 'number') {
+
+      var number = parseInt(colorInput);
+
+      if (number < 360 && number > 0) {
+        return [number, number];
+      }
+
+    }
+
+    if (typeof colorInput === 'string') {
+
+      if (colorDictionary[colorInput]) {
+        var color = colorDictionary[colorInput];
+        if (color.hueRange) {return color.hueRange;}
+      }
+    }
+
+    return [0,360];
+
+  }
+
+  function getSaturationRange (hue) {
+    return getColorInfo(hue).saturationRange;
+  }
+
+  function getColorInfo (hue) {
+
+    // Maps red colors to make picking hue easier
+    if (hue >= 334 && hue <= 360) {
+      hue-= 360;
+    }
+
+    for (var colorName in colorDictionary) {
+       var color = colorDictionary[colorName];
+       if (color.hueRange &&
+           hue >= color.hueRange[0] &&
+           hue <= color.hueRange[1]) {
+          return colorDictionary[colorName];
+       }
+    } return 'Color not found';
+  }
+
+  function randomWithin (range) {
+    if (seed === null) {
+      return Math.floor(range[0] + Math.random()*(range[1] + 1 - range[0]));
+    } else {
+      //Seeded random algorithm from http://indiegamr.com/generate-repeatable-random-numbers-in-js/
+      var max = range[1] || 1;
+      var min = range[0] || 0;
+      seed = (seed * 9301 + 49297) % 233280;
+      var rnd = seed / 233280.0;
+      return Math.floor(min + rnd * (max - min));
+    }
+  }
+
+  function HSVtoHex (hsv){
+
+    var rgb = HSVtoRGB(hsv);
+
+    function componentToHex(c) {
+        var hex = c.toString(16);
+        return hex.length == 1 ? '0' + hex : hex;
+    }
+
+    var hex = '#' + componentToHex(rgb[0]) + componentToHex(rgb[1]) + componentToHex(rgb[2]);
+
+    return hex;
+
+  }
+
+  function defineColor (name, hueRange, lowerBounds) {
+
+    var sMin = lowerBounds[0][0],
+        sMax = lowerBounds[lowerBounds.length - 1][0],
+
+        bMin = lowerBounds[lowerBounds.length - 1][1],
+        bMax = lowerBounds[0][1];
+
+    colorDictionary[name] = {
+      hueRange: hueRange,
+      lowerBounds: lowerBounds,
+      saturationRange: [sMin, sMax],
+      brightnessRange: [bMin, bMax]
+    };
+
+  }
+
+  function loadColorBounds () {
+
+    defineColor(
+      'monochrome',
+      null,
+      [[0,0],[100,0]]
+    );
+
+    defineColor(
+      'red',
+      [-26,18],
+      [[20,100],[30,92],[40,89],[50,85],[60,78],[70,70],[80,60],[90,55],[100,50]]
+    );
+
+    defineColor(
+      'orange',
+      [19,46],
+      [[20,100],[30,93],[40,88],[50,86],[60,85],[70,70],[100,70]]
+    );
+
+    defineColor(
+      'yellow',
+      [47,62],
+      [[25,100],[40,94],[50,89],[60,86],[70,84],[80,82],[90,80],[100,75]]
+    );
+
+    defineColor(
+      'green',
+      [63,178],
+      [[30,100],[40,90],[50,85],[60,81],[70,74],[80,64],[90,50],[100,40]]
+    );
+
+    defineColor(
+      'blue',
+      [179, 257],
+      [[20,100],[30,86],[40,80],[50,74],[60,60],[70,52],[80,44],[90,39],[100,35]]
+    );
+
+    defineColor(
+      'purple',
+      [258, 282],
+      [[20,100],[30,87],[40,79],[50,70],[60,65],[70,59],[80,52],[90,45],[100,42]]
+    );
+
+    defineColor(
+      'pink',
+      [283, 334],
+      [[20,100],[30,90],[40,86],[60,84],[80,80],[90,75],[100,73]]
+    );
+
+  }
+
+  function HSVtoRGB (hsv) {
+
+    // this doesn't work for the values of 0 and 360
+    // here's the hacky fix
+    var h = hsv[0];
+    if (h === 0) {h = 1;}
+    if (h === 360) {h = 359;}
+
+    // Rebase the h,s,v values
+    h = h/360;
+    var s = hsv[1]/100,
+        v = hsv[2]/100;
+
+    var h_i = Math.floor(h*6),
+      f = h * 6 - h_i,
+      p = v * (1 - s),
+      q = v * (1 - f*s),
+      t = v * (1 - (1 - f)*s),
+      r = 256,
+      g = 256,
+      b = 256;
+
+    switch(h_i) {
+      case 0: r = v; g = t; b = p;  break;
+      case 1: r = q; g = v; b = p;  break;
+      case 2: r = p; g = v; b = t;  break;
+      case 3: r = p; g = q; b = v;  break;
+      case 4: r = t; g = p; b = v;  break;
+      case 5: r = v; g = p; b = q;  break;
+    }
+
+    var result = [Math.floor(r*255), Math.floor(g*255), Math.floor(b*255)];
+    return result;
+  }
+
+  function HSVtoHSL (hsv) {
+    var h = hsv[0],
+      s = hsv[1]/100,
+      v = hsv[2]/100,
+      k = (2-s)*v;
+
+    return [
+      h,
+      Math.round(s*v / (k<1 ? k : 2-k) * 10000) / 100,
+      k/2 * 100
+    ];
+  }
+
+  function stringToInteger (string) {
+    var total = 0
+    for (var i = 0; i !== string.length; i++) {
+      if (total >= Number.MAX_SAFE_INTEGER) break;
+      total += string.charCodeAt(i)
+    }
+    return total
+  }
+
+  return randomColor;
+}));
+
+
+/***/ }),
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.8.3
@@ -37451,7 +38002,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscor
 
 
 /***/ }),
-/* 268 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -39705,7 +40256,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 269 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40783,7 +41334,7 @@ var xhrClient = function (request) {
 
 var nodeClient = function (request) {
 
-    var client = __webpack_require__(271);
+    var client = __webpack_require__(275);
 
     return new PromiseObj(function (resolve) {
 
@@ -41237,7 +41788,7 @@ module.exports = plugin;
 
 
 /***/ }),
-/* 270 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -49170,664 +49721,18 @@ return Vue$3;
 
 
 /***/ }),
-/* 271 */
+/* 275 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 272 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(124);
 module.exports = __webpack_require__(125);
 
-
-/***/ }),
-/* 273 */,
-/* 274 */,
-/* 275 */,
-/* 276 */,
-/* 277 */,
-/* 278 */,
-/* 279 */,
-/* 280 */,
-/* 281 */,
-/* 282 */,
-/* 283 */,
-/* 284 */,
-/* 285 */,
-/* 286 */,
-/* 287 */,
-/* 288 */,
-/* 289 */,
-/* 290 */,
-/* 291 */,
-/* 292 */,
-/* 293 */,
-/* 294 */,
-/* 295 */,
-/* 296 */,
-/* 297 */,
-/* 298 */,
-/* 299 */,
-/* 300 */,
-/* 301 */,
-/* 302 */,
-/* 303 */,
-/* 304 */,
-/* 305 */,
-/* 306 */,
-/* 307 */,
-/* 308 */,
-/* 309 */,
-/* 310 */,
-/* 311 */,
-/* 312 */,
-/* 313 */,
-/* 314 */,
-/* 315 */,
-/* 316 */,
-/* 317 */,
-/* 318 */,
-/* 319 */,
-/* 320 */,
-/* 321 */,
-/* 322 */,
-/* 323 */,
-/* 324 */,
-/* 325 */,
-/* 326 */,
-/* 327 */,
-/* 328 */,
-/* 329 */,
-/* 330 */,
-/* 331 */,
-/* 332 */,
-/* 333 */,
-/* 334 */,
-/* 335 */,
-/* 336 */,
-/* 337 */,
-/* 338 */,
-/* 339 */,
-/* 340 */,
-/* 341 */,
-/* 342 */,
-/* 343 */,
-/* 344 */,
-/* 345 */,
-/* 346 */,
-/* 347 */,
-/* 348 */,
-/* 349 */,
-/* 350 */,
-/* 351 */,
-/* 352 */,
-/* 353 */,
-/* 354 */,
-/* 355 */,
-/* 356 */,
-/* 357 */,
-/* 358 */,
-/* 359 */,
-/* 360 */,
-/* 361 */,
-/* 362 */,
-/* 363 */,
-/* 364 */,
-/* 365 */,
-/* 366 */,
-/* 367 */,
-/* 368 */
-/***/ (function(module, exports) {
-
-Vue.component('paths', {
-    template: '\n        <div>\n            <ul>\n                <li v-for="path in paths">\n                    {{ path.name }} <small>({{ path.views.length }} views)</small>\n                     \u2014 <a :href="path.urls.edit">Edit</a> \u2014 <a :href="path.urls.view">View</a>\n                </li>\n                <li>\n                    <input type="text" placeholder="Name a new path" v-model="name" @keyup="onKeyUp" />\n                </li>\n            </ul>\n        </div>\n    ',
-    props: ['user'],
-    data: function data() {
-        return {
-            paths: [],
-            name: ''
-        };
-    },
-    created: function created() {
-        var _this = this;
-
-        this.$http.get('/api/users/' + this.user.id + '/paths/').then(function (response) {
-            return _this.paths = response.data;
-        }).catch(function (error) {
-            return alert('Error fetching your paths');
-        });
-    },
-
-    methods: {
-        onKeyUp: function onKeyUp(event) {
-            var _this2 = this;
-
-            if (event.keyCode == 13) {
-                this.$http.post('/api/users/' + this.user.id + '/paths/', { name: this.name }).then(function (response) {
-                    _this2.paths.push(response.body.data);
-                    _this2.name = '';
-                }).catch(function (error) {
-                    return console.log(error);
-                });
-
-                event.preventDefault();
-            }
-        }
-    }
-});
-
-/***/ }),
-/* 369 */
-/***/ (function(module, exports) {
-
-Vue.component('path-editor', {
-    template: '\n        <div>\n            <p class="help-block" v-if="!markers.length">First click where you want to link another view.</p>\n            <div class="media" v-for="marker in markers">\n                <div class="media-left">\n                    <i class="media-object fa fa-arrow-circle-up fa-fw fa-2x" :style="{ color: marker.color }"></i>\n                </div>\n                <div class="media-body">\n                    <div class="form-group">\n                        <view-uploader></view-uploader>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ',
-    data: function data() {
-        return {
-            markers: []
-        };
-    },
-    created: function created() {
-        Bus.$on('marker-created', this.onMarkerCreated);
-        Bus.$on('marker-removed', this.onMarkerRemoved);
-    },
-
-    methods: {
-        onMarkerCreated: function onMarkerCreated(marker) {
-            this.markers.push(marker);
-        },
-        onMarkerRemoved: function onMarkerRemoved(marker) {
-            alert('do something when marker is removed');
-        }
-    }
-});
-
-/***/ }),
-/* 370 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// randomColor by David Merfield under the CC0 license
-// https://github.com/davidmerfield/randomColor/
-
-;(function(root, factory) {
-
-  // Support AMD
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-  // Support CommonJS
-  } else if (typeof exports === 'object') {
-    var randomColor = factory();
-
-    // Support NodeJS & Component, which allow module.exports to be a function
-    if (typeof module === 'object' && module && module.exports) {
-      exports = module.exports = randomColor;
-    }
-
-    // Support CommonJS 1.1.1 spec
-    exports.randomColor = randomColor;
-
-  // Support vanilla script loading
-  } else {
-    root.randomColor = factory();
-  }
-
-}(this, function() {
-
-  // Seed to get repeatable colors
-  var seed = null;
-
-  // Shared color dictionary
-  var colorDictionary = {};
-
-  // Populate the color dictionary
-  loadColorBounds();
-
-  var randomColor = function (options) {
-
-    options = options || {};
-
-    // Check if there is a seed and ensure it's an
-    // integer. Otherwise, reset the seed value.
-    if (options.seed && options.seed === parseInt(options.seed, 10)) {
-      seed = options.seed;
-
-    // A string was passed as a seed
-    } else if (typeof options.seed === 'string') {
-      seed = stringToInteger(options.seed);
-
-    // Something was passed as a seed but it wasn't an integer or string
-    } else if (options.seed !== undefined && options.seed !== null) {
-      throw new TypeError('The seed value must be an integer or string');
-
-    // No seed, reset the value outside.
-    } else {
-      seed = null;
-    }
-
-    var H,S,B;
-
-    // Check if we need to generate multiple colors
-    if (options.count !== null && options.count !== undefined) {
-
-      var totalColors = options.count,
-          colors = [];
-
-      options.count = null;
-
-      while (totalColors > colors.length) {
-
-        // Since we're generating multiple colors,
-        // incremement the seed. Otherwise we'd just
-        // generate the same color each time...
-        if (seed && options.seed) options.seed += 1;
-
-        colors.push(randomColor(options));
-      }
-
-      options.count = totalColors;
-
-      return colors;
-    }
-
-    // First we pick a hue (H)
-    H = pickHue(options);
-
-    // Then use H to determine saturation (S)
-    S = pickSaturation(H, options);
-
-    // Then use S and H to determine brightness (B).
-    B = pickBrightness(H, S, options);
-
-    // Then we return the HSB color in the desired format
-    return setFormat([H,S,B], options);
-  };
-
-  function pickHue (options) {
-
-    var hueRange = getHueRange(options.hue),
-        hue = randomWithin(hueRange);
-
-    // Instead of storing red as two seperate ranges,
-    // we group them, using negative numbers
-    if (hue < 0) {hue = 360 + hue;}
-
-    return hue;
-
-  }
-
-  function pickSaturation (hue, options) {
-
-    if (options.luminosity === 'random') {
-      return randomWithin([0,100]);
-    }
-
-    if (options.hue === 'monochrome') {
-      return 0;
-    }
-
-    var saturationRange = getSaturationRange(hue);
-
-    var sMin = saturationRange[0],
-        sMax = saturationRange[1];
-
-    switch (options.luminosity) {
-
-      case 'bright':
-        sMin = 55;
-        break;
-
-      case 'dark':
-        sMin = sMax - 10;
-        break;
-
-      case 'light':
-        sMax = 55;
-        break;
-   }
-
-    return randomWithin([sMin, sMax]);
-
-  }
-
-  function pickBrightness (H, S, options) {
-
-    var bMin = getMinimumBrightness(H, S),
-        bMax = 100;
-
-    switch (options.luminosity) {
-
-      case 'dark':
-        bMax = bMin + 20;
-        break;
-
-      case 'light':
-        bMin = (bMax + bMin)/2;
-        break;
-
-      case 'random':
-        bMin = 0;
-        bMax = 100;
-        break;
-    }
-
-    return randomWithin([bMin, bMax]);
-  }
-
-  function setFormat (hsv, options) {
-
-    switch (options.format) {
-
-      case 'hsvArray':
-        return hsv;
-
-      case 'hslArray':
-        return HSVtoHSL(hsv);
-
-      case 'hsl':
-        var hsl = HSVtoHSL(hsv);
-        return 'hsl('+hsl[0]+', '+hsl[1]+'%, '+hsl[2]+'%)';
-
-      case 'hsla':
-        var hslColor = HSVtoHSL(hsv);
-        return 'hsla('+hslColor[0]+', '+hslColor[1]+'%, '+hslColor[2]+'%, ' + Math.random() + ')';
-
-      case 'rgbArray':
-        return HSVtoRGB(hsv);
-
-      case 'rgb':
-        var rgb = HSVtoRGB(hsv);
-        return 'rgb(' + rgb.join(', ') + ')';
-
-      case 'rgba':
-        var rgbColor = HSVtoRGB(hsv);
-        return 'rgba(' + rgbColor.join(', ') + ', ' + Math.random() + ')';
-
-      default:
-        return HSVtoHex(hsv);
-    }
-
-  }
-
-  function getMinimumBrightness(H, S) {
-
-    var lowerBounds = getColorInfo(H).lowerBounds;
-
-    for (var i = 0; i < lowerBounds.length - 1; i++) {
-
-      var s1 = lowerBounds[i][0],
-          v1 = lowerBounds[i][1];
-
-      var s2 = lowerBounds[i+1][0],
-          v2 = lowerBounds[i+1][1];
-
-      if (S >= s1 && S <= s2) {
-
-         var m = (v2 - v1)/(s2 - s1),
-             b = v1 - m*s1;
-
-         return m*S + b;
-      }
-
-    }
-
-    return 0;
-  }
-
-  function getHueRange (colorInput) {
-
-    if (typeof parseInt(colorInput) === 'number') {
-
-      var number = parseInt(colorInput);
-
-      if (number < 360 && number > 0) {
-        return [number, number];
-      }
-
-    }
-
-    if (typeof colorInput === 'string') {
-
-      if (colorDictionary[colorInput]) {
-        var color = colorDictionary[colorInput];
-        if (color.hueRange) {return color.hueRange;}
-      }
-    }
-
-    return [0,360];
-
-  }
-
-  function getSaturationRange (hue) {
-    return getColorInfo(hue).saturationRange;
-  }
-
-  function getColorInfo (hue) {
-
-    // Maps red colors to make picking hue easier
-    if (hue >= 334 && hue <= 360) {
-      hue-= 360;
-    }
-
-    for (var colorName in colorDictionary) {
-       var color = colorDictionary[colorName];
-       if (color.hueRange &&
-           hue >= color.hueRange[0] &&
-           hue <= color.hueRange[1]) {
-          return colorDictionary[colorName];
-       }
-    } return 'Color not found';
-  }
-
-  function randomWithin (range) {
-    if (seed === null) {
-      return Math.floor(range[0] + Math.random()*(range[1] + 1 - range[0]));
-    } else {
-      //Seeded random algorithm from http://indiegamr.com/generate-repeatable-random-numbers-in-js/
-      var max = range[1] || 1;
-      var min = range[0] || 0;
-      seed = (seed * 9301 + 49297) % 233280;
-      var rnd = seed / 233280.0;
-      return Math.floor(min + rnd * (max - min));
-    }
-  }
-
-  function HSVtoHex (hsv){
-
-    var rgb = HSVtoRGB(hsv);
-
-    function componentToHex(c) {
-        var hex = c.toString(16);
-        return hex.length == 1 ? '0' + hex : hex;
-    }
-
-    var hex = '#' + componentToHex(rgb[0]) + componentToHex(rgb[1]) + componentToHex(rgb[2]);
-
-    return hex;
-
-  }
-
-  function defineColor (name, hueRange, lowerBounds) {
-
-    var sMin = lowerBounds[0][0],
-        sMax = lowerBounds[lowerBounds.length - 1][0],
-
-        bMin = lowerBounds[lowerBounds.length - 1][1],
-        bMax = lowerBounds[0][1];
-
-    colorDictionary[name] = {
-      hueRange: hueRange,
-      lowerBounds: lowerBounds,
-      saturationRange: [sMin, sMax],
-      brightnessRange: [bMin, bMax]
-    };
-
-  }
-
-  function loadColorBounds () {
-
-    defineColor(
-      'monochrome',
-      null,
-      [[0,0],[100,0]]
-    );
-
-    defineColor(
-      'red',
-      [-26,18],
-      [[20,100],[30,92],[40,89],[50,85],[60,78],[70,70],[80,60],[90,55],[100,50]]
-    );
-
-    defineColor(
-      'orange',
-      [19,46],
-      [[20,100],[30,93],[40,88],[50,86],[60,85],[70,70],[100,70]]
-    );
-
-    defineColor(
-      'yellow',
-      [47,62],
-      [[25,100],[40,94],[50,89],[60,86],[70,84],[80,82],[90,80],[100,75]]
-    );
-
-    defineColor(
-      'green',
-      [63,178],
-      [[30,100],[40,90],[50,85],[60,81],[70,74],[80,64],[90,50],[100,40]]
-    );
-
-    defineColor(
-      'blue',
-      [179, 257],
-      [[20,100],[30,86],[40,80],[50,74],[60,60],[70,52],[80,44],[90,39],[100,35]]
-    );
-
-    defineColor(
-      'purple',
-      [258, 282],
-      [[20,100],[30,87],[40,79],[50,70],[60,65],[70,59],[80,52],[90,45],[100,42]]
-    );
-
-    defineColor(
-      'pink',
-      [283, 334],
-      [[20,100],[30,90],[40,86],[60,84],[80,80],[90,75],[100,73]]
-    );
-
-  }
-
-  function HSVtoRGB (hsv) {
-
-    // this doesn't work for the values of 0 and 360
-    // here's the hacky fix
-    var h = hsv[0];
-    if (h === 0) {h = 1;}
-    if (h === 360) {h = 359;}
-
-    // Rebase the h,s,v values
-    h = h/360;
-    var s = hsv[1]/100,
-        v = hsv[2]/100;
-
-    var h_i = Math.floor(h*6),
-      f = h * 6 - h_i,
-      p = v * (1 - s),
-      q = v * (1 - f*s),
-      t = v * (1 - (1 - f)*s),
-      r = 256,
-      g = 256,
-      b = 256;
-
-    switch(h_i) {
-      case 0: r = v; g = t; b = p;  break;
-      case 1: r = q; g = v; b = p;  break;
-      case 2: r = p; g = v; b = t;  break;
-      case 3: r = p; g = q; b = v;  break;
-      case 4: r = t; g = p; b = v;  break;
-      case 5: r = v; g = p; b = q;  break;
-    }
-
-    var result = [Math.floor(r*255), Math.floor(g*255), Math.floor(b*255)];
-    return result;
-  }
-
-  function HSVtoHSL (hsv) {
-    var h = hsv[0],
-      s = hsv[1]/100,
-      v = hsv[2]/100,
-      k = (2-s)*v;
-
-    return [
-      h,
-      Math.round(s*v / (k<1 ? k : 2-k) * 10000) / 100,
-      k/2 * 100
-    ];
-  }
-
-  function stringToInteger (string) {
-    var total = 0
-    for (var i = 0; i !== string.length; i++) {
-      if (total >= Number.MAX_SAFE_INTEGER) break;
-      total += string.charCodeAt(i)
-    }
-    return total
-  }
-
-  return randomColor;
-}));
-
-
-/***/ }),
-/* 371 */
-/***/ (function(module, exports) {
-
-Vue.component('view-uploader', {
-    template: '\n        <div>\n            <div v-if="fileData">\n                <a :href="viewEditLink">\n                    <img :src="fileData" class="img-responsive" alt="New view" />\n                </a>\n            </div>\n            <input v-else type="file" name="file" id="file" accept="image/*" @change="uploadFile">\n        </div>\n    ',
-    data: function data() {
-        return {
-            fileData: null,
-            viewEditLink: null
-        };
-    },
-
-    methods: {
-        uploadFile: function uploadFile(event) {
-            var files = event.target.files || event.dataTransfer.files;
-
-            if (!files.length) return;
-
-            this.createImage(files[0]);
-        },
-        saveImage: function saveImage() {
-            this.$http.post('/api/views', { image: this.fileData }).then(function (response) {
-                return console.log(response);
-            }).catch(function (error) {
-                return console.log(error);
-            });
-
-            this.viewEditLink = "pop";
-        },
-        createImage: function createImage(file) {
-            var _this = this;
-
-            var self = this,
-                reader = new FileReader();
-
-            reader.onload = function (event) {
-                self.fileData = event.target.result;
-                _this.saveImage();
-            };
-
-            reader.readAsDataURL(file);
-        }
-    }
-});
 
 /***/ })
 /******/ ]);

@@ -27,6 +27,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('schedules', 'SchedulesController');
     Route::resource('shops.markers', 'MarkersController');
     Route::resource('paths', 'PathsController');
+    Route::resource('views', 'ViewsController');
 
     Route::resource('crawls', 'CrawlsController');
 

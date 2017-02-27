@@ -93,6 +93,9 @@ Route::post('users/{id}/paths/', function($id) {
 
     return ['data' => $path];
 });
+
+Route::resource('views', 'API\ViewsApiController');
+
 /*
 |--------------------------------------------------------------------------
 | API Routes

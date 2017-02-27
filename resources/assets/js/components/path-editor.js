@@ -8,7 +8,7 @@ Vue.component('path-editor', {
                 </div>
                 <div class="media-body">
                     <div class="form-group">
-                        <input type="file" name="" id="" accept="image/*">
+                        <view-uploader></view-uploader>
                     </div>
                 </div>
             </div>
