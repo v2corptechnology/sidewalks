@@ -1,3 +1,5 @@
+import randomColor from 'randomcolor';
+
 Vue.component('path-viewer', {
     props: {
         viewId: {type: [Number, String], required: true}, 
@@ -8,6 +10,7 @@ Vue.component('path-viewer', {
         return {
             PSV: {},
             longitude: 0,
+            currentMarker: null,
         };
     },
     computed: {
@@ -41,10 +44,30 @@ Vue.component('path-viewer', {
             }
         },
         onClick(event) {
-            console.log({
-                latitude: event.latitude,
+            this.clearUnsavedMarker();
+            this.addMarker(event);
+        },
+        clearUnsavedMarker() {
+            if (this.currentMarker) {
+                this.PSV.removeMarker(this.currentMarker);
+                Bus.$emit('marker-removed', this.currentMarker);
+                this.currentMarker = null;
+            }
+        },
+        addMarker(event) {
+            var randomcolor = randomColor();
+            this.currentMarker = this.PSV.addMarker({
+                id: Math.random().toString(36).substr(2, 5),
                 longitude: event.longitude,
+                latitude: event.latitude,
+                x: event.texture_x,
+                y: event.texture_y,
+                color: randomcolor,
+                html: '<i style="color:'+ randomcolor +'" class="media-object fa fa-arrow-circle-up fa-fw fa-3x"></i>',
+                anchor: 'center center',
+                tooltip: 'Attach a view to this marker',
             });
+            Bus.$emit('marker-created', this.currentMarker);
         },
         initPSV(viewPath, viewMarkers) {
             this.PSV = new PhotoSphereViewer({

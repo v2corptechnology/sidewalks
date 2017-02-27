@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Path;
 
 class PathsController extends Controller
 {
@@ -54,9 +55,9 @@ class PathsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Path $path)
     {
-        //
+        return view('paths.edit', compact('path'));
     }
 
     /**

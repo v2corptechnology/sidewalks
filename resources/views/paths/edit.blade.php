@@ -1,0 +1,23 @@
+@extends('spark::layouts.app')
+
+@section('scripts')
+@endsection
+
+@section('content')
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8">
+            <h1>Current view <small>/ {{ $path->name }}</small></h1>
+            <path-viewer view-id="1" height="300"></path-viewer>
+        </div>
+        <div class="col-sm-4">
+            <h2>Linked views</h1>
+            <div class="box">
+                <div class="box__content">
+                    <path-editor></path-editor>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
