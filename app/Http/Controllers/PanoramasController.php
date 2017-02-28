@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreViewRequest;
+use App\Panorama;
 
-class ViewsApiController extends Controller
+class PanoramasController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,17 +33,9 @@ class ViewsApiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreViewRequest $request)
+    public function store(Request $request)
     {
-        $path = $request->file('image')->store('views');
-
-        $view = \App\View::Create([
-            'path_id' => 1,
-            'image' => basename($path),
-            'exif' => exif_read_data(asset('storage/' . $path)),
-        ]);
-    
-        return $view->toJson();
+        //
     }
 
     /**
@@ -65,9 +55,9 @@ class ViewsApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Panorama $panorama)
     {
-        //
+        return view('panoramas.edit', compact('panorama'));
     }
 
     /**

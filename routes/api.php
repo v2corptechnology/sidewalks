@@ -92,7 +92,7 @@ Route::post('paths/', function() {
     return ['data' => $path];
 });
 
-Route::resource('views', 'API\ViewsApiController');
+Route::resource('panoramasApi', 'API\PanoramasApiController');
 
 /*
 |--------------------------------------------------------------------------

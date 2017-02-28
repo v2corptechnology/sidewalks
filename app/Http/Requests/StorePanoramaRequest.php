@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreViewRequest extends FormRequest
+class StorePanoramaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,8 @@ class StoreViewRequest extends FormRequest
     public function rules()
     {
         return [
-            'image' => 'required|image',
+            'path_id'   => 'required|integer|exists:paths,id',
+            'panorama'  => 'required|image',
         ];
     }
 }

@@ -10,7 +10,15 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-8">
-            <h1>Path panoramas</h1>
+            <h1>{{ $path->name }}</h1>
+
+            @if (! $path->panoramas->count())
+                <div class="alert alert-warning">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    No panorama yet
+                </div>
+            @endif
+            
             <ul class="row list-unstyled">
                 @foreach ($path->panoramas as $pano)
                     <li class="col-sm-4 panorama-list__item">
@@ -28,10 +36,11 @@
             </ul>
         </div>
         <div class="col-sm-4">
-            <h1>Path info</h1>
+            <h1>Info</h1>
             <div class="box">
                 <div class="box__content">
                     {{ $path->name }}
+                    <br> Change name and/or add a description
                 </div>
             </div>
         </div>

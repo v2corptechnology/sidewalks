@@ -1,4 +1,5 @@
 Vue.component('view-uploader', {
+    props: ['pathId'],
     template: `
         <div>
             <div v-if="view">
@@ -27,9 +28,10 @@ Vue.component('view-uploader', {
         },
         uploadImage(file) {
             var formData = new FormData();
-            formData.append('image', file);
+            formData.append('panorama', file);
+            formData.append('path_id', this.pathId);
 
-            this.$http.post('/api/views', formData)
+            this.$http.post('/api/panoramasApi', formData)
                 .then(response => this.view = response.body)
                 .catch(error => {console.log(error); alert('Error while uploading image')});
         },

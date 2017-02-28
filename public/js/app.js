@@ -27210,7 +27210,8 @@ Vue.component('panorama-chooser', {
 /***/ (function(module, exports) {
 
 Vue.component('path-editor', {
-    template: '\n        <div>\n            <p class="help-block" v-if="!markers.length">First click where you want to link another view.</p>\n            <div class="media" v-for="marker in markers">\n                <div class="media-left">\n                    <i class="media-object fa fa-arrow-circle-up fa-fw fa-2x" :style="{ color: marker.color }"></i>\n                </div>\n                <div class="media-body">\n                    <div class="form-group">\n                        <view-uploader></view-uploader>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ',
+    props: ['pathId'],
+    template: '\n        <div>\n            <p class="help-block" v-if="!markers.length">First click where you want to link another view.</p>\n            <div class="media" v-for="marker in markers">\n                <div class="media-left">\n                    <i class="media-object fa fa-arrow-circle-up fa-fw fa-2x" :style="{ color: marker.color }"></i>\n                </div>\n                <div class="media-body">\n                    <div class="form-group">\n                        <view-uploader :path-id="pathId"></view-uploader>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ',
     data: function data() {
         return {
             markers: []
@@ -27582,6 +27583,7 @@ Vue.component('shop-items', {
 /***/ (function(module, exports) {
 
 Vue.component('view-uploader', {
+    props: ['pathId'],
     template: '\n        <div>\n            <div v-if="view">\n                <a :href="view.urls.edit">\n                    <img :src="imageData" class="img-responsive" alt="New view" />\n                </a>\n            </div>\n            <input v-else type="file" name="file" id="file" accept="image/*" @change="onImageChange">\n        </div>\n    ',
     data: function data() {
         return {
@@ -27603,9 +27605,10 @@ Vue.component('view-uploader', {
             var _this = this;
 
             var formData = new FormData();
-            formData.append('image', file);
+            formData.append('panorama', file);
+            formData.append('path_id', this.pathId);
 
-            this.$http.post('/api/views', formData).then(function (response) {
+            this.$http.post('/api/panoramasApi', formData).then(function (response) {
                 return _this.view = response.body;
             }).catch(function (error) {
                 console.log(error);alert('Error while uploading image');

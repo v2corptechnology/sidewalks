@@ -13,7 +13,7 @@ class Panorama extends Model
 
     public function path()
     {
-        return $this->belognsTo(\App\Path::class);
+        return $this->belongsTo(\App\Path::class);
     }
 
     public function markers()
@@ -24,8 +24,8 @@ class Panorama extends Model
     public function getUrlsAttribute()
     {
         return [
-            'view' => route('views.show', $this),
-            'edit' => route('views.edit', $this),
+            'view' => route('panoramas.show', $this),
+            'edit' => route('panoramas.edit', $this),
         ];
     }
 

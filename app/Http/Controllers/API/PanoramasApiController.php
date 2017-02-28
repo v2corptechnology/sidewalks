@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use App\Path;
+use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePanoramaRequest;
 
-class PathsController extends Controller
+class PanoramasApiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +16,7 @@ class PathsController extends Controller
      */
     public function index()
     {
-        $paths = auth()->user()->paths;
-
-        return view('paths.index', compact('paths'));
+        //
     }
 
     /**
@@ -35,9 +35,18 @@ class PathsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePanoramaRequest $request)
     {
-        //
+        $path = $request->file('panorama')->store('views');
+
+        $request->merge([
+            'image' => basename($path),
+            'exif' => exif_read_data(asset('storage/' . $path)),
+        ]);
+
+        $view = \App\Panorama::Create($request->all());
+    
+        return $view->toJson();
     }
 
     /**
@@ -46,9 +55,9 @@ class PathsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        return view('paths.show');
+        //
     }
 
     /**
@@ -57,9 +66,9 @@ class PathsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Path $path)
+    public function edit($id)
     {
-        return view('paths.edit', compact('path'));
+        //
     }
 
     /**
