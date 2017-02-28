@@ -3,8 +3,8 @@ Vue.component('paths', {
         <div>
             <ul>
                 <li v-for="path in paths">
-                    {{ path.name }} <small>({{ path.views.length }} views)</small>
-                     — <a :href="path.urls.edit">Edit</a> — <a :href="path.urls.view">View</a>
+                    <a :href="path.urls.view">{{ path.name }}</a> <small>({{ path.panoramas.length }} panoramas)</small>
+                     — <a :href="path.urls.edit">Edit</a>
                 </li>
                 <li>
                     <input type="text" placeholder="Name a new path" v-model="name" @keyup="onKeyUp" />
@@ -27,7 +27,10 @@ Vue.component('paths', {
     methods: {
         onKeyUp(event) {
             if (event.keyCode == 13) {
-                this.$http.post('/api/users/'+ this.user.id +'/paths/', {name: this.name})
+                this.$http.post('/api/paths/', {
+                        name: this.name,
+                        user_id: this.user.id,
+                    })
                     .then(response => {
                         this.paths.push(response.body.data)
                         this.name = '';

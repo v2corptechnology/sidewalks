@@ -14,22 +14,17 @@
 Route::get('/', 'WelcomeController@show');
 
 Route::group(['middleware' => 'auth'], function () {
+    /* Review needed */
     Route::get('home', 'HomeController@show')->name('home');
     Route::get('autocomplete', 'AcController@create');
     Route::post('scrape', 'ScrapeController@index');
-
-	Route::group(['middleware' => 'hasShop'], function () {
-		Route::resource('categories', 'CategoriesController');
-	});
-
-    Route::resource('items', 'ItemsController');
-    Route::resource('shops', 'ShopsController');
-    Route::resource('schedules', 'SchedulesController');
-    Route::resource('shops.markers', 'MarkersController');
-    Route::resource('paths', 'PathsController');
-    Route::resource('views', 'ViewsController');
-
     Route::resource('crawls', 'CrawlsController');
 
-    Route::get('demo', 'PathsController@show');
+    Route::resource('categories', 'CategoriesController');
+    Route::resource('items', 'ItemsController');
+    Route::resource('paths', 'PathsController');
+    Route::resource('panoramas', 'ViewsController');
+    Route::resource('schedules', 'SchedulesController');
+    Route::resource('shops', 'ShopsController');
+    Route::resource('shops.markers', 'MarkersController');
 });

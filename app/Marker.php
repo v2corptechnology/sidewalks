@@ -3,14 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\MarkersCollection;
-use App\Item;
 
 class Marker extends Model
 {
-    protected $fillable = ['shop_id', 'markable_id', 'markable_type', 'latitude', 'longitude', 'latitude_px', 'longitude_px'];
-
+    protected $fillable = ['panorama_id', 'markable_id', 'markable_type', 'latitude', 'longitude', 'latitude_px', 'longitude_px'];
     protected $appends = ['filter', 'psv_info'];
+
+    public function panorama()
+    {
+        return $this->belognsTo(\App\Panorama::class);
+    }
 
     public function markable()
     {

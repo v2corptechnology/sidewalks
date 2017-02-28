@@ -81,15 +81,13 @@ Route::get('/views/{id}', function($id) {
 });
 
 Route::get('users/{id}/paths/', function($id) {
-    //return factory(\App\Path::class, 3)->create();
-    return \App\User::find($id)->paths()->with('views')->get();
+    return \App\User::find($id)->paths()->with('panoramas')->get();
 });
 
 
-Route::post('users/{id}/paths/', function($id) {
-    $path = \App\User::find($id)->paths()
-        ->create(request()->all())
-        ->load('views');
+Route::post('paths/', function() {
+    $path = \App\Path::create(request()->all())
+                ->load('panoramas');
 
     return ['data' => $path];
 });

@@ -27344,7 +27344,7 @@ Vue.component('path-viewer', {
 /***/ (function(module, exports) {
 
 Vue.component('paths', {
-    template: '\n        <div>\n            <ul>\n                <li v-for="path in paths">\n                    {{ path.name }} <small>({{ path.views.length }} views)</small>\n                     \u2014 <a :href="path.urls.edit">Edit</a> \u2014 <a :href="path.urls.view">View</a>\n                </li>\n                <li>\n                    <input type="text" placeholder="Name a new path" v-model="name" @keyup="onKeyUp" />\n                </li>\n            </ul>\n        </div>\n    ',
+    template: '\n        <div>\n            <ul>\n                <li v-for="path in paths">\n                    <a :href="path.urls.view">{{ path.name }}</a> <small>({{ path.panoramas.length }} panoramas)</small>\n                     \u2014 <a :href="path.urls.edit">Edit</a>\n                </li>\n                <li>\n                    <input type="text" placeholder="Name a new path" v-model="name" @keyup="onKeyUp" />\n                </li>\n            </ul>\n        </div>\n    ',
     props: ['user'],
     data: function data() {
         return {
@@ -27367,7 +27367,10 @@ Vue.component('paths', {
             var _this2 = this;
 
             if (event.keyCode == 13) {
-                this.$http.post('/api/users/' + this.user.id + '/paths/', { name: this.name }).then(function (response) {
+                this.$http.post('/api/paths/', {
+                    name: this.name,
+                    user_id: this.user.id
+                }).then(function (response) {
                     _this2.paths.push(response.body.data);
                     _this2.name = '';
                 }).catch(function (error) {

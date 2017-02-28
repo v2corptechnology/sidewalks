@@ -15,7 +15,7 @@ class CreateMarkersTable extends Migration
     {
         Schema::create('markers', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('shop_id')->foreign('id')->on('shops');
+            $table->unsignedInteger('panorama_id')->foreign('id')->on('panoramas');
             $table->morphs('markable');
             $table->decimal('latitude', 10, 7);
             $table->decimal('longitude', 10, 7);

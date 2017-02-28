@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateViewsTable extends Migration
+class CreatePanoramasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,8 @@ class CreateViewsTable extends Migration
      * @return void
      */
     public function up()
-    {
-        Schema::create('views', function (Blueprint $table) {
+    {            
+        Schema::create('panoramas', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('path_id')->references('id')->on('paths');
             $table->string('image');
@@ -29,6 +29,6 @@ class CreateViewsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('views');
+        Schema::dropIfExists('panoramas');
     }
 }
