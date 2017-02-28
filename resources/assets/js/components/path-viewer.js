@@ -8,7 +8,7 @@ Vue.component('path-viewer', {
     template: `<div id="path_viewer"></div>`,
     data() {
         return {
-            PSV: {},
+            PSV: null,
             longitude: 0,
             currentMarker: null,
         };
@@ -29,12 +29,13 @@ Vue.component('path-viewer', {
                 });
         },
         onData(data) {
-            if (! Object.keys(this.PSV).length) {
-                this.initPSV(data.path, data.markers);
+            if (! this.PSV) {
+                var markers = data.markers.map(marker => marker.psv_info);
+                this.initPSV(data.imageUrl, markers);
             } else {
                 this.PSV.clearMarkers();
-                this.PSV.setPanorama(data.path, {latitude:0, longitude: this.longitude});
-                data.markers.map(marker => this.PSV.addMarker(marker));
+                this.PSV.setPanorama(data.imageUrl, {latitude:0, longitude: this.longitude});
+                data.markers.map(marker => this.PSV.addMarker(marker.psv_info));
             }
         },
         onSelectMarker(marker) {

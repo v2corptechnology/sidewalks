@@ -8,7 +8,7 @@ use App\Markers;
 class Panorama extends Model
 {
     protected $fillable = ['path_id', 'image', 'exif'];
-    protected $appends = ['urls'];
+    protected $appends = ['urls', 'imageUrl'];
     protected $casts = ['exif' => 'array'];
 
     public function path()
@@ -19,6 +19,11 @@ class Panorama extends Model
     public function markers()
     {
     	return $this->hasMany(Marker::class);
+    }
+    
+    public function getImageUrlAttribute()
+    {
+        return asset('storage/panoramas/' . $this->image);
     }
     
     public function getUrlsAttribute()

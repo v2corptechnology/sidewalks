@@ -22,11 +22,13 @@ class Marker extends Model
     public function getPsvInfoAttribute()
     {
         return [
-            'image'   => asset('img/pin_green.svg'),
-            'anchor'  => 'bottom center',
-            'width'   => 32,
-            'height'  => 32,
-            'tooltip' => $this->markable->title,
+            'id'        => $this->id,
+            'latitude'  => $this->latitude,
+            'longitude' => $this->longitude,
+            'anchor'    => 'center center',
+            'html'      => '<i style="color: #FFF" class="fa fa-arrow-circle-up fa-5x"></i>',
+            'tooltip'   => "Walk here",
+            'view_id'   => 3,
         ];   
     }
 

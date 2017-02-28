@@ -1,5 +1,5 @@
 Vue.component('view-uploader', {
-    props: ['pathId'],
+    props: ['pathId', 'panoramaId', 'marker'],
     template: `
         <div>
             <div v-if="view">
@@ -30,6 +30,11 @@ Vue.component('view-uploader', {
             var formData = new FormData();
             formData.append('panorama', file);
             formData.append('path_id', this.pathId);
+            formData.append('panorama_id', this.panoramaId);
+            formData.append('latitude', this.marker.latitude);
+            formData.append('longitude', this.marker.longitude);
+            formData.append('latitude_px', this.marker.y);
+            formData.append('longitude_px', this.marker.x);
 
             this.$http.post('/api/panoramasApi', formData)
                 .then(response => this.view = response.body)

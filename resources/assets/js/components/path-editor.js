@@ -1,5 +1,5 @@
 Vue.component('path-editor', {
-    props: ['pathId'],
+    props: ['pathId', 'panoramaId'],
     template: `
         <div>
             <p class="help-block" v-if="!markers.length">First click where you want to link another view.</p>
@@ -9,7 +9,7 @@ Vue.component('path-editor', {
                 </div>
                 <div class="media-body">
                     <div class="form-group">
-                        <view-uploader :path-id="pathId"></view-uploader>
+                        <view-uploader :path-id="pathId" :panorama-id="panoramaId" :marker="marker"></view-uploader>
                     </div>
                 </div>
             </div>

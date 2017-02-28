@@ -17,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
         Relation::morphMap([
             'items'      => \App\Item::class,
             'categories' => \App\Category::class,
+            'panoramas' => \App\Panorama::class,
         ]);
     }
 

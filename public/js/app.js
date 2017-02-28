@@ -27210,8 +27210,8 @@ Vue.component('panorama-chooser', {
 /***/ (function(module, exports) {
 
 Vue.component('path-editor', {
-    props: ['pathId'],
-    template: '\n        <div>\n            <p class="help-block" v-if="!markers.length">First click where you want to link another view.</p>\n            <div class="media" v-for="marker in markers">\n                <div class="media-left">\n                    <i class="media-object fa fa-arrow-circle-up fa-fw fa-2x" :style="{ color: marker.color }"></i>\n                </div>\n                <div class="media-body">\n                    <div class="form-group">\n                        <view-uploader :path-id="pathId"></view-uploader>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ',
+    props: ['pathId', 'panoramaId'],
+    template: '\n        <div>\n            <p class="help-block" v-if="!markers.length">First click where you want to link another view.</p>\n            <div class="media" v-for="marker in markers">\n                <div class="media-left">\n                    <i class="media-object fa fa-arrow-circle-up fa-fw fa-2x" :style="{ color: marker.color }"></i>\n                </div>\n                <div class="media-body">\n                    <div class="form-group">\n                        <view-uploader :path-id="pathId" :panorama-id="panoramaId" :marker="marker"></view-uploader>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ',
     data: function data() {
         return {
             markers: []
@@ -27250,7 +27250,7 @@ Vue.component('path-viewer', {
     template: '<div id="path_viewer"></div>',
     data: function data() {
         return {
-            PSV: {},
+            PSV: null,
             longitude: 0,
             currentMarker: null
         };
@@ -27276,13 +27276,16 @@ Vue.component('path-viewer', {
         onData: function onData(data) {
             var _this2 = this;
 
-            if (!Object.keys(this.PSV).length) {
-                this.initPSV(data.path, data.markers);
+            if (!this.PSV) {
+                var markers = data.markers.map(function (marker) {
+                    return marker.psv_info;
+                });
+                this.initPSV(data.imageUrl, markers);
             } else {
                 this.PSV.clearMarkers();
-                this.PSV.setPanorama(data.path, { latitude: 0, longitude: this.longitude });
+                this.PSV.setPanorama(data.imageUrl, { latitude: 0, longitude: this.longitude });
                 data.markers.map(function (marker) {
-                    return _this2.PSV.addMarker(marker);
+                    return _this2.PSV.addMarker(marker.psv_info);
                 });
             }
         },
@@ -27583,7 +27586,7 @@ Vue.component('shop-items', {
 /***/ (function(module, exports) {
 
 Vue.component('view-uploader', {
-    props: ['pathId'],
+    props: ['pathId', 'panoramaId', 'marker'],
     template: '\n        <div>\n            <div v-if="view">\n                <a :href="view.urls.edit">\n                    <img :src="imageData" class="img-responsive" alt="New view" />\n                </a>\n            </div>\n            <input v-else type="file" name="file" id="file" accept="image/*" @change="onImageChange">\n        </div>\n    ',
     data: function data() {
         return {
@@ -27607,6 +27610,11 @@ Vue.component('view-uploader', {
             var formData = new FormData();
             formData.append('panorama', file);
             formData.append('path_id', this.pathId);
+            formData.append('panorama_id', this.panoramaId);
+            formData.append('latitude', this.marker.latitude);
+            formData.append('longitude', this.marker.longitude);
+            formData.append('latitude_px', this.marker.y);
+            formData.append('longitude_px', this.marker.x);
 
             this.$http.post('/api/panoramasApi', formData).then(function (response) {
                 return _this.view = response.body;

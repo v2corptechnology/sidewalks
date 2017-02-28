@@ -37,16 +37,23 @@ class PanoramasApiController extends Controller
      */
     public function store(StorePanoramaRequest $request)
     {
-        $path = $request->file('panorama')->store('views');
+        $path = $request->file('panorama')->store('panoramas');
 
         $request->merge([
             'image' => basename($path),
             'exif' => exif_read_data(asset('storage/' . $path)),
         ]);
 
-        $view = \App\Panorama::Create($request->all());
+        $panorama = \App\Panorama::Create($request->all());
+
+        $request->merge([
+            'markable_id' => $panorama->id,
+            'markable_type' => \App\Panorama::class,
+        ]);
+
+        \App\Marker::create($request->all());
     
-        return $view->toJson();
+        return $panorama->toJson();
     }
 
     /**
