@@ -41,7 +41,7 @@ Vue.component('path-editor', {
     },
     methods: {
         onMarkerCreated(marker) {
-            this.markers.push(marker);
+            this.markers.unshift(marker);
         },
         onMarkerRemoved(marker) {
             alert('do something when marker is removed');
