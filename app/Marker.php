@@ -26,7 +26,7 @@ class Marker extends Model
             'latitude'  => $this->latitude,
             'longitude' => $this->longitude,
             'anchor'    => 'center center',
-            'html'      => '<i style="color: #FFF" class="fa fa-arrow-circle-up fa-5x"></i>',
+            'html'      => '<i style="color: #FFF" class="fa fa-arrow-circle-up fa-3x"></i>',
             'tooltip'   => "Walk here",
             'view_id'   => 3,
         ];   
