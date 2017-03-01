@@ -4,7 +4,7 @@ Vue.component('path-viewer', {
     props: {
         viewId: {type: [Number, String], required: true}, 
         height: {type: [Number, String], required: false},
-        fullScreen: {type: [Boolean], required: false},
+        fullscreen: {type: [Boolean], required: false},
         caption: {type: [String], required: false},
         editable: {type: [Boolean], required: false},
     },
@@ -81,7 +81,7 @@ Vue.component('path-viewer', {
                 panorama: viewPath,
                 loading_img: '/img/spin.svg',
                 caption: this.caption || null,
-                navbar: this.fullScreen ? ['fullscreen'] : false,
+                navbar: this.fullscreen ? ['fullscreen'] : false,
                 default_fov: 70,
                 mousewheel: false,
                 time_anim: false,
