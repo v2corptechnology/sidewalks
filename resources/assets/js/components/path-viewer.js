@@ -6,6 +6,7 @@ Vue.component('path-viewer', {
         height: {type: [Number, String], required: false},
         fullScreen: {type: [Boolean], required: false},
         caption: {type: [String], required: false},
+        editable: {type: [Boolean], required: false},
     },
     template: `<div id="path_viewer"></div>`,
     data() {
@@ -47,8 +48,10 @@ Vue.component('path-viewer', {
             }
         },
         onClick(event) {
-            this.clearUnsavedMarker();
-            this.addMarker(event);
+            if (this.editable) {
+                this.clearUnsavedMarker();
+                this.addMarker(event);
+            }
         },
         clearUnsavedMarker() {
             if (this.currentMarker) {

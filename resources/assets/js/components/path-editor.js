@@ -9,7 +9,12 @@ Vue.component('path-editor', {
                 </div>
                 <div class="media-body">
                     <div class="form-group">
-                        <view-uploader :path-id="pathId" :panorama-id="panoramaId" :marker="marker"></view-uploader>
+                        <div v-if="marker.markable && marker.markable.imageUrl">
+                            <a :href="marker.markable.urls.edit">
+                                <img class="img-responsive" :src="marker.markable.imageUrl" alt="" />
+                            </a>
+                        </div>
+                        <view-uploader v-else :path-id="pathId" :panorama-id="panoramaId" :marker="marker"></view-uploader>
                     </div>
                 </div>
             </div>
@@ -26,7 +31,9 @@ Vue.component('path-editor', {
 
         // Get view info
         this.$http.get('/api/views/' + this.panoramaId)
-            .then(response => this.markers = response.data.markers.map(marker => marker.psv_info))
+            .then(response => {
+                this.markers = response.data.markers;
+            })
             .catch(error => {
                 console.log(error);
                 alert('Error while fetching markers');

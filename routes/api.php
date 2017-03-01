@@ -1,6 +1,6 @@
 <?php
 Route::get('/views/{id}', function($id) {
-    return \App\Panorama::find($id)->load('markers')->toArray();
+    return \App\Panorama::find($id)->load('markers.markable')->toArray();
 });
 
 Route::get('users/{id}/paths/', function($id) {

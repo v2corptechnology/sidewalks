@@ -27211,7 +27211,7 @@ Vue.component('panorama-chooser', {
 
 Vue.component('path-editor', {
     props: ['pathId', 'panoramaId'],
-    template: '\n        <div>\n            <p class="help-block" v-if="!markers.length">First click where you want to link another view.</p>\n            <div class="media" v-for="marker in markers">\n                <div class="media-left">\n                    <i class="media-object fa fa-arrow-circle-up fa-fw fa-2x" :style="{ color: marker.color }"></i>\n                </div>\n                <div class="media-body">\n                    <div class="form-group">\n                        <view-uploader :path-id="pathId" :panorama-id="panoramaId" :marker="marker"></view-uploader>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ',
+    template: '\n        <div>\n            <p class="help-block" v-if="!markers.length">First click where you want to link another view.</p>\n            <div class="media" v-for="marker in markers">\n                <div class="media-left">\n                    <i class="media-object fa fa-arrow-circle-up fa-fw fa-2x" :style="{ color: marker.color }"></i>\n                </div>\n                <div class="media-body">\n                    <div class="form-group">\n                        <div v-if="marker.markable && marker.markable.imageUrl">\n                            <a :href="marker.markable.urls.edit">\n                                <img class="img-responsive" :src="marker.markable.imageUrl" alt="" />\n                            </a>\n                        </div>\n                        <view-uploader v-else :path-id="pathId" :panorama-id="panoramaId" :marker="marker"></view-uploader>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ',
     data: function data() {
         return {
             markers: []
@@ -27225,9 +27225,7 @@ Vue.component('path-editor', {
 
         // Get view info
         this.$http.get('/api/views/' + this.panoramaId).then(function (response) {
-            return _this.markers = response.data.markers.map(function (marker) {
-                return marker.psv_info;
-            });
+            _this.markers = response.data.markers;
         }).catch(function (error) {
             console.log(error);
             alert('Error while fetching markers');
@@ -27259,7 +27257,8 @@ Vue.component('path-viewer', {
         viewId: { type: [Number, String], required: true },
         height: { type: [Number, String], required: false },
         fullScreen: { type: [Boolean], required: false },
-        caption: { type: [String], required: false }
+        caption: { type: [String], required: false },
+        editable: { type: [Boolean], required: false }
     },
     template: '<div id="path_viewer"></div>',
     data: function data() {
@@ -27310,8 +27309,10 @@ Vue.component('path-viewer', {
             }
         },
         onClick: function onClick(event) {
-            this.clearUnsavedMarker();
-            this.addMarker(event);
+            if (this.editable) {
+                this.clearUnsavedMarker();
+                this.addMarker(event);
+            }
         },
         clearUnsavedMarker: function clearUnsavedMarker() {
             if (this.currentMarker) {
