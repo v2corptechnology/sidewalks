@@ -26899,6 +26899,9 @@ __webpack_require__(143);
 
 __webpack_require__(128);
 
+__webpack_require__(136); // Display user's paths
+__webpack_require__(372); // Create a new path
+
 __webpack_require__(132);
 __webpack_require__(135);
 __webpack_require__(134);
@@ -27364,41 +27367,21 @@ Vue.component('path-viewer', {
 /***/ (function(module, exports) {
 
 Vue.component('paths', {
-    template: '\n        <div>\n            <ul>\n                <li v-for="path in paths">\n                    <a :href="path.urls.view">{{ path.name }}</a> <small>({{ path.panoramas.length }} panoramas)</small>\n                     \u2014 <a :href="path.urls.edit">Edit</a>\n                </li>\n                <li>\n                    <input type="text" placeholder="Name a new path" v-model="name" @keyup="onKeyUp" />\n                </li>\n            </ul>\n        </div>\n    ',
-    props: ['user'],
+    template: '\n        <ul class="row list-unstyled">\n            <li class="col-sm-4" v-for="path in pathsList">\n                <a :href="path.urls.edit" :title="path.name">\n                        <img v-if="path.mainPanoramaUrl" class="img-responsive" :src="path.mainPanoramaUrl" :alt="path.name">\n                        <p v-else>No panorama image</p>\n                        {{ path.name }}\n                        <small class="pull-right">{{ path.panoramas.length }} views</small>\n                </a>\n            </li>\n        </ul>\n    ',
+    props: ['paths'],
     data: function data() {
         return {
-            paths: [],
-            name: ''
+            pathsList: []
         };
     },
     created: function created() {
-        var _this = this;
-
-        this.$http.get('/api/users/' + this.user.id + '/paths/').then(function (response) {
-            return _this.paths = response.data;
-        }).catch(function (error) {
-            return alert('Error fetching your paths');
-        });
+        Bus.$on('path-created', this.onPathCreated);
+        this.pathsList = this.paths;
     },
 
     methods: {
-        onKeyUp: function onKeyUp(event) {
-            var _this2 = this;
-
-            if (event.keyCode == 13) {
-                this.$http.post('/api/paths/', {
-                    name: this.name,
-                    user_id: this.user.id
-                }).then(function (response) {
-                    _this2.paths.push(response.body.data);
-                    _this2.name = '';
-                }).catch(function (error) {
-                    return console.log(error);
-                });
-
-                event.preventDefault();
-            }
+        onPathCreated: function onPathCreated(path) {
+            this.pathsList.push(path);
         }
     }
 });
@@ -49763,6 +49746,168 @@ return Vue$3;
 __webpack_require__(124);
 module.exports = __webpack_require__(125);
 
+
+/***/ }),
+/* 277 */,
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */,
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */,
+/* 291 */,
+/* 292 */,
+/* 293 */,
+/* 294 */,
+/* 295 */,
+/* 296 */,
+/* 297 */,
+/* 298 */,
+/* 299 */,
+/* 300 */,
+/* 301 */,
+/* 302 */,
+/* 303 */,
+/* 304 */,
+/* 305 */,
+/* 306 */,
+/* 307 */,
+/* 308 */,
+/* 309 */,
+/* 310 */,
+/* 311 */,
+/* 312 */,
+/* 313 */,
+/* 314 */,
+/* 315 */,
+/* 316 */,
+/* 317 */,
+/* 318 */,
+/* 319 */,
+/* 320 */,
+/* 321 */,
+/* 322 */,
+/* 323 */,
+/* 324 */,
+/* 325 */,
+/* 326 */,
+/* 327 */,
+/* 328 */,
+/* 329 */,
+/* 330 */,
+/* 331 */,
+/* 332 */,
+/* 333 */,
+/* 334 */,
+/* 335 */,
+/* 336 */,
+/* 337 */,
+/* 338 */,
+/* 339 */,
+/* 340 */,
+/* 341 */,
+/* 342 */,
+/* 343 */,
+/* 344 */,
+/* 345 */,
+/* 346 */,
+/* 347 */,
+/* 348 */,
+/* 349 */,
+/* 350 */,
+/* 351 */,
+/* 352 */,
+/* 353 */,
+/* 354 */,
+/* 355 */,
+/* 356 */,
+/* 357 */,
+/* 358 */,
+/* 359 */,
+/* 360 */,
+/* 361 */,
+/* 362 */,
+/* 363 */,
+/* 364 */,
+/* 365 */,
+/* 366 */,
+/* 367 */,
+/* 368 */,
+/* 369 */,
+/* 370 */,
+/* 371 */,
+/* 372 */
+/***/ (function(module, exports) {
+
+Vue.component('paths-creator', {
+    template: '\n        <fieldset :disabled="isSaving">\n            <div class="form-group">\n                <input class="form-control" type="text" placeholder="Name a new path" v-model="name"/>\n            </div>\n\n            <div class="form-group">\n                <div v-if="image">\n                    <a href="#" title="Remove image" @click="removeImage">\n                        <img :src="image" class="img-responsive" :alt="name" />\n                    </a>\n                </div>\n                <span v-else class="form-control">\n                    <input type="file" name="file" id="file" accept="image/*" @change="onImageChange">\n                </span>\n            </div>\n\n            <button class="btn btn-primary btn-block" :disabled="isInvalid" @click.prevent="savePath">Create path</button>\n\n        </fieldset>\n    ',
+    props: ['user'],
+    data: function data() {
+        return {
+            isSaving: false,
+            name: null,
+            image: null,
+            imageFile: null
+        };
+    },
+
+    computed: {
+        isInvalid: function isInvalid() {
+            return !this.image || !this.name;
+        }
+    },
+    methods: {
+        onImageChange: function onImageChange(event) {
+            var files = event.target.files || event.dataTransfer.files;
+
+            if (!files.length) return;
+
+            this.imageFile = files[0];
+            this.createPreview();
+        },
+        removeImage: function removeImage() {
+            this.image = null;
+            this.imageFile = null;
+        },
+        createPreview: function createPreview() {
+            var self = this,
+                reader = new FileReader();
+
+            reader.onload = function (event) {
+                return self.image = event.target.result;
+            };
+            reader.readAsDataURL(this.imageFile);
+        },
+        savePath: function savePath() {
+            var _this = this;
+
+            this.isSaving = true;
+
+            var formData = new FormData();
+            formData.append('panorama', this.imageFile);
+            formData.append('name', this.name);
+            formData.append('user_id', this.user.id);
+
+            this.$http.post('/api/paths/', formData).then(function (response) {
+                Bus.$emit('path-created', response.body.data);
+                _this.name = '';
+                _this.removeImage();
+                _this.isSaving = false;
+            }).catch(function (error) {
+                console.log(error);
+                _this.isSaving = false;
+                alert('Error while isSaving your path');
+            });
+        }
+    }
+});
 
 /***/ })
 /******/ ]);

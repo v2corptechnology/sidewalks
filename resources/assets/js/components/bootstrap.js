@@ -13,6 +13,9 @@ require('./../spark-components/bootstrap');
 
 require('./home');
 
+require('./paths'); // Display user's paths
+require('./paths-creator'); // Create a new path
+
 require('./pano');
 require('./path-viewer');
 require('./path-editor');

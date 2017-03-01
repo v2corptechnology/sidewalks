@@ -1,44 +1,29 @@
 Vue.component('paths', {
     template: `
-        <div>
-            <ul>
-                <li v-for="path in paths">
-                    <a :href="path.urls.view">{{ path.name }}</a> <small>({{ path.panoramas.length }} panoramas)</small>
-                     — <a :href="path.urls.edit">Edit</a>
-                </li>
-                <li>
-                    <input type="text" placeholder="Name a new path" v-model="name" @keyup="onKeyUp" />
-                </li>
-            </ul>
-        </div>
+        <ul class="row list-unstyled">
+            <li class="col-sm-4" v-for="path in pathsList">
+                <a :href="path.urls.edit" :title="path.name">
+                        <img v-if="path.mainPanoramaUrl" class="img-responsive" :src="path.mainPanoramaUrl" :alt="path.name">
+                        <p v-else>No panorama image</p>
+                        {{ path.name }}
+                        <small class="pull-right">{{ path.panoramas.length }} views</small>
+                </a>
+            </li>
+        </ul>
     `,
-    props: ['user'],
+    props: ['paths'],
     data() {
         return {
-            paths: [],
-            name: '',
+            pathsList: [],
         };
     },
     created() {
-        this.$http.get('/api/users/'+ this.user.id +'/paths/')
-            .then(response => this.paths = response.data)
-            .catch(error => alert('Error fetching your paths'));
+        Bus.$on('path-created', this.onPathCreated);
+        this.pathsList = this.paths;
     },
     methods: {
-        onKeyUp(event) {
-            if (event.keyCode == 13) {
-                this.$http.post('/api/paths/', {
-                        name: this.name,
-                        user_id: this.user.id,
-                    })
-                    .then(response => {
-                        this.paths.push(response.body.data)
-                        this.name = '';
-                    })
-                    .catch(error => console.log(error));
-
-                event.preventDefault();
-            }
+        onPathCreated(path) {
+            this.pathsList.push(path);
         }
     }
 });

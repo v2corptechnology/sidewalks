@@ -9,10 +9,18 @@ Route::get('users/{id}/paths/', function($id) {
 
 
 Route::post('paths/', function() {
-    $path = \App\Path::create(request()->all())
-                ->load('panoramas');
+    $path = \App\Path::create(request()->all());
 
-    return ['data' => $path];
+    $imagePath = request()->file('panorama')->store('panoramas');
+    request()->merge([
+    	'path_id' => $path->id,
+        'image' => basename($imagePath),
+        'exif' => exif_read_data(asset('storage/' . $imagePath)),
+    ]);
+
+    $panorama = \App\Panorama::Create(request()->all());
+
+    return ['data' => $path->load('panoramas')->load('panoramas')];
 });
 
 Route::resource('panoramasApi', 'API\PanoramasApiController');

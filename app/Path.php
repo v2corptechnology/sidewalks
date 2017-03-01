@@ -8,7 +8,7 @@ use App\Panorama;
 class Path extends Model
 {
     protected $fillable = ['user_id', 'name'];
-    protected $appends = ['urls'];
+    protected $appends = ['urls', 'mainPanoramaUrl'];
 
     public function panoramas()
     {
@@ -21,5 +21,13 @@ class Path extends Model
             'view' => route('paths.show', $this),
             'edit' => route('paths.edit', $this),
         ];
+    }
+
+    public function getMainPanoramaUrlAttribute()
+    {
+        if (! $this->panoramas->first()) 
+            return null;
+
+        return $this->panoramas->first()->imageUrl;
     }
 }
