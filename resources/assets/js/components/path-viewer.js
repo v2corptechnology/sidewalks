@@ -3,7 +3,9 @@ import randomColor from 'randomcolor';
 Vue.component('path-viewer', {
     props: {
         viewId: {type: [Number, String], required: true}, 
-        height: {type: [Number, String], required: false}
+        height: {type: [Number, String], required: false},
+        fullScreen: {type: [Boolean], required: false},
+        caption: {type: [String], required: false},
     },
     template: `<div id="path_viewer"></div>`,
     data() {
@@ -75,7 +77,8 @@ Vue.component('path-viewer', {
                 container: 'path_viewer',
                 panorama: viewPath,
                 loading_img: '/img/spin.svg',
-                navbar: false,
+                caption: this.caption || null,
+                navbar: this.fullScreen ? ['fullscreen'] : false,
                 default_fov: 70,
                 mousewheel: false,
                 time_anim: false,

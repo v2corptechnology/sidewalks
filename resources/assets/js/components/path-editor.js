@@ -23,6 +23,14 @@ Vue.component('path-editor', {
     created() {
         Bus.$on('marker-created', this.onMarkerCreated);
         Bus.$on('marker-removed', this.onMarkerRemoved);
+
+        // Get view info
+        this.$http.get('/api/views/' + this.panoramaId)
+            .then(response => this.markers = response.data.markers.map(marker => marker.psv_info))
+            .catch(error => {
+                console.log(error);
+                alert('Error while fetching markers');
+            });
     },
     methods: {
         onMarkerCreated(marker) {

@@ -27218,8 +27218,20 @@ Vue.component('path-editor', {
         };
     },
     created: function created() {
+        var _this = this;
+
         Bus.$on('marker-created', this.onMarkerCreated);
         Bus.$on('marker-removed', this.onMarkerRemoved);
+
+        // Get view info
+        this.$http.get('/api/views/' + this.panoramaId).then(function (response) {
+            return _this.markers = response.data.markers.map(function (marker) {
+                return marker.psv_info;
+            });
+        }).catch(function (error) {
+            console.log(error);
+            alert('Error while fetching markers');
+        });
     },
 
     methods: {
@@ -27245,7 +27257,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Vue.component('path-viewer', {
     props: {
         viewId: { type: [Number, String], required: true },
-        height: { type: [Number, String], required: false }
+        height: { type: [Number, String], required: false },
+        fullScreen: { type: [Boolean], required: false },
+        caption: { type: [String], required: false }
     },
     template: '<div id="path_viewer"></div>',
     data: function data() {
@@ -27326,7 +27340,8 @@ Vue.component('path-viewer', {
                 container: 'path_viewer',
                 panorama: viewPath,
                 loading_img: '/img/spin.svg',
-                navbar: false,
+                caption: this.caption || null,
+                navbar: this.fullScreen ? ['fullscreen'] : false,
                 default_fov: 70,
                 mousewheel: false,
                 time_anim: false,
