@@ -19,8 +19,7 @@ class CreateMarkersTable extends Migration
             $table->morphs('markable');
             $table->decimal('latitude', 10, 7);
             $table->decimal('longitude', 10, 7);
-            $table->unsignedInteger('latitude_px');
-            $table->unsignedInteger('longitude_px');
+            $table->boolean('is_generated')->default(false);
             $table->timestamps();
         });
     }

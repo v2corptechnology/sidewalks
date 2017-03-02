@@ -63,8 +63,7 @@ $factory->define(App\Marker::class, function (Faker\Generator $faker) {
         'markable_type' => \App\Item::class,
         'latitude'      => $faker->latitude,
         'longitude'     => $faker->longitude,
-        'latitude_px'   => $faker->randomNumber,
-        'longitude_px'  => $faker->randomNumber,
+        'is_generated'   => $faker->boolean,
     ];
 });
 

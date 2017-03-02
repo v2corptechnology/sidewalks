@@ -59,8 +59,7 @@ class PanoramasApiController extends Controller
             'panorama_id' => $panorama->id,
             'markable_id' => $request->input('panorama_id'),
             'longitude' => $reverseLongitude,
-            'latitude_px' => 0,
-            'longitude_px' => 0,
+            'is_generated' => true,
         ]);
         $reverseMarker = \App\Marker::create($request->all());
     

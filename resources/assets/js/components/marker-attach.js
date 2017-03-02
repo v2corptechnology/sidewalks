@@ -49,8 +49,6 @@ Vue.component('marker-attach', {
                 markable_type: selectedOption.data('type'), 
                 latitude: this.currentMarker.latitude, 
                 longitude: this.currentMarker.longitude,
-                latitude_px: this.currentMarker.y,
-                longitude_px: this.currentMarker.x,
             }).then(response => {
                 this.currentMarker.tooltip = selectedOption.text();
                 Bus.$emit('marker-saved', this.currentMarker);

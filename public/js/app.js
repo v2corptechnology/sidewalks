@@ -27055,9 +27055,7 @@ Vue.component('item', {
                 markable_id: this.currentMarker.item_id,
                 markable_type: selectedOption.data('type'),
                 latitude: this.currentMarker.latitude,
-                longitude: this.currentMarker.longitude,
-                latitude_px: this.currentMarker.y,
-                longitude_px: this.currentMarker.x
+                longitude: this.currentMarker.longitude
             }).then(function (response) {
                 _this.currentMarker.tooltip = selectedOption.text();
                 Bus.$emit('marker-saved', _this.currentMarker);
@@ -27686,8 +27684,6 @@ Vue.component('view-uploader', {
             formData.append('panorama_id', this.panoramaId);
             formData.append('latitude', this.marker.latitude);
             formData.append('longitude', this.marker.longitude);
-            formData.append('latitude_px', this.marker.y);
-            formData.append('longitude_px', this.marker.x);
 
             this.$http.post('/api/panoramasApi', formData).then(function (response) {
                 _this.view = response.body;

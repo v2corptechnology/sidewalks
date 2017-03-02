@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Marker extends Model
 {
-    protected $fillable = ['panorama_id', 'markable_id', 'markable_type', 'latitude', 'longitude', 'latitude_px', 'longitude_px'];
+    protected $fillable = ['panorama_id', 'markable_id', 'markable_type', 'latitude', 'longitude', 'is_generated'];
     protected $appends = ['anchor', 'html', 'tooltip', 'view_id'];
+    protected $casts = ['is_generated' => 'boolean'];
 
     public function panorama()
     {

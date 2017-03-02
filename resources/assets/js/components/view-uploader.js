@@ -33,8 +33,6 @@ Vue.component('view-uploader', {
             formData.append('panorama_id', this.panoramaId);
             formData.append('latitude', this.marker.latitude);
             formData.append('longitude', this.marker.longitude);
-            formData.append('latitude_px', this.marker.y);
-            formData.append('longitude_px', this.marker.x);
 
             this.$http.post('/api/panoramasApi', formData)
                 .then(response => {
