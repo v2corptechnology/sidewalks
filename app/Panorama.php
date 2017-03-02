@@ -29,7 +29,7 @@ class Panorama extends Model
     public function getUrlsAttribute()
     {
         return [
-            'view' => route('panoramas.show', $this),
+            'show' => route('panoramas.show', $this),
             'edit' => route('panoramas.edit', $this),
         ];
     }

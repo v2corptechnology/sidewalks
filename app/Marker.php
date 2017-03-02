@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Marker extends Model
 {
     protected $fillable = ['panorama_id', 'markable_id', 'markable_type', 'latitude', 'longitude', 'latitude_px', 'longitude_px'];
-    protected $appends = ['filter', 'psv_info'];
+    protected $appends = ['anchor', 'html', 'tooltip', 'view_id'];
 
     public function panorama()
     {
@@ -19,21 +19,23 @@ class Marker extends Model
         return $this->morphTo();
     }
 
-    public function getPsvInfoAttribute()
+    public function getAnchorAttribute()
     {
-        return [
-            'id'        => $this->id,
-            'latitude'  => $this->latitude,
-            'longitude' => $this->longitude,
-            'anchor'    => 'center center',
-            'html'      => '<i style="color: #FFF" class="fa fa-arrow-circle-up fa-3x"></i>',
-            'tooltip'   => "Walk here",
-            'view_id'   => $this->markable_id,
-        ];   
+        return 'center center';
     }
 
-    public function getFilterAttribute()
+    public function getHtmlAttribute()
     {
-        return ucfirst($this->markable_type) . ': ' . $this->markable_id;
+        return '<i style="color: #FFF" class="fa fa-arrow-circle-up fa-3x"></i>';
+    }
+
+    public function getTooltipAttribute()
+    {
+        return 'Walk here';
+    }
+
+    public function getViewIdAttribute()
+    {
+        return $this->markable_id;
     }
 }

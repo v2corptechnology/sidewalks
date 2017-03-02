@@ -5,7 +5,9 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="box">
-                <path-viewer :view-id="{{ $panorama->id }}" fullscreen caption="{{ $panorama->GPSLongitude . ', ' . $panorama->GPSLatitude }}"></path-viewer>
+                <panorama image="{{ $panorama->imageUrl }}" 
+                          :markers="{{ $panorama->markers->load('markable')->toJson() }}"
+                          caption="Long: {{ $panorama->GPSLongitude . ", Lat: " . $panorama->GPSLatitude}}"></panorama>
             </div>
         </div>
     </div>

@@ -15,13 +15,19 @@
                     <small><i class="fa fa-refresh"></i> visit</small>
                 </a>
             </h1>
-            <path-viewer view-id="{{ $panorama->id }}" height="500" editable></path-viewer>
+
+            <panorama image="{{ $panorama->imageUrl }}" 
+                      :markers="{{ $panorama->markers->load('markable')->toJson() }}"
+                      caption="Long: {{ $panorama->GPSLongitude . ", Lat: " . $panorama->GPSLatitude}}"
+                      editable></panorama>
         </div>
         <div class="col-sm-4">
             <h1>Linked views</h1>
             <div class="box">
                 <div class="box__content">
-                    <path-editor :path-id="{{ $panorama->path->id }}" :panorama-id="{{ $panorama->id }}"></path-editor>
+                    <panoramas-creator :path="{{ $panorama->path->toJson() }}" 
+                                       :panorama="{{ $panorama->toJson() }}"
+                                       :markers="{{ $panorama->markers->load('markable')->toJson() }}"></panoramas-creator>
                 </div>
             </div>
         </div>

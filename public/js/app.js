@@ -26925,6 +26925,8 @@ __webpack_require__(129);
 
 __webpack_require__(9); // Display user's paths
 __webpack_require__(137); // Create a new path
+__webpack_require__(373); // Display any panorama
+__webpack_require__(374); // Display linked panoramas and create button
 
 __webpack_require__(133);
 __webpack_require__(136);
@@ -27688,7 +27690,8 @@ Vue.component('view-uploader', {
             formData.append('longitude_px', this.marker.x);
 
             this.$http.post('/api/panoramasApi', formData).then(function (response) {
-                return _this.view = response.body;
+                _this.view = response.body;
+                Bus.$emit('view-uploader-uploaded');
             }).catch(function (error) {
                 console.log(error);alert('Error while uploading image');
             });
@@ -49818,6 +49821,262 @@ return Vue$3;
 __webpack_require__(125);
 module.exports = __webpack_require__(126);
 
+
+/***/ }),
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */,
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */,
+/* 291 */,
+/* 292 */,
+/* 293 */,
+/* 294 */,
+/* 295 */,
+/* 296 */,
+/* 297 */,
+/* 298 */,
+/* 299 */,
+/* 300 */,
+/* 301 */,
+/* 302 */,
+/* 303 */,
+/* 304 */,
+/* 305 */,
+/* 306 */,
+/* 307 */,
+/* 308 */,
+/* 309 */,
+/* 310 */,
+/* 311 */,
+/* 312 */,
+/* 313 */,
+/* 314 */,
+/* 315 */,
+/* 316 */,
+/* 317 */,
+/* 318 */,
+/* 319 */,
+/* 320 */,
+/* 321 */,
+/* 322 */,
+/* 323 */,
+/* 324 */,
+/* 325 */,
+/* 326 */,
+/* 327 */,
+/* 328 */,
+/* 329 */,
+/* 330 */,
+/* 331 */,
+/* 332 */,
+/* 333 */,
+/* 334 */,
+/* 335 */,
+/* 336 */,
+/* 337 */,
+/* 338 */,
+/* 339 */,
+/* 340 */,
+/* 341 */,
+/* 342 */,
+/* 343 */,
+/* 344 */,
+/* 345 */,
+/* 346 */,
+/* 347 */,
+/* 348 */,
+/* 349 */,
+/* 350 */,
+/* 351 */,
+/* 352 */,
+/* 353 */,
+/* 354 */,
+/* 355 */,
+/* 356 */,
+/* 357 */,
+/* 358 */,
+/* 359 */,
+/* 360 */,
+/* 361 */,
+/* 362 */,
+/* 363 */,
+/* 364 */,
+/* 365 */,
+/* 366 */,
+/* 367 */,
+/* 368 */,
+/* 369 */,
+/* 370 */,
+/* 371 */,
+/* 372 */,
+/* 373 */
+/***/ (function(module, exports) {
+
+Vue.component('panorama', {
+    props: {
+        image: { type: String, required: true },
+        markers: { type: Array, required: false, default: [] },
+        height: { type: [Number, String], required: false, default: 500 },
+        fullscreen: { type: Boolean, required: false, default: true },
+        caption: { type: String, required: false, default: null },
+        editable: { type: Boolean, required: false, default: false }
+    },
+    template: '<div id="PSV"></div>',
+    data: function data() {
+        return {
+            PSV: null
+        };
+    },
+    created: function created() {
+        Bus.$on('panorama-marker-created', this.onMarkerCreated);
+        Bus.$on('panorama-marker-removed', this.onMarkerRemoved);
+    },
+    mounted: function mounted() {
+        this.initPano();
+    },
+
+    methods: {
+        initPano: function initPano() {
+            if (!this.image) return;
+
+            this.PSV = new PhotoSphereViewer({
+                panorama: this.image,
+                container: 'PSV',
+                loading_img: '/img/spin.svg',
+                caption: this.caption,
+                navbar: this.fullscreen ? ['fullscreen', 'caption'] : false,
+                default_fov: 70,
+                mousewheel: false,
+                time_anim: false,
+                gyroscope: true,
+                markers: this.markers,
+                size: { height: this.height }
+            });
+
+            this.PSV.on('select-marker', this.onSelectMarker);
+            this.PSV.on('unselect-marker', this.onUnselectMarker);
+            this.PSV.on('click', this.onClick);
+        },
+        onSelectMarker: function onSelectMarker(marker) {
+            Bus.$emit('panorama-marker-selected', marker);
+
+            if (this.editable) {
+                window.location.href = marker.markable.urls.edit;
+                return;
+            }
+
+            window.location.href = marker.markable.urls.show;
+
+            /*if (marker.target) {
+                this.PSV.setPanorama(marker.target);
+                return;
+            }*/
+        },
+        onUnselectMarker: function onUnselectMarker(marker) {
+            Bus.$emit('panorama-marker-unselected', marker);
+        },
+        onClick: function onClick(event) {
+            Bus.$emit('panorama-click', event);
+
+            /*
+            if (this.isEditable) {
+                this.PSV.on('click', this.onPSVClick);
+            }
+            if (this.currentMarker) {
+                this.PSV.removeMarker(this.currentMarker);
+                this.currentMarker = null;
+            }
+             this.currentMarker = this.PSV.addMarker({
+                id: '#' + Math.random(),
+                longitude: event.longitude,
+                latitude: event.latitude,
+                x: event.texture_x,
+                y: event.texture_y,
+                image: '/img/pin_red.svg',
+                width: 32,
+                height: 32,
+                anchor: 'bottom center',
+                tooltip: 'This marker is not saved',
+            });
+             Bus.$emit('marker-created', this.currentMarker);
+            */
+        },
+        onMarkerCreated: function onMarkerCreated(marker) {
+            this.PSV.addMarker(marker);
+        },
+        onMarkerRemoved: function onMarkerRemoved(identifier) {
+            this.PSV.removeMarker(identifier);
+        }
+    }
+});
+
+/***/ }),
+/* 374 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_randomcolor__ = __webpack_require__(271);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_randomcolor___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_randomcolor__);
+
+
+Vue.component('panoramas-creator', {
+    props: {
+        path: { type: Object, required: true },
+        panorama: { type: Object, required: true },
+        markers: { type: Array, required: true, default: [] }
+    },
+    template: '\n        <div>\n            <p class="help-block" v-if="!markers.length">First click where you want to link another view.</p>\n            <div class="media" v-for="marker in markerList">\n                <div class="media-left">\n                    <i class="media-object fa fa-arrow-circle-up fa-fw fa-2x" :style="{ color: marker.color }"></i>\n                </div>\n                <div class="media-body">\n                    <div class="form-group">\n                        <div v-if="marker.markable">\n                            <a :href="marker.markable.urls.edit">\n                                <img class="img-responsive" :src="marker.markable.imageUrl" alt="" />\n                            </a>\n                        </div>\n                        <view-uploader v-else :path-id="path.id" :panorama-id="panorama.id" :marker="marker"></view-uploader>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ',
+    data: function data() {
+        return {
+            createdId: null,
+            markerList: this.markers
+        };
+    },
+    created: function created() {
+        Bus.$on('panorama-click', this.onPanoramaClick);
+        Bus.$on('view-uploader-uploaded', this.onPanoramaUploaded);
+    },
+
+    methods: {
+        onPanoramaUploaded: function onPanoramaUploaded() {
+            this.createdId = null;
+        },
+        onPanoramaClick: function onPanoramaClick(event) {
+            if (this.createdId) {
+                Bus.$emit('panorama-marker-removed', this.createdId);
+                this.markerList.shift();
+                this.createdId = null;
+            }
+
+            this.createdId = Math.random().toString(36).substr(2, 5);
+
+            var randomcolor = __WEBPACK_IMPORTED_MODULE_0_randomcolor___default()(),
+                marker = {
+                id: this.createdId,
+                longitude: event.longitude,
+                latitude: event.latitude,
+                color: randomcolor,
+                html: '<i style="color:' + randomcolor + '" class="media-object fa fa-arrow-circle-up fa-fw fa-3x"></i>',
+                anchor: 'center center',
+                tooltip: 'Attach a view to this marker'
+            };
+
+            this.markerList.unshift(marker);
+
+            Bus.$emit('panorama-marker-created', marker);
+        }
+    }
+});
 
 /***/ })
 /******/ ]);

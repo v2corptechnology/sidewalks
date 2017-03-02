@@ -15,6 +15,8 @@ require('./home');
 
 require('./paths'); // Display user's paths
 require('./paths-creator'); // Create a new path
+require('./panorama'); // Display any panorama
+require('./panoramas-creator'); // Display linked panoramas and create button
 
 require('./pano');
 require('./path-viewer');

@@ -37,7 +37,10 @@ Vue.component('view-uploader', {
             formData.append('longitude_px', this.marker.x);
 
             this.$http.post('/api/panoramasApi', formData)
-                .then(response => this.view = response.body)
+                .then(response => {
+                    this.view = response.body;
+                    Bus.$emit('view-uploader-uploaded');
+                })
                 .catch(error => {console.log(error); alert('Error while uploading image')});
         },
         createPreview(file) {
