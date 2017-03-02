@@ -28,7 +28,7 @@ class Marker extends Model
             'anchor'    => 'center center',
             'html'      => '<i style="color: #FFF" class="fa fa-arrow-circle-up fa-3x"></i>',
             'tooltip'   => "Walk here",
-            'view_id'   => 3,
+            'view_id'   => $this->markable_id,
         ];   
     }
 
