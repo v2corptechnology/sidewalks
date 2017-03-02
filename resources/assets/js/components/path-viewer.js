@@ -33,7 +33,10 @@ Vue.component('path-viewer', {
         },
         onData(data) {
             if (! this.PSV) {
-                var markers = data.markers.map(marker => marker.psv_info);
+                var markers = data.markers.map(marker => {
+                    Object.assign(marker.psv_info, {urls: marker.markable.urls});
+                    return marker.psv_info;
+                });
                 this.initPSV(data.imageUrl, markers);
             } else {
                 this.PSV.clearMarkers();
@@ -42,6 +45,10 @@ Vue.component('path-viewer', {
             }
         },
         onSelectMarker(marker) {
+            if (this.editable) {
+                window.location.href = marker.urls.edit;
+                return;
+            }
             if (marker.view_id) {
                 this.longitude = marker.longitude;
                 this.loadView(marker.view_id);

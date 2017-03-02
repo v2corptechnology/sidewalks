@@ -27318,6 +27318,7 @@ Vue.component('path-viewer', {
 
             if (!this.PSV) {
                 var markers = data.markers.map(function (marker) {
+                    Object.assign(marker.psv_info, { urls: marker.markable.urls });
                     return marker.psv_info;
                 });
                 this.initPSV(data.imageUrl, markers);
@@ -27330,6 +27331,10 @@ Vue.component('path-viewer', {
             }
         },
         onSelectMarker: function onSelectMarker(marker) {
+            if (this.editable) {
+                window.location.href = marker.urls.edit;
+                return;
+            }
             if (marker.view_id) {
                 this.longitude = marker.longitude;
                 this.loadView(marker.view_id);
