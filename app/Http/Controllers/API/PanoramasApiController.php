@@ -51,7 +51,16 @@ class PanoramasApiController extends Controller
             'markable_type' => \App\Panorama::class,
         ]);
 
-        \App\Marker::create($request->all());
+        $marker = \App\Marker::create($request->all());
+
+        $lng = (float) $request->input('longitude');
+        $reverseLongitude = $lng < pi() ? $lng + pi() : fmod($lng + pi(), pi());
+        $request->merge([
+            'longitude' => $reverseLongitude,
+            'latitude_px' => 0,
+            'longitude_px' => 0,
+        ]);
+        $reverseMarker = \App\Marker::create($request->all());
     
         return $panorama->toJson();
     }
