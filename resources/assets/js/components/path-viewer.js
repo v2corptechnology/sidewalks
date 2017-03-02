@@ -81,7 +81,7 @@ Vue.component('path-viewer', {
                 panorama: viewPath,
                 loading_img: '/img/spin.svg',
                 caption: this.caption || null,
-                navbar: this.fullscreen ? ['fullscreen'] : false,
+                navbar: this.fullscreen ? ['fullscreen', 'caption'] : false,
                 default_fov: 70,
                 mousewheel: false,
                 time_anim: false,
