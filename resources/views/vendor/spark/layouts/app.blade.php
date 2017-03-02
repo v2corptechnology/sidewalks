@@ -24,7 +24,7 @@
     <script src="//rawgit.com/mistic100/uEvent/master/uevent.min.js"></script>
     <script src="//rawgit.com/olado/doT/master/doT.min.js"></script>
     <script src="//rawgit.com/mrdoob/three.js/master/examples/js/controls/DeviceOrientationControls.js"></script>
-    <script src="//rawgit.com/mistic100/Photo-Sphere-Viewer/master/dist/photo-sphere-viewer.min.js"></script>
+    <script src="{{ asset('js/photo-sphere-viewer.min.js') }}"></script>
     @yield('scripts', '')
 
     <!-- Global Spark Object -->
