@@ -56,6 +56,8 @@ class PanoramasApiController extends Controller
         $lng = (float) $request->input('longitude');
         $reverseLongitude = $lng < pi() ? $lng + pi() : fmod($lng + pi(), pi());
         $request->merge([
+            'panorama_id' => $panorama->id,
+            'markable_id' => $request->input('panorama_id'),
             'longitude' => $reverseLongitude,
             'latitude_px' => 0,
             'longitude_px' => 0,
