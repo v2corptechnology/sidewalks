@@ -8,7 +8,8 @@ use App\Markers;
 class Panorama extends Model
 {
     protected $fillable = ['path_id', 'image', 'exif'];
-    protected $appends = ['urls', 'imageUrl'];
+    protected $appends = ['urls', 'imageUrl', 'caption'];
+    protected $hidden = ['exif'];
     protected $casts = ['exif' => 'array'];
 
     public function path()
@@ -19,6 +20,11 @@ class Panorama extends Model
     public function markers()
     {
     	return $this->hasMany(Marker::class);
+    }
+
+    public function getCaptionAttribute()
+    {
+        return 'Lat: ' . $this->GPSLatitude. ', Long: '. $this->GPSLongitude;
     }
     
     public function getImageUrlAttribute()

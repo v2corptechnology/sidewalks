@@ -18,8 +18,7 @@
 
             <panorama image="{{ $panorama->imageUrl }}" 
                       :markers="{{ $panorama->markers->load('markable')->toJson() }}"
-                      caption="Long: {{ $panorama->GPSLongitude . ", Lat: " . $panorama->GPSLatitude}}"
-                      editable></panorama>
+                      caption="{{ $panorama->caption }}" editable></panorama>
         </div>
         <div class="col-sm-4">
             <h1>Linked views</h1>

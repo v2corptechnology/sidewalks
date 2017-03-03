@@ -7,7 +7,7 @@
             <div class="box">
                 <panorama image="{{ $panorama->imageUrl }}" 
                           :markers="{{ $panorama->markers->load('markable')->toJson() }}"
-                          caption="Long: {{ $panorama->GPSLongitude . ", Lat: " . $panorama->GPSLatitude}}"></panorama>
+                          caption="{{ $panorama->caption }}"></panorama>
             </div>
         </div>
     </div>
