@@ -20,16 +20,11 @@ require('./panoramas-creator'); // Display linked panoramas and create button
 
 require('./pano');
 require('./path-viewer');
-require('./path-editor');
-require('./paths');
 require('./view-uploader');
 require('./panorama-chooser');
 require('./shop-items');
 require('./item-card');
 require('./marker-attach');
-
 require('./item');
-
 require('./schedules');
-
 require('./scraper');

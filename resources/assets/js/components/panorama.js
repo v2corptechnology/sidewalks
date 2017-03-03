@@ -41,6 +41,7 @@ Vue.component('panorama', {
             this.PSV.on('select-marker', this.onSelectMarker);
             this.PSV.on('unselect-marker', this.onUnselectMarker);
             this.PSV.on('click', this.onClick);
+            this.PSV.on('ready', this.onReady);
         },
         onSelectMarker(marker) {
             Bus.$emit('panorama-marker-selected', marker);
@@ -50,15 +51,16 @@ Vue.component('panorama', {
                 return;
             }
 
-            window.location.href = marker.markable.urls.show;
+            this.PSV.clearMarkers();
+            this.PSV.setPanorama(marker.markable.imageUrl).then(() => this.loadMarkers(marker.markable.id));
 
-            /*if (marker.target) {
-                this.PSV.setPanorama(marker.target);
-                return;
-            }*/
+            //window.location.href = marker.markable.urls.show;
         },
         onUnselectMarker(marker) {
             Bus.$emit('panorama-marker-unselected', marker);
+        },
+        onReady(event) {
+            Bus.$emit('panorama-ready', event);
         },
         onClick(event) {
             Bus.$emit('panorama-click', event);
@@ -93,6 +95,17 @@ Vue.component('panorama', {
         },
         onMarkerRemoved(identifier) {
             this.PSV.removeMarker(identifier);
+        },
+        loadMarkers(panoramaId) {
+            this.$http.get('/api/views/' + panoramaId)
+                .then(response => {
+                    this.PSV.setCaption(response.data.caption);
+                    response.data.markers.map(marker => this.PSV.addMarker(marker));
+                })
+                .catch(error => {
+                    console.log(error);
+                    alert('Error while fetching markers');
+                });
         }
     }
 });

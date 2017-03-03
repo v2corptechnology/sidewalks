@@ -26930,18 +26930,13 @@ __webpack_require__(374); // Display linked panoramas and create button
 
 __webpack_require__(133);
 __webpack_require__(136);
-__webpack_require__(135);
-__webpack_require__(9);
 __webpack_require__(141);
 __webpack_require__(134);
 __webpack_require__(140);
 __webpack_require__(130);
 __webpack_require__(132);
-
 __webpack_require__(131);
-
 __webpack_require__(138);
-
 __webpack_require__(139);
 
 /***/ }),
@@ -27233,43 +27228,7 @@ Vue.component('panorama-chooser', {
 });
 
 /***/ }),
-/* 135 */
-/***/ (function(module, exports) {
-
-Vue.component('path-editor', {
-    props: ['pathId', 'panoramaId'],
-    template: '\n        <div>\n            <p class="help-block" v-if="!markers.length">First click where you want to link another view.</p>\n            <div class="media" v-for="marker in markers">\n                <div class="media-left">\n                    <i class="media-object fa fa-arrow-circle-up fa-fw fa-2x" :style="{ color: marker.color }"></i>\n                </div>\n                <div class="media-body">\n                    <div class="form-group">\n                        <div v-if="marker.markable && marker.markable.imageUrl">\n                            <a :href="marker.markable.urls.edit">\n                                <img class="img-responsive" :src="marker.markable.imageUrl" alt="" />\n                            </a>\n                        </div>\n                        <view-uploader v-else :path-id="pathId" :panorama-id="panoramaId" :marker="marker"></view-uploader>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ',
-    data: function data() {
-        return {
-            markers: []
-        };
-    },
-    created: function created() {
-        var _this = this;
-
-        Bus.$on('marker-created', this.onMarkerCreated);
-        Bus.$on('marker-removed', this.onMarkerRemoved);
-
-        // Get view info
-        this.$http.get('/api/views/' + this.panoramaId).then(function (response) {
-            _this.markers = response.data.markers;
-        }).catch(function (error) {
-            console.log(error);
-            alert('Error while fetching markers');
-        });
-    },
-
-    methods: {
-        onMarkerCreated: function onMarkerCreated(marker) {
-            this.markers.unshift(marker);
-        },
-        onMarkerRemoved: function onMarkerRemoved(marker) {
-            alert('do something when marker is removed');
-        }
-    }
-});
-
-/***/ }),
+/* 135 */,
 /* 136 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -49961,8 +49920,11 @@ Vue.component('panorama', {
             this.PSV.on('select-marker', this.onSelectMarker);
             this.PSV.on('unselect-marker', this.onUnselectMarker);
             this.PSV.on('click', this.onClick);
+            this.PSV.on('ready', this.onReady);
         },
         onSelectMarker: function onSelectMarker(marker) {
+            var _this = this;
+
             Bus.$emit('panorama-marker-selected', marker);
 
             if (this.editable) {
@@ -49970,15 +49932,18 @@ Vue.component('panorama', {
                 return;
             }
 
-            window.location.href = marker.markable.urls.show;
+            this.PSV.clearMarkers();
+            this.PSV.setPanorama(marker.markable.imageUrl).then(function () {
+                return _this.loadMarkers(marker.markable.id);
+            });
 
-            /*if (marker.target) {
-                this.PSV.setPanorama(marker.target);
-                return;
-            }*/
+            //window.location.href = marker.markable.urls.show;
         },
         onUnselectMarker: function onUnselectMarker(marker) {
             Bus.$emit('panorama-marker-unselected', marker);
+        },
+        onReady: function onReady(event) {
+            Bus.$emit('panorama-ready', event);
         },
         onClick: function onClick(event) {
             Bus.$emit('panorama-click', event);
@@ -50011,6 +49976,19 @@ Vue.component('panorama', {
         },
         onMarkerRemoved: function onMarkerRemoved(identifier) {
             this.PSV.removeMarker(identifier);
+        },
+        loadMarkers: function loadMarkers(panoramaId) {
+            var _this2 = this;
+
+            this.$http.get('/api/views/' + panoramaId).then(function (response) {
+                _this2.PSV.setCaption(response.data.caption);
+                response.data.markers.map(function (marker) {
+                    return _this2.PSV.addMarker(marker);
+                });
+            }).catch(function (error) {
+                console.log(error);
+                alert('Error while fetching markers');
+            });
         }
     }
 });
