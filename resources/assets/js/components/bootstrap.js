@@ -19,7 +19,6 @@ require('./panorama'); // Display any panorama
 require('./panoramas-creator'); // Display linked panoramas and create button
 
 require('./pano');
-require('./path-viewer');
 require('./view-uploader');
 require('./panorama-chooser');
 require('./shop-items');

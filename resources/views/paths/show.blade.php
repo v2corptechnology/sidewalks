@@ -5,7 +5,9 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="box">
-                <path-viewer :view-id="1"></path-viewer>
+                <panorama image="{{ $path->panoramas()->first()->imageUrl }}" 
+                          :markers="{{ $path->panoramas()->first()->load('markers.markable')->markers->toJson() }}"
+                          caption="{{ $path->panoramas()->first()->caption }}"></panorama>
             </div>
         </div>
     </div>

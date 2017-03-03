@@ -52,9 +52,8 @@ Vue.component('panorama', {
             }
 
             this.PSV.clearMarkers();
-            this.PSV.setPanorama(marker.markable.imageUrl).then(() => this.loadMarkers(marker.markable.id));
-
-            //window.location.href = marker.markable.urls.show;
+            this.PSV.setPanorama(marker.markable.imageUrl)
+                .then(() => this.loadMarkers(marker.markable.id));
         },
         onUnselectMarker(marker) {
             Bus.$emit('panorama-marker-unselected', marker);
@@ -64,31 +63,6 @@ Vue.component('panorama', {
         },
         onClick(event) {
             Bus.$emit('panorama-click', event);
-
-            /*
-            if (this.isEditable) {
-                this.PSV.on('click', this.onPSVClick);
-            }
-            if (this.currentMarker) {
-                this.PSV.removeMarker(this.currentMarker);
-                this.currentMarker = null;
-            }
-
-            this.currentMarker = this.PSV.addMarker({
-                id: '#' + Math.random(),
-                longitude: event.longitude,
-                latitude: event.latitude,
-                x: event.texture_x,
-                y: event.texture_y,
-                image: '/img/pin_red.svg',
-                width: 32,
-                height: 32,
-                anchor: 'bottom center',
-                tooltip: 'This marker is not saved',
-            });
-
-            Bus.$emit('marker-created', this.currentMarker);
-            */
         },
         onMarkerCreated(marker) {
             this.PSV.addMarker(marker);
