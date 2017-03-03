@@ -27524,7 +27524,7 @@ Vue.component('view-uploader', {
 
             this.$http.post('/api/panoramasApi', formData).then(function (response) {
                 _this.view = response.body;
-                Bus.$emit('view-uploader-uploaded');
+                Bus.$emit('view-uploader-uploaded', response.body);
             }).catch(function (error) {
                 console.log(error);alert('Error while uploading image');
             });
@@ -49862,7 +49862,7 @@ Vue.component('panoramas-creator', {
         panorama: { type: Object, required: true },
         markers: { type: Array, required: true, default: [] }
     },
-    template: '\n        <div>\n            <p class="help-block" v-if="!markers.length">First click where you want to link another view.</p>\n            <div class="media" v-for="marker in markerList">\n                <div class="media-left">\n                    <i class="media-object fa fa-arrow-circle-up fa-fw fa-2x" :style="{ color: marker.color }"></i>\n                </div>\n                <div class="media-body">\n                    <div class="form-group">\n                        <div v-if="marker.markable">\n                            <a :href="marker.markable.urls.edit">\n                                <img class="img-responsive" :src="marker.markable.imageUrl" alt="" />\n                            </a>\n                        </div>\n                        <view-uploader v-else :path-id="path.id" :panorama-id="panorama.id" :marker="marker"></view-uploader>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ',
+    template: '\n        <div>\n            <p class="help-block" v-if="!markerList.length">First click where you want to link another view.</p>\n            <div class="media" v-for="marker in markerList">\n                <div class="media-left">\n                    <i class="media-object fa fa-arrow-circle-up fa-fw fa-2x" :style="{ color: marker.color }"></i>\n                </div>\n                <div class="media-body">\n                    <div class="form-group">\n                        <div v-if="isValidMarker(marker)">\n                            <a :href="getMarkerInfo(marker).urls.edit">\n                                <img class="img-responsive" :src="getMarkerInfo(marker).imageUrl" :alt="marker.id" />\n                            </a>\n                        </div>\n                        <view-uploader v-else :path-id="path.id" :panorama-id="panorama.id" :marker="marker"></view-uploader>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ',
     data: function data() {
         return {
             createdId: null,
@@ -49871,11 +49871,18 @@ Vue.component('panoramas-creator', {
     },
     created: function created() {
         Bus.$on('panorama-click', this.onPanoramaClick);
-        Bus.$on('view-uploader-uploaded', this.onPanoramaUploaded);
+        Bus.$on('view-uploader-uploaded', this.onViewUploaderUploaded);
     },
 
     methods: {
-        onPanoramaUploaded: function onPanoramaUploaded() {
+        isValidMarker: function isValidMarker(marker) {
+            return marker.id != this.createdId;
+        },
+        getMarkerInfo: function getMarkerInfo(marker) {
+            return marker.markable || marker;
+        },
+        onViewUploaderUploaded: function onViewUploaderUploaded(marker) {
+            this.markerList.splice(0, 1, Object.assign(this.markerList[0], marker));
             this.createdId = null;
         },
         onPanoramaClick: function onPanoramaClick(event) {

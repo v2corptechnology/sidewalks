@@ -8,16 +8,16 @@ Vue.component('panoramas-creator', {
     },
     template: `
         <div>
-            <p class="help-block" v-if="!markers.length">First click where you want to link another view.</p>
+            <p class="help-block" v-if="!markerList.length">First click where you want to link another view.</p>
             <div class="media" v-for="marker in markerList">
                 <div class="media-left">
                     <i class="media-object fa fa-arrow-circle-up fa-fw fa-2x" :style="{ color: marker.color }"></i>
                 </div>
                 <div class="media-body">
                     <div class="form-group">
-                        <div v-if="marker.markable">
-                            <a :href="marker.markable.urls.edit">
-                                <img class="img-responsive" :src="marker.markable.imageUrl" alt="" />
+                        <div v-if="isValidMarker(marker)">
+                            <a :href="getMarkerInfo(marker).urls.edit">
+                                <img class="img-responsive" :src="getMarkerInfo(marker).imageUrl" :alt="marker.id" />
                             </a>
                         </div>
                         <view-uploader v-else :path-id="path.id" :panorama-id="panorama.id" :marker="marker"></view-uploader>
@@ -34,10 +34,17 @@ Vue.component('panoramas-creator', {
     },
     created() {
         Bus.$on('panorama-click', this.onPanoramaClick);
-        Bus.$on('view-uploader-uploaded', this.onPanoramaUploaded);
+        Bus.$on('view-uploader-uploaded', this.onViewUploaderUploaded);
     },
     methods: {
-        onPanoramaUploaded() {
+        isValidMarker(marker) {
+            return marker.id != this.createdId;
+        },
+        getMarkerInfo(marker) {
+            return marker.markable || marker;
+        },
+        onViewUploaderUploaded(marker) {
+            this.markerList.splice(0, 1, Object.assign(this.markerList[0], marker));
             this.createdId = null;
         },
         onPanoramaClick(event) {

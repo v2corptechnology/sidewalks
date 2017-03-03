@@ -37,7 +37,7 @@ Vue.component('view-uploader', {
             this.$http.post('/api/panoramasApi', formData)
                 .then(response => {
                     this.view = response.body;
-                    Bus.$emit('view-uploader-uploaded');
+                    Bus.$emit('view-uploader-uploaded', response.body);
                 })
                 .catch(error => {console.log(error); alert('Error while uploading image')});
         },

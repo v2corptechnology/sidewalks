@@ -42,11 +42,15 @@ class Panorama extends Model
 
     public function getGPSLongitudeAttribute() : float
     {
+        if (!isset($this->exif["GPSLongitude"])) return 0.0;
+        
         return $this->getGps($this->exif["GPSLongitude"], $this->exif['GPSLongitudeRef']);
     }
 
     public function getGPSLatitudeAttribute() : float
     {
+        if (!isset($this->exif["GPSLatitude"])) return 0.0;
+
         return $this->getGps($this->exif["GPSLatitude"], $this->exif['GPSLatitudeRef']);
     }
 
