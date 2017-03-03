@@ -34,6 +34,8 @@ Vue.component('panoramas-creator', {
     },
     created() {
         Bus.$on('panorama-click', this.onPanoramaClick);
+        Bus.$on('panorama-hover', this.onPanoramaHover);
+        Bus.$on('panorama-leave', this.onPanoramaLeave);
         Bus.$on('view-uploader-uploaded', this.onViewUploaderUploaded);
     },
     methods: {
@@ -46,6 +48,12 @@ Vue.component('panoramas-creator', {
         onViewUploaderUploaded(marker) {
             this.markerList.splice(0, 1, Object.assign(this.markerList[0], marker));
             this.createdId = null;
+        },
+        onPanoramaHover(markerId) {
+
+        },
+        onPanoramaLeave(markerId) {
+
         },
         onPanoramaClick(event) {
             if (this.createdId) {

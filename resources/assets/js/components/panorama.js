@@ -42,6 +42,8 @@ Vue.component('panorama', {
             this.PSV.on('unselect-marker', this.onUnselectMarker);
             this.PSV.on('click', this.onClick);
             this.PSV.on('ready', this.onReady);
+            this.PSV.on('over-marker', this.onOverMarker);
+            this.PSV.on('leave-marker', this.onLeaveMarker);
         },
         onSelectMarker(marker) {
             Bus.$emit('panorama-marker-selected', marker);
@@ -69,6 +71,12 @@ Vue.component('panorama', {
         },
         onMarkerRemoved(identifier) {
             this.PSV.removeMarker(identifier);
+        },
+        onOverMarker(marker) {
+            Bus.$emit('panorama-hover', marker.id);
+        },
+        onLeaveMarker(marker) {
+            Bus.$emit('panorama-leave', marker.id);
         },
         loadMarkers(panoramaId) {
             this.$http.get('/api/views/' + panoramaId)

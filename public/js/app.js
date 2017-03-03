@@ -49799,6 +49799,8 @@ Vue.component('panorama', {
             this.PSV.on('unselect-marker', this.onUnselectMarker);
             this.PSV.on('click', this.onClick);
             this.PSV.on('ready', this.onReady);
+            this.PSV.on('over-marker', this.onOverMarker);
+            this.PSV.on('leave-marker', this.onLeaveMarker);
         },
         onSelectMarker: function onSelectMarker(marker) {
             var _this = this;
@@ -49829,6 +49831,12 @@ Vue.component('panorama', {
         },
         onMarkerRemoved: function onMarkerRemoved(identifier) {
             this.PSV.removeMarker(identifier);
+        },
+        onOverMarker: function onOverMarker(marker) {
+            Bus.$emit('panorama-hover', marker.id);
+        },
+        onLeaveMarker: function onLeaveMarker(marker) {
+            Bus.$emit('panorama-leave', marker.id);
         },
         loadMarkers: function loadMarkers(panoramaId) {
             var _this2 = this;
@@ -49871,6 +49879,8 @@ Vue.component('panoramas-creator', {
     },
     created: function created() {
         Bus.$on('panorama-click', this.onPanoramaClick);
+        Bus.$on('panorama-hover', this.onPanoramaHover);
+        Bus.$on('panorama-leave', this.onPanoramaLeave);
         Bus.$on('view-uploader-uploaded', this.onViewUploaderUploaded);
     },
 
@@ -49885,6 +49895,8 @@ Vue.component('panoramas-creator', {
             this.markerList.splice(0, 1, Object.assign(this.markerList[0], marker));
             this.createdId = null;
         },
+        onPanoramaHover: function onPanoramaHover(markerId) {},
+        onPanoramaLeave: function onPanoramaLeave(markerId) {},
         onPanoramaClick: function onPanoramaClick(event) {
             if (this.createdId) {
                 Bus.$emit('panorama-marker-removed', this.createdId);
