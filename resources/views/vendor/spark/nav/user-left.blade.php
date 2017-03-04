@@ -1,9 +1,9 @@
 <!-- Left Side Of Navbar -->
 <li>
-    <a href="{{ route('items.create') }}">Items</a>
+    <a href="{{ route('paths.index') }}">Paths</a>
 </li>
 <li>
-    <a href="{{ route('paths.index') }}">Paths</a>
+    <a href="{{ route('items.create') }}">Items</a>
 </li>
  {{-- 
 <li>

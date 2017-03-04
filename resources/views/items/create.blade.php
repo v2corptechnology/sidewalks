@@ -137,6 +137,17 @@
                                             <input type="file" name="image" id="image" accept="image/*" multiple :required="! item.images.length"
                                                    @change="onFileChange">
                                         </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="path">
+                                                Path
+                                            </label>
+                                            <select class="form-control" name="path_id" id="path" required>
+                                                @foreach(auth()->user()->paths as $path)
+                                                    <option value="{{ $path->id }}">{{ $path->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </fieldset>
                                 </div>
                             </div>
