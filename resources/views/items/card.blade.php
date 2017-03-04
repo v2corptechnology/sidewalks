@@ -14,4 +14,10 @@
             </figure>
         </a>
     </div>
+    @if (isset($showDescription) && $showDescription)
+        <p>{{ $item->description }}</p>
+        <div class="form-group">
+            <a href="{{ route('items.show', $item) }}" class="btn btn-block btn-primary">Buy</a>
+        </div>
+    @endif
 </div>

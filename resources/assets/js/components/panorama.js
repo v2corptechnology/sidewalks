@@ -65,6 +65,13 @@ Vue.component('panorama', {
         },
         onClick(event) {
             Bus.$emit('panorama-click', event);
+
+            if (! this.editable) {
+                var cards = document.querySelectorAll('#cards .col-sm-3'),
+                    displayedCard = cards[Math.floor(Math.random()*cards.length)];   
+
+                if (cards.length) this.PSV.showPanel(displayedCard.innerHTML);
+            }
         },
         onMarkerCreated(marker) {
             this.PSV.addMarker(marker);
