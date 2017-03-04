@@ -26,7 +26,7 @@ class ItemsController extends Controller
      */
     public function create()
     {
-        $categories = auth()->user()->shop->categories;
+        $categories = auth()->user()->categories;
 
         return view('items.create', compact('categories'));
     }
@@ -40,19 +40,16 @@ class ItemsController extends Controller
     public function store(StoreItem $request)
     {
         // Store item
-        $item = Item::create($request->except('images'));
+        $item = auth()->user()->items()->create($request->except('images'));
+
         // Attach the categories to him
         $categoriesId = $this->saveCategories($request->get('categories'));
         $item->categories()->attach($categoriesId);
+
         // Save image
         $images = $this->saveImages($item, $request->get('images'));
 
-        // Redirect accordingly
-        if ($request->get('next', 'save') == 'save') {
-            return redirect()->route('shops.markers.create', $request->user()->shop);
-        }
-
-        return redirect()->back();
+        return redirect()->route('items.create');
     }
 
     /**
@@ -105,7 +102,7 @@ class ItemsController extends Controller
         return collect($categories)->map(function($category) {
             if (! is_numeric($category)) {
                 return Category::create([
-                    'shop_id' => auth()->user()->shop->id,
+                    'user_id' => auth()->user()->id,
                     'name' => $category,
                 ])->id;
             }

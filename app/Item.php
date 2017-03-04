@@ -7,10 +7,8 @@ use App\Marker;
 
 class Item extends Model
 {
-    protected $fillable = ['user_id', 'shop_id', 'title', 'description', 'amount', 'symbol', 'quantity', 'images', 'extra'];
-
+    protected $fillable = ['user_id', 'title', 'description', 'amount', 'symbol', 'quantity', 'images', 'extra'];
     protected $casts = ['amount' => 'float', 'images' => 'array', 'extra' => 'array'];
-
     protected $appends = ['display_url', 'src', 'srcset'];
 
     public function categories()

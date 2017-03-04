@@ -145,14 +145,15 @@
                                 <input type="hidden" name="images[]" v-for="image in item.images" :value="image">
                                 <input type="hidden" name="symbol" value="$">
                                 <input type="hidden" name="extra[url]" v-model="scrapedUrl">
-                                <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                                <input type="hidden" name="shop_id" value="{{ auth()->user()->shop->id }}">
-                                <button class="btn btn-default" type="submit" name="next" value="save">Save</button>
-                                <button class="btn btn-primary" type="submit" name="next" value="add">Save + add another</button>
+                                <button class="btn btn-primary" type="submit">Create</button>
                             </fieldset>
                         </form>
                     </div>
                 </div>
+            </div>
+
+            <div class="col-md-8 col-md-offset-2">
+                <shop-items raw-items="{{ auth()->user()->items->load('categories')->toJson() }}"></shop-items>
             </div>
         </div>
     </div>
