@@ -25,6 +25,7 @@
     <script src="//rawgit.com/olado/doT/master/doT.min.js"></script>
     <script src="//rawgit.com/mrdoob/three.js/master/examples/js/controls/DeviceOrientationControls.js"></script>
     <script src="{{ asset('js/photo-sphere-viewer.min.js') }}"></script>
+    <script src="//rawgit.com/ccampbell/mousetrap/master/mousetrap.min.js"></script>
     @yield('scripts', '')
 
     <!-- Global Spark Object -->

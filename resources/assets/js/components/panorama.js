@@ -11,6 +11,10 @@ Vue.component('panorama', {
     data() {
         return {
             PSV: null,
+            visitedDiaporamas: [{
+                id: window.location.href.substring(window.location.href.lastIndexOf('/') + 1), 
+                imageUrl: this.image
+            }],
         };
     },
     created() {
@@ -19,6 +23,20 @@ Vue.component('panorama', {
     },
     mounted() {
         this.initPano();
+
+        // Quick and dirty code
+        var self = this;
+        Mousetrap.bind('return', function() {
+            if (self.visitedDiaporamas.length > 1) {
+                // Remove current visit
+                self.visitedDiaporamas.pop();
+                // Load previous visit
+                var previous = self.visitedDiaporamas[self.visitedDiaporamas.length-1];
+                self.PSV.clearMarkers();
+                self.PSV.setPanorama(previous.imageUrl)
+                    .then(() => self.loadMarkers(previous.id));
+            }
+        });
     },
     methods: {
         initPano() {
@@ -51,6 +69,14 @@ Vue.component('panorama', {
             if (this.editable) {
                 window.location.href = marker.markable.urls.edit;
                 return;
+            }
+
+            // Quick and dirty code
+            if (! this.editable) {
+                this.visitedDiaporamas.push({
+                    id: marker.markable.id, 
+                    imageUrl: marker.markable.imageUrl
+                });
             }
 
             this.PSV.clearMarkers();
