@@ -10,7 +10,13 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-8">
-            <h1>{{ $path->name }}</h1>
+            <h1>
+                {{ $path->name }}
+
+                <a class="pull-right h4" href="{{ route('panoramas.show', $path->panoramas()->first()) }}" title="View full path">
+                    <small><i class="fa fa-refresh"></i> visit</small>
+                </a>
+            </h1>
 
             @if (! $path->panoramas->count())
                 <div class="alert alert-warning">
