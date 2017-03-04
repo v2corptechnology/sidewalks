@@ -23,7 +23,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('categories', 'CategoriesController');
     Route::resource('items', 'ItemsController');
     Route::resource('paths', 'PathsController');
-    Route::resource('panoramas', 'PanoramasController');
+    Route::resource('panoramas', 'PanoramasController', ['except' => ['show']]);
     Route::resource('shops', 'ShopsController');
     Route::resource('shops.markers', 'MarkersController');
 });
+Route::resource('panoramas', 'PanoramasController', ['only' => ['show']]);
