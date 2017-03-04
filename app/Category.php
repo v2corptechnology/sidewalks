@@ -7,7 +7,7 @@ use App\Marker;
 
 class Category extends Model
 {
-    protected $fillable = ['shop_id', 'name'];
+    protected $fillable = ['user_id', 'name'];
 
     public function items()
     {

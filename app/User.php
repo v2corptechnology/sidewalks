@@ -3,6 +3,7 @@
 namespace App;
 
 use Laravel\Spark\User as SparkUser;
+use App\Category;
 use App\Shop;
 use App\Path;
 
@@ -58,6 +59,11 @@ class User extends SparkUser
     public function paths()
     {
         return $this->hasMany(Path::class);
+    }
+
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
     }
 
     public function hasShop() :bool 
