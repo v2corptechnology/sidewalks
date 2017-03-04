@@ -25,10 +25,10 @@ class HomeController extends Controller
      */
     public function show()
     {
-        if (! auth()->user()->shop) {
-            return redirect()->route('shops.create');
+        if (! auth()->user()->paths) {
+            return redirect()->route('paths.create');
         }
         
-        return view('home');
+        return redirect()->route('paths.index');
     }
 }
